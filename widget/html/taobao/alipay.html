@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>支付宝红包</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/mescroll.css" />
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+            background: transparent;
+            -webkit-touch-callout: none;
+            font-family: Tahoma, Geneva, sans-serif;
+            font-style: normal;
+        }
+
+        .activityModel {
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 99;
+        }
+
+        #dialog {
+            background-color: #eee;
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            -webkit-transition: all .1s;
+            transition: all .1s;
+            -webkit-transform: scale(1);
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        #erweima {
+            height: 100%;
+            width: 100%;
+            border-radius: 0px;
+            margin: auto;
+            position: absolute;
+        }
+
+        #percent {
+            left: 10px;
+            right: 10px;
+            top: 50%;
+            bottom: 50%;
+            min-height: 40px;
+            position: absolute;
+            margin: auto;
+            text-align: center;
+            white-space: nowrap;
+            width: auto;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            z-index: 2;
+            color: #fff;
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="dialog">
+        <div id="coupon" tapmode onclick="">
+            <img id="erweima" src="https://img.alicdn.com/imgextra/i1/97248844/O1CN01CRpVZz2FCbJPFUX5w_!!97248844.png" />
+            <div id="percent">X5678X</div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/mescroll.js"></script>
+<script type="text/javascript">
+    //https://img.alicdn.com/imgextra/i4/97248844/O1CN012zdT8F2FCbJTgaTUs_!!97248844.png
+    //https://img.alicdn.com/imgextra/i4/97248844/O1CN01FnMpky2FCbJ4sgPoE_!!97248844.png
+    apiready = function() {
+        api.parseTapmode();
+        loaddata();
+    }
+
+    function loaddata() {
+        var commondata = GetStorage('commondata');
+        var serverurl = GetStorage('serverurl');
+        var pinvite = GetStorage('pinvite');
+        var listDom = document.getElementById("coupon");
+        console.log('支付宝搜索码：' + pinvite.alipay_search);
+        var name = api.pageParam.name;
+        var id = api.pageParam.id;
+        //  Alert(name + '<<<' + serverurl + '>>>' + id);
+        api.ajax({
+            url: serverurl + '/api/user/sort?name=alipay&title_id=1',
+            method: 'get',
+            timeout: 5,
+            cache: false,
+            dataType: 'json',
+        }, function(ret, err) {
+            if (ret.code == 1) {
+                //Alert(ret.data)
+                var html = '<div id="coupon" tapmode onclick="openalipay()">';
+                html += '<img id="erweima" src="' + ret.data.image + '" />';
+                html += '<div id="percent">' + pinvite.alipay_search + '</div></div>';
+                $api.html(listDom, html);
+            }
+        });
+    }
+
+    //一键复制
+    function openalipay() {
+        var pinvite = GetStorage('pinvite');
+        if (pinvite.alipay_search && pinvite.alipay_search != "undefined") {
+            var clipBoard = api.require('clipBoard');
+            clipBoard.set({
+                    value: pinvite.alipay_search
+                },
+                function(ret, err) {
+                    Toast('复制搜索码【' + pinvite.alipay_search + '】成功');
+                    alipayBox();
+                });
+        } else {
+            toast('当前没有支付宝搜索码');
+        }
+    }
+
+    function alipayBox() {
+        api.openApp({
+            iosUrl: "alipays://",
+            uri: "alipays://"
+        }, function(ret, err) {
+            if (!ret) {
+                Toast('没有安装支付宝')
+            }
+        });
+    }
+</script>
+
+</html>

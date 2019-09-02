@@ -1,0 +1,192 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>商品列表</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/mescroll.css" />
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <!--滑动区域-->
+    <div class="mescroll" id="mescroll">
+        <!--商品列表  -->
+        <div class="goods-list" id="goods_block">
+            <!--        <div class="goods-item">
+                <a class="img">
+                    <span class="coupon-wrapper  theme-bg-color-1">券<i>￥</i><b></b></span>
+                    <img src="../../image/load.gif">
+                </a>
+                <a class="title">
+                    <div class="text"></div>
+                </a>
+                <div class="price-wrapper">
+                    <span class="price">￥<span></span></span><span class="price_yj">￥</span>
+                    <div class="sold-wrapper"><span class="text">月销</span><span class="sold-num">件</span></div>
+                </div>
+            </div>
+            <div class="goods-item">
+                <a class="img">
+                    <span class="coupon-wrapper  theme-bg-color-1">券<i>￥</i><b></b></span>
+                    <img src="../../image/load.gif">
+                </a>
+                <a class="title">
+                    <div class="text"></div>
+                </a>
+                <div class="price-wrapper">
+                    <span class="price">￥<span></span></span><span class="price_yj">￥</span>
+                    <div class="sold-wrapper"><span class="text">月销</span><span class="sold-num">件</span></div>
+                </div>
+            </div>
+            <div class="goods-item">
+                <a class="img">
+                    <span class="coupon-wrapper  theme-bg-color-1">券<i>￥</i><b></b></span>
+                    <img src="../../image/load.gif">
+                </a>
+                <a class="title">
+                    <div class="text"></div>
+                </a>
+                <div class="price-wrapper">
+                    <span class="price">￥<span></span></span><span class="price_yj">￥</span>
+                    <div class="sold-wrapper"><span class="text">月销</span><span class="sold-num">件</span></div>
+                </div>
+            </div>
+            <div class="goods-item">
+                <a class="img">
+                    <span class="coupon-wrapper  theme-bg-color-1">券<i>￥</i><b></b></span>
+                    <img src="../../image/load.gif">
+                </a>
+                <a class="title">
+                    <div class="text"></div>
+                </a>
+                <div class="price-wrapper">
+                    <span class="price">￥<span></span></span><span class="price_yj">￥</span>
+                    <div class="sold-wrapper"><span class="text">月销</span><span class="sold-num">件</span></div>
+                </div>
+            </div>-->
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/mescroll.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+            api.parseTapmode();
+
+            //创建MeScroll对象,内部已默认开启下拉刷新,自动执行up.callback,重置列表数据;
+            mescroll = new MeScroll("mescroll", {
+                up: {
+                    callback: uploadData, //上拉回调,此处可简写; 相当于 callback: function (page) { getListData(page); }
+                    clearEmptyId: "goods_block", //1.下拉刷新时会自动先清空此列表,再加入数据; 2.无任何数据时会在此列表自动提示空
+                    isBounce: false, //此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
+                    offset: 200, //列表滚动到距离底部小于100px,即可触发上拉加载的回调
+                    noMoreSize: 1, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看
+                    //isLock: true, //是否锁定上拉
+                    page: {
+                        num: 0, //当前页码,默认0,回调之前加1,
+                        size: 20, //每页数据的数量;
+                        time: null //加载第一页数据服务器返回的时间 (可空);
+                    },
+                    lazyLoad: {
+                        use: true, // 是否开启懒加载,默认false
+                        attr: 'imgurl', // 网络图片地址的属性名 (图片加载成功会自动移除改属性): <img imgurl='网络图  src='占位图''/>
+                        showClass: 'mescroll-lazy-in', // 图片加载成功的显示动画: 渐变显示,参见mescroll.css
+                        delay: 400, // 列表滚动的过程中每500ms检查一次图片是否在可视区域,如果在可视区域则加载图片
+                        offset: 10 // 超出可视区域200px的图片仍可触发懒加载,目的是提前加载部分图片
+                    },
+                    empty: {
+                        icon: "../../image/option/mescroll-empty.png", //图标,默认null
+                        tip: "暂无相关数据~", //提示
+                        //		btntext: "去逛逛 >", //按钮,默认""
+                        //	btnClick: function() { //点击按钮的回调,默认null
+                        //			alert("点击了按钮,具体逻辑自行实现");}
+                    },
+                    htmlNodata: '<p class="upwarp-nodata">-- 已加载完毕 --</p>',
+                    empty: {
+                        icon: "../../image/option/mescroll-empty.png", //图标,默认null
+                        tip: "暂无相关数据~", //提示
+                        //		btntext: "去逛逛 >", //按钮,默认""
+                        //	btnClick: function() { //点击按钮的回调,默认null
+                        //			alert("点击了按钮,具体逻辑自行实现");}
+                    },
+                }
+            });
+        }
+        //上拉加载的回调 page = {num:1, size:10}; num:当前页 默认从1开始, size:每页数据条数,默认10
+    function uploadData(page) {
+        var commondata = GetStorage('commondata');
+        var min = api.pageParam.min;
+        var max = api.pageParam.max;
+        var jingtuitui = "http://japi.jingtuitui.com/api/get_goods_list?" + "appid=" + commondata.jingtuitui_APPID + "&appkey=" + commondata.jingtuitui_APPKEY; //京推推链接
+        api.ajax({
+                url: jingtuitui + '&price_start=' + min + '&price_end=' + max + '&num=' + page.size + '&page=' + page.num, //分类商品API接口链接
+                encode: false,
+                method: 'post',
+                timeout: 5,
+                cache: 'true',
+                dataType: 'json',
+                returnAll: false,
+                data: {}
+            },
+            function(ret, err) {
+                if (ret) {
+                    var curPageData = ret.result.data;
+                    mescroll.endSuccess(curPageData.length);
+                    setListData(curPageData); //自行实现
+                } else {
+                    mescroll.endErr(); //联网失败的回调,隐藏下拉刷新的状态
+                    var listDom = document.getElementById("goods_block");
+                    var html = '<div style="text-align:center"><img src="../../image/option/mescroll-empty.png" style="width:200PX;"></div>';
+                    html += '<div class="paging" style="text-align:center;padding-top:5px;">-- 没有网络或网络错误 --<br>请检查网络后下拉刷新!!</div>';
+                    //      html += '<div class="aui-btn aui-btn-danger aui-btn-block aui-btn-outlined" onclick="reloadPage();">点击刷新</div>';
+                    $api.html(listDom, html);
+                }
+            });
+    }
+
+    function setListData(curPageData) {
+        var len = curPageData.length;
+        var listDom = document.getElementById("goods_block");
+        /*下面就是往容器里面插入数据的代码*/
+        var html = '';
+        for (var i = 0; i < len; i++) {
+            var data = curPageData[i];
+            var tbm = "";
+            if (data.shoptype == 'B') {
+                tbm = '<img src="../../image/jd.png"style="width:13px;"/>&nbsp;';
+            } else {
+                tbm = '<img src="../../image/jd.png"style="width:13px;"/>&nbsp;';
+            };
+            //图片链接判断
+            var pic = "";
+            if ((data.goods_img).indexOf("http") != -1) {
+                pic = data.goods_img;
+            } else {
+                pic = 'https:' + data.goods_img;
+            };
+            html += '<div class="goods-item" tapmode data-sku="' + data.goods_id + '" data-couponurl="' + data.discount_link + '" onclick="toDetail(this);"><a class="img">';
+            html += '<span class="coupon-wrapper  theme-bg-color-1">券<i>￥</i><b>' + parseFloat(data.discount_price) + '</b></span>'; //<span class="today-wrapper"><b>NEW</b></span>';
+            html += '<img onerror="this.src=\'../../image/loaderr.png\'";" src="../../image/load.gif" imgurl="' + pic + '"></a>';
+            html += '<a class="title"><div class="text">' + tbm + data.goods_name + '</div></a>';
+            html += '<div class="price-wrapper"><span class="price">￥<span>' + parseFloat(data.coupon_price) + '</span></span><span class="text">券后</span>';
+            html += '<div class="sold-wrapper"><span class="text">原价</span><span class="sold-num">' + data.goods_price + '元</span></div>';
+            html += '</div></div>';
+        }
+        $api.append(listDom, html);
+        //api.refreshHeaderLoadDone();
+        lock = false;
+    }
+</script>
+
+</html>

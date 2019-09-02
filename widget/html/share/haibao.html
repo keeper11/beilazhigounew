@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>邀请海报</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.css" />
+    <style>
+        .swiper-pagination-fraction,
+        .swiper-pagination-custom,
+        .swiper-container-horizontal>.swiper-pagination-bullets {
+            bottom: -100px;
+            left: 0;
+            width: 100%;
+        }
+
+        .swiper-container {
+            margin-top: 2px;
+            overflow: hidden!important;
+            z-index: 1;
+            display: block;
+        }
+
+        .swiper-pagination-bullet {
+            width: 15px;
+            height: 8px;
+            border-radius: 8px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            display: block;
+            width: 100%;
+            height: 60px;
+            border-top: 1px solid #f0f0f0;
+            top: auto;
+            table-layout: fixed;
+            background-color: #ffffff;
+            color: #757575;
+        }
+
+        .bt1 {
+            display: inline-block;
+            width: 90%;
+            background: linear-gradient(to right, #4eec57, #45b14b);
+            text-align: center;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 25px;
+            color: #ffffff;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .bt2 {
+            display: inline-block;
+            width: 90%;
+            background: linear-gradient(to right, #FF6145, #FF3649);
+            text-align: center;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 25px;
+            color: #ffffff;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .my_code {
+            position: absolute;
+            width: 20%;
+            height: 20%;
+            bottom: 5%;
+            left: 20%;
+        }
+
+        .my_code canvas {
+            height: 100%;
+            width: auto;
+        }
+
+        .my_invite {
+            position: absolute;
+            width: 25%;
+            height: auto;
+            bottom: 15%;
+            right: 20%;
+            font-size: 20px;
+            color: red;
+            border-radius: 5px;
+            border: 0px #fff solid;
+        }
+
+        .invite {
+            position: absolute;
+            width: 100%;
+            background: rgba(254, 223, 235, 0.6);
+            font-size: 18px;
+            color: red;
+            border-radius: 15px;
+            border: 1px #fff solid;
+        }
+
+        .box {
+            display: inline-block;
+            height: 100%;
+            width: 70%;
+            position: relative;
+        }
+
+        .box img {
+            width: 100%;
+            height: 80%;
+        }
+
+        .header {
+            top: 0px;
+            display: block;
+            width: 100%;
+            height: 100px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+<!--   <div class="header">
+        <img src="../../image/yaoqing.png" />
+    </div>-->
+
+    <div class="swiper-container">
+        <div class="swiper-wrapper" id="haibao">
+            <div class="swiper-slide text-center">
+                <div class="box" id="Img20">
+                    <img class="boximg" src="../../image/haibao.png" />
+                    <div class="my_code"></div>
+                    <div class="my_invite">
+                        <div class="invite"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+
+    <div class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-6 text-center" onclick="FenXiang(0)" tapmode="cb">
+                    <span class="bt1">分享邀请海报</span>
+                    <a href="" class="down"></a>
+                </div>
+                <div class="col-xs-6 text-center" onclick="FenXiang(1)" tapmode="cb">
+                    <span class="bt2 down2">分享邀请链接</span>
+                    <a href="" class="down"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/qrcode.js"></script>
+<script type="text/javascript" src="../../script/swiper.js"></script>
+<script type="text/javascript" src="../../script/html2canvas.js"></script>
+<script type="text/javascript">
+    var pic_num = 0;
+    var mySwiper;
+    apiready = function() {
+        api.parseTapmode();
+        clipBoard = api.require('clipBoard');
+        sharedModule = api.require('shareAction');
+        GetContent();
+    };
+
+    function GetContent() {
+        var appdata = GetStorage('appdata');
+        var inviteinfo = GetStorage('inviteinfo');
+        var serverurl = GetStorage('serverurl');
+        var name = appconfig.packageName.split(".")[2];
+        api.ajax({
+            url: serverurl + '/api/user/sorts?name=' + name,
+            method: 'get',
+        }, function(ret, err) {
+            if (ret.code == 1) {
+                var count = ret.data.length;
+                var ccc = 0;
+                var imgs = [];
+                for (var i in ret.data) {
+                    api.download({
+                        url: ret.data[i].image,
+                        savePath: 'fs://ShareImg/' + i + '.png',
+                        report: false,
+                        cache: false,
+                        allowResume: false
+                    }, function(ret, err) {
+                        if (ret.state == 1) {
+                            //  Alert(ret.savePath)
+                            imgs.push(ret.savePath);
+                            ccc++;
+                            if (ccc >= count) {
+                                var html = '';
+                                for (var j in imgs) {
+                                    html += '<div class="swiper-slide text-center" tapmode onclick="SaveImg(' + j + ')">';
+                                    html += '<div class="box" id="Img' + j + '">';
+                                    html += '<img src="' + imgs[j] + '"/>';
+                                    html += '<div class="my_code"></div>';
+                                    html += '<div class="my_invite">邀请码</br><div class="invite">' + inviteinfo.invite + '</div></div></div></div>';
+                                }
+                                $('.swiper-wrapper').html(html);
+                                $('.my_code').qrcode({
+                                    render: "canvas",
+                                    background: "#FFF",
+                                    text: GetStorage('appurl')
+                                });
+                                mySwiper();
+                            }
+                        }
+                    });
+                };
+            };
+        });
+    };
+
+    function mySwiper() {
+        mySwiper = new Swiper('.swiper-container', {
+            pagination: '.swiper-pagination',
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: 'auto',
+            coverflow: {
+                rotate: 50,
+                stretch: 0,
+                depth: 800,
+                modifier: 1,
+                slideShadows: true
+            }
+        });
+    }
+
+    function FenXiang(tag) {
+        if (tag == 0) {
+            CanvasImg();
+        } else {
+            ShareUrl();
+        }
+    }
+
+    function CanvasImg() {
+        var pic_num = mySwiper.activeIndex;
+        var canvas2 = document.createElement("canvas");
+        var _canvas = $('.swiper-slide').eq(0);
+        if (pic_num == undefined && pic_num == null) {
+            Toast('请等待加载完成');
+            return false;
+        }
+        var w = parseInt(_canvas.width);
+        var h = parseInt(_canvas.height);
+        //将canvas画布放大若干倍，然后盛放在较小的容器内，就显得不模糊了
+        canvas2.width = w * 2;
+        canvas2.height = h * 2;
+        canvas2.style.width = w + "px";
+        canvas2.style.height = h + "px";
+        //可以按照自己的需求，对context的参数修改,translate指的是偏移量
+        //  var context = canvas.getContext("2d");
+        //  context.translate(0,0);
+        var context = canvas2.getContext("2d");
+        context.scale(2, 2);
+        console.log(pic_num);
+        html2canvas(document.querySelector('#Img' + pic_num), {
+            canvas: canvas2
+        }).then(function(canvas) {
+            //document.body.appendChild(canvas);
+            //canvas转换成url，然后利用a标签的download属性，直接下载，绕过上传服务器再下载
+            base64Str = canvas.toDataURL('image/jpeg').replace("data:image/jpeg;base64,", "");
+            var imgName = Math.floor((Math.random() * 100) + 1) + pic_num + ".png";
+            var trans = api.require('trans');
+            trans.saveImage({
+                base64Str: base64Str,
+                imgPath: "fs://share/",
+                imgName: imgName,
+            }, function(ret, err) {
+                if (ret.status) {
+                    ShareImg("fs://share/" + imgName);
+                } else {
+                    Toast('图片初始化失败');
+                }
+            });
+        });
+    }
+
+    function SaveImg(pic_num) {
+        //  var pic_num = mySwiper.activeIndex;
+        var canvas2 = document.createElement("canvas");
+        var _canvas = $('.swiper-slide').eq(0);
+        var w = parseInt(_canvas.width);
+        var h = parseInt(_canvas.height);
+        //将canvas画布放大若干倍，然后盛放在较小的容器内，就显得不模糊了
+        canvas2.width = w * 2;
+        canvas2.height = h * 2;
+        canvas2.style.width = w + "px";
+        canvas2.style.height = h + "px";
+        //可以按照自己的需求，对context的参数修改,translate指的是偏移量
+        //  var context = canvas.getContext("2d");
+        //  context.translate(0,0);
+        var context = canvas2.getContext("2d");
+        context.scale(2, 2);
+        console.log(pic_num);
+        html2canvas(document.querySelector('#Img' + pic_num), {
+            canvas: canvas2
+        }).then(function(canvas) {
+            //document.body.appendChild(canvas);
+            //canvas转换成url，然后利用a标签的download属性，直接下载，绕过上传服务器再下载
+            base64Str = canvas.toDataURL('image/jpeg').replace("data:image/jpeg;base64,", "");
+            var imgName = Math.floor((Math.random() * 100) + 1) + pic_num + ".png";
+            var trans = api.require('trans');
+            trans.saveImage({
+                album: true,
+                base64Str: base64Str,
+                imgPath: "fs://share/",
+                imgName: imgName,
+            }, function(ret, err) {
+                if (ret.status) {
+                    Toast('海报保存成功');
+                    //    SaveImg("fs://share/" + imgName);
+                } else {
+                    Toast('图片初始化失败');
+                }
+            });
+        });
+    }
+    //分享邀请海报
+    function ShareImg(img) {
+        var appdata = GetStorage('appdata');
+        var commondata = GetStorage('commondata');
+        var inviteinfo = GetStorage('inviteinfo');
+        var title = "【" + api.appName + "】APP" + commondata.apptext + '  邀请码：' + inviteinfo.invite + '\n   =>>>> 下载地址：' + GetStorage('appurl');
+        clipBoard.set({
+                value: title
+            },
+            function(ret, err) {
+                //Toast('邀请码：' + inviteinfo.invite + '，复制成功')
+            });
+        sharedModule.share({
+            //  images: [img],
+            path: img,
+            type: 'image'
+        });
+    }
+
+    //分享邀请链接
+    function ShareUrl() {
+        var appdata = GetStorage('appdata');
+        var commondata = GetStorage('commondata');
+        var inviteinfo = GetStorage('inviteinfo');
+        var title = "【" + api.appName + "】APP" + commondata.apptext + '  邀请码：' + inviteinfo.invite + ',复制这段文字,注册时自动填写。\n =>>>> 下载地址：' + GetStorage('appurl');
+        sharedModule.share({
+            text: title,
+            type: 'text'
+        });
+    };
+</script>
+
+</html>

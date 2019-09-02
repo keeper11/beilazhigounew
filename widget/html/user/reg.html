@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+	<title>用户注册</title>
+	<link rel="stylesheet" type="text/css" href="../../css/reg_login.css">
+	<style type="text/css">
+		.login_input {
+			position: relative;
+			width: 100%;
+			line-height: 52px;
+			font-size: 18px;
+			color: #000;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+			background-color: #fff;
+
+		}
+
+		.invite {
+			width: 100%;
+			color: #000;
+			font-size: 16px;
+			word-wrap: break-word;
+			line-height: 20px;
+			position: absolute;
+		}
+		.input_lf{
+			display: inline-block;
+			width: 75px;
+		}
+		.input_rg{
+			display: inline-block;width: 88px;
+		}
+		.login_input_div{
+			display: flex;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="login_content_wrapper" style="display: block; opacity: 1;">
+		<div id="login_tele_wrapper" style="display: block; opacity: 1;">
+			<h3 class="login_content_h3 none">手机号注册</h3>
+			<div class="text">
+			</div>
+			<div class="login_input_div">
+				<span class="input_title input_lf">邀请码</span>
+				<input type="tel" id="invite" placeholder="找推荐人索取" class="login_input" maxlength="8">
+			</div>
+			<div class="login_input_div">
+				<div id="login_tele_left input_lf" class="left">
+					+
+					<input type="tel" id="country" class="login_tele_code_input" maxlength="4" value="86" readonly="readonly">
+				</div>
+				<div id="CountriesRegions" class="right rel" onclick="Toast('当前仅支持中国大陆手机用户')">
+					中国
+				</div>
+			</div>
+			<div class="login_input_div">
+				<span class="input_title input_lf">手机号</span>
+				<input type="tel" id="phone" placeholder="填写手机号码" class="login_input" maxlength="11">
+			</div>
+			<div class="login_input_div">
+				<span class="input_title input_lf">验证码</span>
+				<input type="tel" id="PIN" placeholder="填写验证码" class="login_input" maxlength="6">
+				<!--获取验证码 计时器-->
+				<div id="getpin" class="getpin_clickable right c_txt rel getpin input_rg" onclick="getCode()">
+					获取验证码
+				</div>
+				<div id="pinjsq" class="pinjsq_clickable right c_txt rel pinjsq none">
+					计时器
+				</div>
+				<!--/-->
+			</div>
+			<div class="login_input_div">
+				<span class="input_title">密&emsp;码</span>
+				<input type="password" id="pwd" class="login_input" style='width:52%;' placeholder="请设置登录密码" maxlength="16">
+				<img class="eye" src="../../image/bkj.png" />
+			</div>
+			<!--<div class="login_input_div">
+				<span class="input_title">类&emsp;型</span>
+				<select id="mtypeid" name="mtypeid">
+                        <option value="1">个人用户</option>
+                        <option value="2">机构用户</option>
+                        <option value="3">专家用户</option>
+
+
+				            </select>
+			</div>
+		-->
+			<p class="login_content_foot_tip" style="overflow:hidden;">
+				<span class="login_protocol_check checked"><label></label>注册表示同意</span>
+				<a onclick="getdefault('user','1','用户服务协议')">《用户服务协议》</a></p>
+			<a class="btnok" onclick="CheckSubmit()">立即注册</a>
+			<a class="btn none"><i class="CIACloud-font icon-icon20 fa-spin"></i> 注册中</a>
+			<div onclick="GoPwd()">
+				<p class="login_content_foot_tip rel left">
+					<a class="login_no_request_code_link">忘记密码</a>
+				</p>
+			</div>
+			<div onclick="GoLogin()">
+				<p class="login_content_foot_tip rel right">
+					<a class="login_no_request_code_link">我要登录</a>
+				</p>
+			</div>
+
+		</div>
+
+	</div>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+	var moduleSMSSDK = null;
+	apiready = function() {
+		api.parseTapmode();
+		var invite = GetStorage('commondata').reg_prompt;
+		//	Alert(invite);
+		if (invite.length >= 10) {
+			$api.dom(".text").innerHTML = '<div class="login_input"><div class="invite">' + invite + '</div></div>';
+		}
+		$(".eye").click(function() {
+			var arr = this.src.split("/");
+			if (arr[arr.length - 1] == "bkj.png") {
+				this.src = "../../image/kj.png";
+				$(this).prev().attr("type", "text");
+			} else {
+				this.src = "../../image/bkj.png";
+				$(this).prev().attr("type", "password");
+			}
+		})
+		moduleSMSSDK = api.require('smssdk');
+		autocopy();
+	}
+
+	//粘贴板监听邀请码自动插入
+	function autocopy() {
+		console.warn('粘贴板自动插入');
+		clipBoard = api.require('clipBoard');
+		clipBoard.setListener( //setListener
+			function(ret) {
+				if ((ret.value).indexOf("邀请码") != -1) { //不是邀请码不输入
+					var invite = (ret.value).match(/\d{6,8}/g);
+					$api.byId('invite').value = invite; //赋值
+				} else if (isNaN(ret.value) != true) { //不是纯数字不输入
+					$api.byId('PIN').value = ret.value; //赋值
+				} else if ((ret.value).indexOf("验证码") != -1) { //不是纯数字不输入
+					var pin = (ret.value).match(/\d{4,6}/g);
+					$api.byId('PIN').value = pin; //赋值
+				}
+			});
+		clipBoard.get( //setListener
+			function(ret) {
+				if ((ret.value).indexOf("邀请码") != -1) { //不是邀请码不输入
+					var invite = (ret.value).match(/\d{6,8}/g);
+					$api.byId('invite').value = invite; //赋值
+				} else if (isNaN(ret.value) != true) { //不是纯数字不输入
+					$api.byId('PIN').value = ret.value; //赋值
+				} else if ((ret.value).indexOf("验证码") != -1) { //不是纯数字不输入
+					var pin = (ret.value).match(/\d{4,6}/g);
+					$api.byId('PIN').value = pin; //赋值
+				}
+			});
+	}
+	//.发送验证码事件
+	function getCode() {
+		var connectionType = api.connectionType;
+		var country = $api.byId("country").value;
+		//	var tempCode = $api.byId("tempCode").value;
+		var phone = $api.byId('phone').value;
+		if (phone.length <= 0) {
+			Toast('请输入手机号');
+		} else if (isNaN(phone)) {
+			Toast('手机号必须纯数字');
+		} else if (phone < 13000000000) {
+			Toast('手机号格式错误');
+		} else if (phone > 19999999999) {
+			Toast('手机号格式错误');
+		} else if (connectionType == 'none') {
+			Toast('没有网络');
+		} else {
+			var param = { // param中的key命名不能改变
+				zone: country,
+				phoneNumber: phone
+			};
+			moduleSMSSDK.getTextCode(param, function(ret, err) {
+				if (err !== null && err !== undefined && err !== '') {
+					Toast(err.msg); // 错误消息示例：{"msg":"Template not exist.","code":484}
+				} else {
+					showtime(120); // 正常消息示例：{"smart":false}
+					Toast('发送成功');
+				}
+			});
+		}
+	}
+
+	//.计时器
+	function showtime(t) {
+		for (i = 1; i <= t; i++) {
+			window.setTimeout("update(" + i + "," + t + ")", i * 1000);
+		}
+	}
+
+	function update(num, t) {
+		if (num == t) {
+			$api.addCls($api.dom('.pinjsq'), 'none');
+			$api.removeCls($api.dom('.getpin'), 'none');
+			$api.text($api.byId("getpin"), '重新获取');
+		} else {
+			printnr = t - num;
+			$api.addCls($api.dom('.getpin'), 'none');
+			$api.removeCls($api.dom('.pinjsq'), 'none');
+			$api.text($api.byId("pinjsq"), printnr + "秒");
+		}
+	}
+
+	//.表单验证
+	function CheckSubmit() {
+		var invite = $api.byId('invite').value;
+		var phone = $api.byId('phone').value;
+		var country = $api.byId("country").value;
+		var code = $api.byId('PIN').value;
+		var pwd = $api.byId('pwd').value;
+		if (invite.length <= 0) {
+			Toast('请输入邀请码');
+		} else if (isNaN(phone)) {
+			Toast('手机号必须纯数字');
+		} else if (invite.length < 4) {
+			Toast('邀请码格式有误');
+		} else if (phone.length <= 0) {
+			Toast('请输入手机号码');
+		} else if (phone < 13000000000) {
+			Toast('手机号格式错误');
+		} else if (phone > 19999999999) {
+			Toast('手机号格式错误');
+		} else if (code.length <= 0) {
+			Toast('请输入验证码');
+		} else if (code.length < 4) {
+			Toast('验证码格式有误');
+		} else if (pwd.length <= 0) {
+			Toast('请设置登录密码');
+		} else if (pwd.length < 6) {
+			Toast('登录密码太过简单');
+		} else {
+			//	Reg(phone, pwd, invite);
+			var param = {
+				zone: country,
+				phoneNumber: phone,
+				code: code
+			};
+			moduleSMSSDK.commitCode(param, function(ret, err) {
+				if (err !== null && err !== undefined && err !== '') {
+					Toast(err.msg);
+				} else {
+					Reg(phone, pwd, invite); // 正常消息示例：{country=86, phone=13362206853}
+				}
+			});
+		}
+	}
+
+	//.注册代码
+	function Reg(phone, pwd, invite) {
+		var serverurl = GetStorage('serverurl');
+		var deviceName = api.deviceName;
+		var deviceId = api.deviceId;
+		var device = deviceName + ':' + deviceId
+		api.ajax({
+			url: serverurl + '/api/user/register?mobile=' + phone + '&password=' + pwd + '&invite=' + invite + '&deviceid=' + device,
+			method: 'get',
+			timeout: 5,
+			cache: false,
+			dataType: 'json',
+		}, function(ret, err) {
+			if (ret.code == 0) {
+				Toast(ret.msg);
+			} else if (ret.code == 1) {
+				Toast(ret.msg);
+				var data = ret.data;
+				SetStorage('mobile', phone);
+				setdata(data);
+				rootuserdata();
+			} else {
+				Toast('网络错误，请稍候重试');
+				RmStorage('serverurl');
+				getServer();
+			}
+		});
+	}
+</script>
+
+</html>

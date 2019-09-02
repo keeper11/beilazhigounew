@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+	<title>修改支付宝</title>
+	<link rel="stylesheet" type="text/css" href="../../css/reg_login.css">
+	<style type="text/css">
+		.alipay {
+			color: #000;
+			font-size: 14px;
+			left: 20px;
+			position: absolute;
+		}
+
+		.name {
+			color: #000;
+			font-size: 14px;
+			left: 20px;
+			position: absolute;
+		}
+
+		.login_input {
+			position: relative;
+			width: 100%;
+			height: 20px;
+			line-height: 10px;
+			font-size: 18px;
+			color: #000;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+			background-color: #fff
+		}
+
+		.text {
+			width: 100%;
+			color: #000;
+			font-size: 16px;
+			word-wrap: break-word;
+			line-height: 20px;
+			position: absolute;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="login_content_wrapper" style="display: block; opacity: 1;">
+		<div id="login_tele_wrapper" style="display: block; opacity: 1;">
+			<h3 class="login_content_h3 none">修改支付宝</h3>
+			<div class="login_input">
+				<div class="text">请如实填写，虚假信息将会提现失败。</div>
+			</div>
+			<div class="login_input_div">
+				<span class="input_title">支付宝</span>
+				<input type="tel" id="alipay" placeholder="填写支付宝帐号" class="login_input" maxlength="30">
+			</div>
+			<div class="login_input_div">
+				<span class="input_title">实&emsp;名</span>
+				<input type="name" id="name" placeholder="填写支付宝实名" class="login_input" maxlength="30">
+			</div>
+
+			<div class="login_input_div">
+				<span class="input_title">验证码</span>
+				<input type="tel" id="PIN" placeholder="填写验证码" class="login_input" maxlength="6">
+				<!--获取验证码 计时器-->
+				<div id="getpin" class="getpin_clickable right c_txt rel getpin" onclick="getCode()">
+					获取验证码
+				</div>
+				<div id="pinjsq" class="pinjsq_clickable right c_txt rel pinjsq none">
+					计时器
+				</div>
+				<!--/-->
+			</div>
+
+			<!--		<div class="login_input_div">
+				<span class="input_title">类&emsp;型</span>
+				<select id="mtypeid" name="mtypeid">
+                        <option value="1">个人用户</option>
+                        <option value="2">机构用户</option>
+                        <option value="3">专家用户</option>
+                    </select>
+			</div>
+		-->
+			<a class="btnok" onclick="CheckSubmit()" style="background-color:#ff0000">提交修改</a>
+			<!--		<div onclick="GoLogin()">
+				<p class="login_content_foot_tip rel right">
+					<a class="login_no_request_code_link">我要登录</a>
+				</p>
+			</div>-->
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+	var moduleSMSSDK = null;
+	apiready = function() {
+			api.parseTapmode();
+			$(".eye").click(function() {
+				var arr = this.src.split("/");
+				if (arr[arr.length - 1] == "bkj.png") {
+					this.src = "../../image/kj.png";
+					$(this).prev().attr("type", "text");
+				} else {
+					this.src = "../../image/bkj.png";
+					$(this).prev().attr("type", "password");
+				}
+			})
+			moduleSMSSDK = api.require('smssdk');
+			autocopy();
+		}
+		//粘贴板监听邀请码自动插入
+	function autocopy() {
+		console.warn('粘贴板自动插入');
+		clipBoard = api.require('clipBoard');
+		clipBoard.setListener( //setListener
+			function(ret) {
+				if (isNaN(ret.value) != true) { //不是纯数字不输入
+					$api.byId('PIN').value = ret.value; //赋值
+				} else if ((ret.value).indexOf("验证码") != -1) { //不是纯数字不输入
+					var pin = (ret.value).match(/\d{4,6}/g);
+					$api.byId('PIN').value = pin; //赋值
+				}
+			});
+		clipBoard.get( //setListener
+			function(ret) {
+				if (isNaN(ret.value) != true) { //不是纯数字不输入
+					$api.byId('PIN').value = ret.value; //赋值
+				} else if ((ret.value).indexOf("验证码") != -1) { //不是纯数字不输入
+					var pin = (ret.value).match(/\d{4,6}/g);
+					$api.byId('PIN').value = pin; //赋值
+				}
+			});
+	}
+	//.发送验证码事件
+	function getCode() {
+		//.获取事件类型
+		var connectionType = api.connectionType;
+		var country = 86;
+		var alipay = $api.byId('alipay').value;
+		var name = $api.byId('name').value;
+		//	var tempCode = $api.byId("tempCode").value;
+		var phone = GetStorage('mobile');
+		if (connectionType == 'none') {
+			Toast('没有网络');
+		} else if (alipay.length <= 0) {
+			Toast('请填写支付宝帐号');
+		} else if (name.length <= 0) {
+			Toast('请填写支付宝实名');
+		} else {
+			// param中的key命名不能改变
+			var param = {
+				zone: country,
+				phoneNumber: phone
+			};
+			moduleSMSSDK.getTextCode(param, function(ret, err) {
+				if (err !== null && err !== undefined && err !== '') {
+					Toast(err.msg); // 错误消息示例：{"msg":"Template not exist.","code":484}
+				} else {
+					showtime(120);
+					Toast('发送成功'); // 正常消息示例：{"smart":false}
+				}
+			});
+		}
+	}
+
+	//.计时器
+	function showtime(t) {
+		for (i = 1; i <= t; i++) {
+			window.setTimeout("update(" + i + "," + t + ")", i * 1000);
+		}
+	}
+
+	function update(num, t) {
+		if (num == t) {
+			$api.addCls($api.dom('.pinjsq'), 'none');
+			$api.removeCls($api.dom('.getpin'), 'none');
+			$api.text($api.byId("getpin"), '重新获取');
+		} else {
+			printnr = t - num;
+			$api.addCls($api.dom('.getpin'), 'none');
+			$api.removeCls($api.dom('.pinjsq'), 'none');
+			$api.text($api.byId("pinjsq"), printnr + "秒");
+		}
+	}
+
+	function CheckSubmit() {
+		var phone = GetStorage('mobile');
+		var country = 86;
+		var code = $api.byId('PIN').value;
+		var alipay = $api.byId('alipay').value;
+		var name = $api.byId('name').value;
+		if (code.length <= 0) {
+			Toast('请输入验证码');
+		} else if (code.length < 4) {
+			Toast('验证码格式有误');
+		} else if (alipay.length <= 0) {
+			Toast('请填写支付宝帐号');
+		} else if (name.length <= 0) {
+			Toast('请填写支付宝实名');
+		} else {
+			var param = {
+				zone: country,
+				phoneNumber: phone,
+				code: code
+			};
+			moduleSMSSDK.commitCode(param, function(ret, err) {
+				if (err !== null && err !== undefined && err !== '') {
+					Toast(err.msg);
+				} else {
+					// 正常消息示例：{country=86, phone=13362206853}
+					Edit(alipay, name);
+				}
+			});
+		}
+	}
+
+	//.修改代码
+	function Edit(alipay, name) {
+		var serverurl = GetStorage('serverurl');
+		api.ajax({
+			url: serverurl + '/api/user/alipay?mobile=' + GetStorage('mobile') + '&alipay=' + alipay + '&name=' + name,
+			method: 'get',
+			timeout: 5,
+			cache: false,
+			dataType: 'json',
+		}, function(ret, err) {
+			if (ret.code == 0) {
+				Toast(ret.msg);
+			} else if (ret.code == 1) {
+				Toast(ret.msg);
+				onelogin();
+				rootuserdata();
+			} else {
+				Toast('网络错误，请稍候重试');
+			}
+		});
+	}
+</script>
+
+</html>

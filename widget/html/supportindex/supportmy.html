@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <style media="screen">
+        .aui-bar-nav {
+            background-color: #f70466;
+            color: #fff;
+            border: none;
+              padding-top: 20px;
+        }
+
+        .personage {
+            width: 100;
+            /*padding: 0 0.5rem;*/
+            background-color: red;
+            height: 162px;
+            background: linear-gradient(0deg, rgba(221, 35, 66, 1) 0%, rgba(247, 3, 103, 1) 100%);
+            border-radius: 0 0 90% 90%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .personage .portrait {
+            width: 60px;
+            height: 60px;
+            background-color: #ccc;
+            border-radius: 30px;
+            margin-right: 10px;
+            margin-left: 20px;
+        }
+
+        .personage .portraitbox {
+            width: 60%;
+            display: flex;
+            /*align-items: center;*/
+            justify-content: center;
+        }
+
+        .personage .portraitboxs {
+            width: 100%;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .personage .portraitboxs .portraittext p {
+            line-height: 30px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .personage .portraitboxs .portraittext p span {
+            font-size: 10px;
+            color: #FEE2AA;
+            background-color: #333;
+            border-radius: 8px;
+            padding: 1px;
+        }
+
+        .personage .portraitboxs .portraittext p span img {
+            width: 10px;
+            height: 10px;
+            vertical-align: text-top;
+        }
+
+        .personage .portraitboxs .portraittext .capys {
+            background-color: #F085A8;
+            color: #fff;
+            font-size: 10px;
+        }
+
+        .personage .integral {
+            background-color: #333333;
+            color: #FEE2AA;
+            font-size: 14px;
+            width: 80px;
+            text-align: right;
+            border-radius: 20px 0 0 20px;
+            padding: 2px 4px;
+            /*display: flex;*/
+            /*align-items: center;*/
+        }
+
+        .remainingbox {
+            margin: 0 0.5rem;
+            /*height: 156px;*/
+            background-color: #fff;
+            border-radius: 10px;
+            position: relative;
+            top: -70px;
+        }
+
+        .remainingbox .remainingnum {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #333333;
+            border-radius: 10px 10px 0 0;
+
+        }
+      .remainingbox .remainingnum .aui-btn{
+        background-color:#FEE2AA;
+        color: #333333;
+      }
+    .remainingbox .remainingnum .recharge_but{
+      border: 1px solid #FEE2AA;
+      color: #fff;
+      font-size: 10px;
+      height: 16px;
+      line-height: 14px;
+      padding: 1px 4px;
+      margin-left: 1rem;
+    }
+    .remainingbox .remainingnum .pbox1{
+      display: flex;
+      align-items: center;
+    }
+  .remainingbox .parameter{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding-top: 14px;
+
+  }
+  .remainingbox .parameter div{
+    text-align: center;
+    margin: 0 25px;
+    line-height: 20px;
+    font-size: 16px;
+    color: #EA1A56;
+    margin-bottom: 14px;
+    font-weight: 400;
+  }
+  .remainingbox .parameter div p{
+    color: #666;
+  }
+  .advertising{
+    /*width: 100%;*/
+    margin: 0 0.5rem;
+    position: relative;
+    top: -53px;
+    border-radius:
+  }
+  .order{
+    margin: 0 0.5rem;
+    position: relative;
+    top: -36px;
+    background-color: #fff;
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+.order .order_tit{
+        padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #E4E4E4;
+  }
+  .order .order_tit p{
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+  }
+  .order .order_option{
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 16px;
+  }
+  .order .order_option div img{
+  margin: 0 auto;
+    /*width: 25px;*/
+    height: 25px;
+    margin-bottom: 9px;
+    margin-top:25px;
+  }
+  .personal{
+  }
+  .personal .personal_box{
+padding-bottom: 16px;
+    display: flex;
+    flex-wrap: wrap;
+
+  }
+.personal .personal_box div{
+  width: 25%;
+  text-align: center;
+}
+.personal .personal_box div img{
+  margin: 0 auto;
+    /*width: 25px;*/
+    height: 25px;
+    margin-bottom: 9px;
+    margin-top:25px;
+}
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <!-- nav -->
+        <header class="aui-bar aui-bar-nav aui-bar-light">
+            <div class="aui-pull-left aui-btn">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </div>
+            <div class="aui-title">个人中心</div>
+            <div class="aui-pull-right aui-btn aui-btn-outlined">
+                <span class="aui-iconfont aui-icon-search"></span>
+            </div>
+        </header>
+        <!-- 头像栏等 -->
+        <div class="personage">
+            <div class="portraitboxs">
+                <div class="portraitbox">
+                    <div class="portrait"></div>
+                    <div class="portraittext">
+                        <p>我的昵称 <span><img src="../../image/soppeticon/qianbi.png" alt="" style="display: inline-block;">普通会员</span> </p>
+                        <p>邀请码：666359 <span class="capys">复制</span></p>
+                    </div>
+                </div>
+                <div class="integral">
+                    <img src="../../image/soppeticon/jifen.png" style="display: inline-block;width: 14px;height: 14px;vertical-align: text-top;" /> 482积分
+                </div>
+            </div>
+        </div>
+        <!-- 余额 -->
+        <div class="remainingbox">
+            <div class="remainingnum">
+                <div>
+                    <p class='pbox1' style="font-size:15px;color: #FEE2AA;">余额：￥<sapn style="font-size:20px">500</sapn> <span class="recharge_but">充值</span></p>
+                    <p  style="font-size:12px;color: #C5C1B6;">每月25号可结算上个月收益></p>
+                </div>
+                <div class="aui-btn">立即提现</div>
+            </div>
+            <div class="parameter">
+              <div><span>￥0</span><p>今日预估</p></div>
+              <div><span>￥0</span><p>昨日预估</p></div>
+              <div><span>￥0</span><p>上月结算</p></div>
+              <div><span>￥0</span><p>我的粉丝</p></div>
+              <div><span>￥0</span><p>今日社群</p></div>
+              <div><span>￥0</span><p>今日预估</p></div>
+            </div>
+        </div>
+        <!-- 广告  -->
+        <div class="advertising"><img src="../../image/soppeticon/guanggao.png" alt=""></div>
+
+        <div class="order">
+          <div class="order_tit">
+            <p>宜玖自营订单</p><p style="font-size:14px;color:rgba(153,153,153,1);" @click='goomyrder(5)'>查看全部订单</p>
+          </div>
+        <div class="order_option">
+          <div  @click='goomyrder(0)'>
+            <img src="../../image/soppeticon/qianbao.png" alt="">
+            <p >代付款</p>
+          </div>
+          <div  @click='goomyrder(1)'>
+            <img src="../../image/soppeticon/fahuo.png" alt="">
+            <p>代发货</p>
+          </div>
+          <div  @click='goomyrder(2)'>
+            <img src="../../image/soppeticon/shouhuo.png" alt="">
+            <p>代收货</p>
+          </div>
+          <div >
+            <img src="../../image/soppeticon/tuikuan.png" alt="">
+            <p>退款/售后</p>
+          </div>
+        </div>
+        </div>
+
+        <div class="order personal">
+          <div class="order_tit">
+            <p>用户中心</p><p style="font-size:14px;color:rgba(153,153,153,1);"></p>
+          </div>
+        <div class="personal_box">
+          <div >
+            <img src="../../image/soppeticon/personal1.png" alt="">
+            <p>我的订单</p>
+          </div>
+          <div>
+            <img src="../../image/soppeticon/personal2.png" alt="">
+            <p>申请提现</p>
+          </div>
+          <div>
+            <img src="../../image/soppeticon/personal3.png" alt="">
+            <p>升级会员</p>
+          </div>
+          <div>
+            <img src="../../image/soppeticon/personal4.png" alt="">
+            <p>邀请好友</p>
+          </div>
+          <div>
+            <img src="../../image/soppeticon/personal5.png" alt="">
+            <p>个人设置</p>
+          </div>
+          <div>
+            <img src="../../image/soppeticon/personal6.png" alt="">
+            <p>建议意见</p>
+          </div>
+          <div>
+            <img src="../../image/soppeticon/personal7.png" alt="">
+            <p>我的粉丝</p>
+          </div>
+          <div>
+            <img src="../../image/soppeticon/personal8.png" alt="">
+            <p>收益总览</p>
+          </div>
+          <div>
+            <img src="../../image/soppeticon/personal9.png" alt="">
+            <p>多多分享</p>
+          </div>
+          <div>
+            <img src="../../image/soppeticon/personal10.png" alt="">
+            <p>排行榜</p>
+          </div>
+          <div>
+            <img src="../../image/soppeticon/personal11.png" alt="">
+            <p>收货地址</p>
+          </div>
+        </div>
+        </div>
+
+        <div class="order">
+          <div class="order_tit">
+            <p>常用工具</p><p style="font-size:14px;color:rgba(153,153,153,1);"></p>
+          </div>
+        <div class="order_option">
+          <div >
+            <img src="../../image/soppeticon/gongju1.png" alt="">
+            <p>常见问题</p>
+          </div>
+          <div>
+            <img src="../../image/soppeticon/gongju2.png" alt="">
+            <p>帮助中心</p>
+          </div>
+          <div>
+            <img src="../../image/soppeticon/gongju3.png" alt="">
+            <p>联系客服</p>
+          </div>
+          <div>
+            <img src="../../image/soppeticon/gongju4.png" alt="">
+            <p>领卷教程</p>
+          </div>
+        </div>
+        </div>
+
+    </div>
+</body>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+    var vuedata = {
+
+    }
+    var vm = new Vue({
+        el: '#box',
+        data: vuedata,
+        mounted: function() {
+
+        },
+        created: function() {
+        },
+        methods: {
+
+          goomyrder(i){
+            api.openWin({     
+                name: 'myorder',
+                     url: './myorder.html',
+                     pageParam: {
+                       indexs:i      
+                }   
+            });
+          }
+        }
+    });
+
+    function getOrderListByPage() {
+
+
+    }
+</script>
+
+</html>

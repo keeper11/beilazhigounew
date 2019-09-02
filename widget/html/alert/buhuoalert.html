@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>弹窗</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style type="text/css">
+        html,
+        body {
+            background: none;
+        }
+
+        .alertBox {
+            position: relative;
+            width: 80%;
+            height: auto;
+            position: fixed;
+            top: 50%;
+            margin-top: -41%;
+            padding-top: 20px;
+            left: 10%;
+            border-radius: 5px;
+        }
+
+        .alertBox .closeAlert {
+            position: absolute;
+            top: 5px;
+            right: -5px;
+            font-size: 40px;
+            color: rgb(218, 53, 79);
+        }
+
+        .alertBox .btn {
+            position: absolute;
+            bottom: 35px;
+            width: 100%;
+            text-align: center;
+            /*display: flex;
+        justify-content: space-around;*/
+        }
+
+        .alertBox .buhuo {
+            width: 100%;
+        }
+
+        .alertBox .buhuobtn {
+            width: 25%;
+        }
+
+        .daojshi {
+            position: absolute;
+            top: 46%;
+            width: 100%;
+            text-align: center;
+            color: #fff;
+        }
+
+        .daojshi div {
+            display: inline;
+            padding: 2px 5px;
+            border-radius: 5px;
+            color: #fff;
+            background: rgb(245, 104, 103);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <header id="headerBar" class="headerBar" style="background:#010101;color: #fff; ">
+
+       <a  class="javascript:;"  onclick="closeBuhuo()" tapmode></a>
+
+        <span id="title"  ></span>
+
+        <a href="javascript:;" class="share" id="save" style="display: none;">保存</a>
+
+        <a href="javascript:;" class="share" id="manage" style="display: none;" onclick="delCollect()">管理</a>
+        <a href="javascript:;" class="share" id="editErweima" style="display: none;" onclick="reUps()">编辑</a>
+        <a href="javascript:;" class="share" id="share" style="display: none;" onclick="sharePage()"></a>
+ </header> -->
+
+    <section class="alertBox">
+        <div class="closeAlert" tapmode onclick="closeBuhuo()">×</div>
+        <div id="buhuoTip"></div>
+        <div class="daojshi">
+            <div>
+                <!-- <span id="timeDay">0</span> 天 -->
+                <span id="timeHour">00</span> :
+                <span id="timeMin">00</span> :
+                <span id="timeSec">00</span>
+            </div>
+        </div>
+        <div class="btn">
+            <img class="buhuobtn" src="../../icon/index/buhuobtn.png" alt="" onclick="intoBuhuo()">
+            <!-- <button type="button" class="default" onclick="closeUpdate()" id="default">下次再说</button> -->
+            <!-- <button type="button" class="default update" onclick="app_update()" id="default">立即升级</button> -->
+        </div>
+        <div class="pregressBox" id="pregressBox">
+            <span class="progressBar" id="progressBar"></span>
+        </div>
+    </section>
+</body>
+<script type="text/javascript" src='../../script/api.js'></script>
+<script type="text/javascript" src='../../script/common.js'></script>
+<script type="text/javascript">
+    var updateResult;
+    apiready = function() {
+        api.parseTapmode();
+        loadCommonJs();
+        loadInfo();
+        setTimeout(count_down, 1000);
+    }
+    closeBuhuo = function() {
+        api.closeFrame();
+    }
+
+    intoBuhuo = function() {
+        api.openWin({
+            name: 'buhuoinfo',
+            url: '../template/win_black.html',
+            vScrollBarEnabled: false,
+            pageParam: {
+                name: 'buhuo',
+                url: './buhuoList.html',
+                title: '补货'
+            }
+        });
+    }
+
+    loadInfo = function() {
+        ajax({
+            do: 'MemberInfo',
+            params: {}
+        }, function(data) {
+            if (data.data.area != 0 || data.data.area != '') {
+                if (data.data.area < 0) {
+                    $api.byId('buhuoTip').innerHTML = '<img class="buhuo" src="../../icon/index/buhuo33.png" alt="">'
+                } else if (data.data.ceo != 0) {
+                    $api.byId('buhuoTip').innerHTML = '<img class="buhuo" src="../../icon/index/buhuo22.png" alt="">'
+                } else {
+                    $api.byId('buhuoTip').innerHTML = '<img class="buhuo" src="../../icon/index/buhuo11.png" alt="">'
+                }
+            } else {
+                return false;
+            }
+            // window.area = -data.data.area;
+            var area = Number(data.data.area);
+            window.area = Math.abs(area);
+        })
+    }
+
+    setTimeout(count_down, 1000);
+    count_down = function() {
+
+        var time_now = new Date(); // 获取当前时间
+        time_now = String(time_now.getTime()).substring(0, 10);
+        // log(time_now,true)
+        var time_distance = Number(window.area) - Number(time_now);
+        // log(time_distance)
+        if (time_distance > 0) {
+            // 相减的差数换算成小时
+            var int_hour = Math.floor(time_distance / 3600)
+            time_distance -= int_hour * 3600;
+            // 相减的差数换算成分钟
+            var int_minute = Math.floor(time_distance / 60)
+            time_distance -= int_minute * 60;
+            // 相减的差数换算成秒数
+            var int_second = Math.floor(time_distance)
+                // 判断小时小于10时，前面加0进行占位
+            if (int_hour < 10)
+                int_hour = "0" + int_hour;
+            // 判断分钟小于10时，前面加0进行占位
+            if (int_minute < 10)
+                int_minute = "0" + int_minute;
+            // 判断秒数小于10时，前面加0进行占位
+            if (int_second < 10)
+                int_second = "0" + int_second;
+        }
+        // $api.byId('timeDay').innerHTML = int_day;
+        $api.byId('timeHour').innerHTML = int_hour || '00';
+        $api.byId('timeMin').innerHTML = int_minute || '00';
+        $api.byId('timeSec').innerHTML = int_second || '00';
+        setTimeout(count_down, 1000);
+        if ($api.byId('timeHour').innerHTML == "00" && $api.byId('timeMin').innerHTML == '00' && $api.byId('timeSec').innerHTML == '00') {
+            api.closeFrame();
+        }
+    }
+</script>
+
+</html>

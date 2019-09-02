@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>超级分类</title>
+	<link rel="stylesheet" type="text/css" href="../../css/ui.css" />
+	<style type="text/css">
+		body {
+			background: #FFFFFF
+		}
+	</style>
+</head>
+
+<body>
+	<div class="con">
+		<aside>
+			<div class="menu-left scrollbar-none" id="sidebar">
+				<ul>
+					<li class="active"> 女装 </li>
+					<li> 男装 </li>
+					<li> 内衣 </li>
+					<li> 美妆 </li>
+					<li> 配饰 </li>
+					<li> 鞋品 </li>
+					<li> 箱包 </li>
+					<li> 儿童 </li>
+					<li> 母婴 </li>
+					<li> 居家 </li>
+					<li> 美食 </li>
+					<li> 数码 </li>
+					<li> 家电 </li>
+					<li> 车品 </li>
+					<li> 文体 </li>
+				</ul>
+			</div>
+		</aside>
+		<section class="menu-right padding-all" id="menu0">
+			<!--	<h5>女士配件</h5>
+			<ul>
+				<li class="w-3"> <img src="../../image/findquan.png" /><span>围巾</span></li>
+				<li class="w-3"> <img src="../../image/findquan.png" /><span>披肩</span></li>
+				<li class="w-3"> <img src="../../image/findquan.png" /><span>丝巾</span></li>
+			</ul>-->
+		</section>
+		<section class="menu-right padding-all" id="menu1" style="display:none">
+		</section>
+		<section class="menu-right padding-all" id="menu2" style="display:none">
+		</section>
+		<section class="menu-right padding-all" id="menu3" style="display:none">
+		</section>
+		<section class="menu-right padding-all" id="menu4" style="display:none">
+		</section>
+		<section class="menu-right padding-all" id="menu5" style="display:none">
+		</section>
+		<section class="menu-right padding-all" id="menu6" style="display:none">
+		</section>
+		<section class="menu-right padding-all" id="menu7" style="display:none">
+		</section>
+		<section class="menu-right padding-all" id="menu8" style="display:none">
+		</section>
+		<section class="menu-right padding-all" id="menu9" style="display:none">
+		</section>
+		<section class="menu-right padding-all" id="menu10" style="display:none">
+		</section>
+		<section class="menu-right padding-all" id="menu11" style="display:none">
+		</section>
+		<section class="menu-right padding-all" id="menu12" style="display:none">
+		</section>
+		<section class="menu-right padding-all" id="menu13" style="display:none">
+		</section>
+		<section class="menu-right padding-all" id="menu14" style="display:none">
+		</section>
+		<section class="menu-right padding-all" id="menu15" style="display:none">
+		</section>
+		<section class="menu-right padding-all" id="menu16" style="display:none">
+		</section>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/mescroll.js"></script>
+<script type="text/javascript" src="../../script/swiper.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/echo.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+		api.parseTapmode();
+		$('#sidebar ul li').click(function() {
+			$(this).addClass('active').siblings('li').removeClass('active');
+			var index = $(this).index();
+			$('.menu-right').eq(index).show().siblings('.menu-right').hide();
+		})
+		uploadData();
+		api.setRefreshHeaderInfo({
+			//  loadingImg: 'widget://image/refresh.png',
+				bgColor: '#ccc',
+				textColor: '#fff',
+				textDown: '下拉刷新...',
+				textUp: '松开刷新...'
+		}, function(ret, err) {
+			uploadData();
+				setTimeout(function() {
+						api.refreshHeaderLoadDone();
+				}, 1000);
+		});
+		setTimeout(Echo, 100);
+		api.addEventListener({
+			name: 'online'
+		}, function(ret, err) {
+			uploadData(); //联网正常重新加载图片
+			Echo();
+		});
+	}
+
+	function Echo() {
+		setInterval(function() {
+			var connectionType = api.connectionType;
+			if (connectionType != 'none') {
+				echo.init({
+					offset: 0,
+					throttle: 100,
+					unload: false,
+					callback: function(element, op) {}
+				});
+				echo.render();
+			} else {
+				echo.detach(); //移除加载图片
+			}
+		}, 500);
+	}
+
+	function uploadData() {
+		var commondata = GetStorage('commondata');
+		var id = api.pageParam.id;
+		var haodanku = "https://v2.api.haodanku.com/super_classify/apikey/"; //好单库链接
+		var timestamp = Date.parse(new Date()) / 1e3; //当前时间戳 精确到秒
+		if (!GetStorage('f_times') || GetStorage('f_times') < timestamp) {
+			var datetime = GetDatetime('Y-m-d H:i:s', timestamp)
+			api.ajax({
+					url: haodanku + commondata.apikey, //专题商品API接口链接
+					method: 'get',
+					timeout: 5,
+					cache: 'true',
+					dataType: 'json',
+				},
+				function(ret, err) {
+					if (ret.general_classify) {
+						var curPageData = ret.general_classify;
+						//		 Alert(curPageData);
+						console.log('网络获取超级分类数据');
+						SetStorage('curPageData', curPageData);
+						setTimeout(setListData, 500); //自行实现
+						SetStorage('f_times', timestamp + 86400 * 10);
+					}
+				});
+		} else {
+			console.log('本地缓存超级分类数据');
+			setListData();
+		}
+	}
+
+	function setListData() {
+		var curPageData = GetStorage('curPageData');
+		var len = curPageData.length;
+		/*下面就是往容器里面插入数据的代码*/
+		for (var i = 0; i < len; i++) {
+			var cidData = curPageData[i].data;
+			setcidData(cidData, i);
+		}
+	}
+
+	function setcidData(cidData, i) {
+		var len = cidData.length;
+		var listDom = document.getElementById("menu" + [i]);
+		var html = '';
+		for (var j = 0; j < len; j++) {
+			var infolen = cidData[j].info.length;
+			var info = cidData[j].info
+			html += '<h5>' + cidData[j].next_name + '</h5>';
+			html += '<ul>';
+			for (var k = 0; k < infolen; k++) {
+				html += '<li class="w-3" tapmode data-cid="' + [i] + '"data-title="' + info[k].son_name + '" onclick="opensuper(this)">';
+				html += '<img src="../../image/rolling.gif" data-echo="' + info[k].imgurl + '"/><span>' + info[k].son_name + '</span></li>'
+			}
+			//		<li class="w-3"> <img src="../../image/findquan.png" /><span>围巾</span></li>
+			html += '</ul>';
+		}
+		$api.html(listDom, html);
+	}
+
+	function opensuper(obj) {
+		var cid = $api.attr(obj, 'data-cid'); //商品分类ID
+		var name = $api.attr(obj, 'data-name'); //窗口名称
+		var title = $api.attr(obj, 'data-title'); //顶部标题
+		var url = 'widget://html/taobao/super.html';
+		SetStorage('cid', cid)
+			//	openpublic(url, title);
+		api.openWin({
+			name: 'super_win',
+			url: 'widget://html/taobao/super_win.html',
+			vScrollBarEnabled: false,
+			delay: 500,
+			pageParam: {
+				title: title,
+				url: url,
+			},
+		});
+	}
+</script>
+
+</html>

@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/aui.css">
+    <link rel="stylesheet" href="../../css/animate.css">
+    <link rel="stylesheet" type="text/css" href="../../css/header.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/mescroll.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.css" />
+    <style media="screen">
+        #box {
+            margin-bottom: 100px;
+        }
+
+        .topimg {
+            width: 100%;
+            height: 375px;
+            background-color: #FBCDCD;
+        }
+
+        .topimg .topicon {
+            width: 30px;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            position: fixed;
+            top: 1rem;
+            /*display: flex;*/
+            z-index: 99;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .topimg .topicon img {
+            /*width: 30%;*/
+            /*height: 20%;*/
+            /*margin: 0 auto;*/
+        }
+
+        .topimg .topicon1 {
+            left: 1rem;
+        }
+
+        .topimg .topicon1 img {
+            width: 10px;
+            height: 18px;
+        }
+
+        .topimg .topicon2 {
+            right: 3rem
+        }
+
+        .topimg .topicon2 img {
+            width: 17px;
+            height: 17px;
+        }
+
+        .topimg .topicon3 {
+            right: 1rem;
+        }
+
+        .topimg .topicon3 img {
+            width: 5px;
+            height: 21px;
+        }
+
+        .topimg img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .gooddetail {
+            /*padding-top: 20px;*/
+            padding: 20px 0.5rem;
+            background-color: #fff;
+        }
+
+        .gooddetail .p1 {
+            color: #EF0C5D;
+            font-size: 24px;
+        }
+
+        .gooddetail .p1 span {
+            font-size: 11px;
+            background: #FEF1F5;
+            padding: 1px 8px;
+            border-radius: 8px;
+        }
+
+        .gooddetail .p2 {
+            font-size: 17px;
+            line-height: 22px;
+            color: #333333;
+            font-weight: 500;
+            font-family: SimHei;
+        }
+
+        .gooddetail .p3 {
+            font-size: 12px;
+            color: #333;
+            margin-top: 13px;
+        }
+
+        .gooddetail .p3 span {
+            color: #333;
+            margin-right: 10px;
+        }
+
+        .gooddetail .p3 .cccc {
+            color: #999999;
+        }
+
+        .select_box {
+            margin-top: 10px;
+        }
+
+        .select_box ul {
+            border: none;
+        }
+
+        .select_box ul li {
+            padding: 0
+        }
+
+        .select_box ul li span {
+            color: #333333;
+            font-size: 14px;
+        }
+
+        .select_box ul li .span1 {
+            color: #999999;
+            margin-right: 14px;
+        }
+
+        .cowry {
+            width: 100%;
+            text-align: center;
+            line-height: 47px;
+            color: #666666;
+            font-family: SimHei;
+        }
+
+        .cowrybox {
+            width: 100%;
+            /*height: 237px;*/
+            background-color: #fff;
+        }
+
+        .goodlist {
+            margin: 0 0.5rem;
+            /*height: 200px;*/
+            /*margin-top: 12px;*/
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .goodlist .goodbox {
+            width: 170px;
+            /*height: 200px;*/
+            background-color: #fff;
+            padding: 0 5px;
+            margin-bottom: 14px;
+            padding-bottom: 14px;
+        }
+
+        .goodlist .goodbox .imgbox {
+            width: 100%;
+            height: 105px;
+            background-color: #DFF2FF;
+        }
+
+        .goodlist .goodbox .goodtit p {
+            /*display: flex;*/
+            /*align-items: center;*/
+            font-size: 15px;
+            color: #666;
+            line-height: 22px;
+        }
+
+        .goodlist .goodbox .goodtit p img {
+            width: 26px;
+            height: 16px;
+            display: inline-block;
+            /*line-height: 40px;*/
+            vertical-align: middle
+        }
+
+        .goodlist .goodbox .pprice {
+            font-size: 17px;
+            color: #F51A68;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .goodlist .goodbox .pprice .people {
+            color: #999999;
+            font-size: 11px;
+        }
+
+        .aui-bar-tab {
+            padding: 4px 0;
+        }
+
+        .aui-bar-tab .aui-text-white {
+            /*background-color: #000;*/
+        }
+
+        .aui-bar-tab .butadd {
+            background-color: #F56F87;
+            border-radius: 25px 0 0 25px;
+        }
+
+        .aui-bar-tab .butbuy {
+            background-color: #EF0C5D;
+            border-radius: 0 25px 25px 0;
+        }
+
+        .bgc {
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            z-index: 99;
+            background-color: rgba(33, 33, 33, 0.2);
+        }
+
+        .bgc .parameterbox {
+            width: 100%;
+            height: 80vh;
+            background-color: #fff;
+            border-radius: 10px 10px 0 0;
+            position: fixed;
+            bottom: 0;
+            padding: 25px 20px;
+            padding-bottom: 0px;
+            /*position: relative;*/
+        }
+
+        .bgc .parameterbox .parametermian {
+            height: 60vh;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .bgc .parameterbox p {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 19px;
+            font-family: SimHei;
+            color: #333;
+        }
+
+        .bgc .parameterbox div {
+            line-height: 50px;
+            font-size: 16px;
+            color: #666;
+            /*height: 60vh*/
+        }
+
+        .bgc .parameterbox div span {
+            width: 30%;
+            color: #333;
+            display: inline-block;
+        }
+
+        .bgc .parameterbox .aui-btn {
+            width: 100%;
+            height: 46px;
+            border-radius: 23px;
+            background-color: #EF0C5D;
+            color: #fff;
+            font-size: 19px;
+            line-height: 46px;
+            /*position: fixed;;*/
+            /*bottom: 10px;*/
+        }
+
+        .bgc1 {
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            z-index: 99;
+            background-color: rgba(33, 33, 33, 0.2);
+        }
+
+        .bgc1 .parameterbox1 {
+            width: 100%;
+            height: 80vh;
+            background-color: #fff;
+            border-radius: 10px 10px 0 0;
+            position: fixed;
+            bottom: 0;
+            padding: 25px 20px;
+            padding-bottom: 0px;
+        }
+
+        .bgc1 .parameterbox1 .topselect {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .bgc1 .parameterbox1 .topselect .selectimg {
+            width: 130px;
+            height: 130px;
+            background-color: #d5d5d5;
+            border-radius: 5px;
+        }
+
+        .bgc1 .parameterbox1 .topselect .selectimg img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .bgc1 .parameterbox1 .topselect .iconguanbi {
+            width: 25px;
+            height: 25px;
+            ;
+        }
+
+        .bgc1 .parameterbox1 .topselect .selecttext {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .bgc1 .parameterbox1 .topselect .selecttext p {
+            /*line-height: 30px;*/
+        }
+
+        .bgc1 .parameterbox1 .topselect .selecttext .p1 {
+            color: #EF0C5D;
+            font-size: 22px;
+            font-weight: 500px;
+            font-family: SimHei;
+        }
+
+        .bgc1 .parameterbox1 .topselect .selecttext .p2 {
+            font-size: 16px;
+            color: #999;
+        }
+
+        .bgc1 .parameterbox1 .topselect .selecttext .p3 {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .bgc1 .parameterbox1 .selectclor {
+            margin-top: 40px;
+        }
+
+        .bgc1 .parameterbox1 .selectclor .selectmsg {
+            display: flex;
+            margin-top: 15px;
+        }
+
+        .bgc1 .parameterbox1 .selectclor .selectmsg div {
+            display: flex;
+            align-items: center;
+            margin-right: 43px;
+            font-size: 14px;
+        }
+
+        .bgc1 .parameterbox1 .selectclor .selectmsg div p {
+            width: 27px;
+            height: 27px;
+            background-color: #ccc;
+            margin-right: 15px;
+        }
+
+        .bgc1 .parameterbox1 .selectsize {
+            margin-top: 40px;
+        }
+
+        .bgc1 .parameterbox1 .selectsize div {
+            display: flex;
+            margin-left: 1rem;
+            margin-top: 10px;
+            height: 35px;
+        }
+
+        .bgc1 .parameterbox1 .selectsize div p {
+            /*width: 58px;*/
+            margin-right: 1rem;
+            padding: 0 8px;
+            height: 30px;
+            line-height: 30px;
+            border: 1px solid #ccc;
+        }
+
+        .bgc1 .parameterbox1 .selectsize div .action {
+            /*width: 58px;*/
+            margin-right: 1rem;
+            border: 1px solid red;
+            color: #EF0C5D;
+            box-sizing: border-box;
+        }
+
+        .bgc1 .parameterbox1 .buynums {
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .bgc1 .parameterbox1 .buynums .jiajian {
+            display: flex;
+            text-align: center;
+            align-items: center;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .bgc1 .parameterbox1 .buynums .jiajian input {
+            width: 36px;
+            height: 30px;
+            text-align: center;
+        }
+
+        .bgc1 .parameterbox1 .buynums .jiajian .jj {
+            width: 36px;
+            height: 30px;
+            color: #ccc;
+        }
+
+        .bgc1 .parameterbox1 .auibut {
+            position: fixed;
+            display: flex;
+            width: 90%;
+            bottom: 19px;
+            margin: 0 auto;
+        }
+
+        .bgc1 .parameterbox1 .auibut .aui-bar-tab-item {
+            width: 180px;
+            height: 46px;
+            text-align: center;
+            line-height: 46px;
+            font-size: 19px;
+            font-family: SimHei;
+        }
+
+        .bgc1 .parameterbox1 .auibut .aui-bar-tab-item1 {
+            background-color: #F56F87;
+            border-radius: 23px 0px 0px 23px;
+        }
+
+        .bgc1 .parameterbox1 .auibut .aui-bar-tab-item2 {
+            background-color: #EF0C5D;
+            border-radius: 0px 23px 23px 0px;
+        }
+
+        .bgc1 .parameterbox1 .auibut .aui-bar-tab-item3 {
+            background-color: #EF0C5D;
+            width: 100%;
+            border-radius: 23px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+
+        <!--头部  -->
+        <div class="topimg">
+            <img :src="GoodsDetail.goods_img" alt="">
+            <div class="topicon topicon1" @click='bankhtml'><img src="../../image/soppeticon/car3.png" alt=""></div>
+            <div class="topicon topicon2"><img src="../../image/soppeticon/car2.png" alt=""></div>
+            <div class="topicon topicon3"><img src="../../image/soppeticon/car1.png" alt=""></div>
+        </div>
+        <!-- 价格和名称 -->
+        <div class="gooddetail">
+            <p class="p1">￥{{ GoodsDetail.goods_price }} <span>优惠价</span></p>
+            <p class="p2">{{ GoodsDetail.goods_name }}</p>
+            <p class="p3"><span class="cccc">发货&emsp;<span>四川成都</span></span> <span>快递&emsp;<span>免运费</span></span>
+            </p>
+        </div>
+        <!-- 选择 -->
+        <div class="select_box">
+            <ul class="aui-list aui-list-in">
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner aui-list-item-arrow">
+                        <span><span class="span1">服务</span>24小时内发货&nbsp;7天无理由退货 </span>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner aui-list-item-arrow" @click='showselect(1)'>
+                        <span><span class="span1">选择</span>选择&nbsp;颜色&nbsp;尺码</span>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner aui-list-item-arrow" @click='showcnashu'>
+                        <span><span class="span1">参数</span>品牌&nbsp;质地...</span>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+        <p class="cowry">—&nbsp;宝贝详情&nbsp;—</p>
+        <div class="cowrybox" id='cowrybox' v-html='imgbox'>
+            {{ imgbox }}
+        </div>
+        <footer class="aui-bar aui-bar-tab">
+            <div class="aui-bar-tab-item" tapmode style="width: 3rem;" onclick="Toast('即将上线')">
+                <i class="aui-iconfont aui-icon-comment"></i>
+                <div class="aui-bar-tab-label">客服</div>
+            </div>
+            <!-- <div class="aui-bar-tab-item" tapmode style="width: 3rem;" >
+                <i class="aui-iconfont aui-icon-star"></i>
+                <div class="aui-bar-tab-label">收藏</div>
+            </div> -->
+            <div class="aui-bar-tab-item butadd aui-text-white" tapmode style="width: auto;" @click='showselect(2)'>加入购物车</div>
+            <div class="aui-bar-tab-item butbuy aui-text-white" tapmode style="width: auto;" @click='showselect(3)'>立即购买</div>
+        </footer>
+
+        <!-- 底部弹出框 -->
+        <div class="bgc bounceIn" v-if='showme1'>
+            <div class="parameterbox animated  bounceInUp" v-if='showme1'>
+                <p>参数品牌</p>
+                <div class="parametermian">
+                    <div v-for='(item,index) in GoodsDetail.json'><span>{{ item.key }}</span>{{ item.val }}</div>
+                </div>
+                <div class="aui-btn" @click='showbox'>完成</div>
+            </div>
+        </div>
+
+        <!-- <input class="aui-radio" type="radio" name="demo" checked="">
+        <input class="aui-radio" type="radio" name="demo" checked=""> -->
+        <!-- 选择 -->
+        <div class="bgc1 bounceIn" v-if='showme2'>
+            <div class="parameterbox1 animated  bounceInUp" v-if='showme2'>
+                <div class="topselect">
+                    <!-- <div class="selectimg" v-for='objs in GoodsDetail.spec' v-if="objs.spec_sku_id.length >0"><img :src="GoodsDetail.goods_img" alt=""/></div> -->
+                    <div class="selectimg">
+                        <img v-for='objs in GoodsDetail.spec' v-if='objs.spec_sku_id == ck' :src="objs.spec_image" alt="" />
+                        <!-- <img  v-else :src="GoodsDetail.goods_img" alt=""/> -->
+                    </div>
+                    <!-- <div class="selectimg" v-for='objs in GoodsDetail.spec'  v-if='objs.spec_sku_id !== clickxs'><img :src="GoodsDetail.goods_img" alt=""/></div> -->
+                    <!-- <div class="selectimg" v-for='objs in GoodsDetail.spec' v-if="skuid == objs.spec_sku_id || objs.spec_sku_id < 1 "><img :src="objs.spec_image" alt=""/></div> -->
+
+                    <div class="selecttext">
+                        <p class="p1">￥{{GoodsDetail.goods_price}}</p>
+                        <p class="p2">库存{{ GoodsDetail.goods_number}}件</p>
+                        <p class="p3">选择 尺码 颜色</p>
+                    </div>
+
+                    <div class="iconguanbi" @click='showselect'>
+                        <img src="../../image/soppeticon/guanbi.png" alt="">
+                    </div>
+                </div>
+                <div style="height: 30vh;overflow-y: auto;">
+
+                    <div class="selectsize" v-for='(item,judge) in selectlist' :key="judge">
+                        <p>{{ item.group_name }}</p>
+                        <div>
+                            <p v-for='(obj,index) in item.spec_items'  :key="index" :class="{action:colac.indexOf(obj.item_id) !== -1}" @click='selectp(obj.item_id,item.group_id,index,judge)'>{{ obj.spec_value }}</p>
+
+
+                        </div>
+                    </div>
+                </div>
+                <!-- 购买数量 -->
+                <div class="buynums">
+                    <div>购买数量</div>
+                    <div class='jiajian'>
+                        <div class="jj" @click='subtract()'>-</div>
+                        <input type="text" value="0" v-model="count">
+                        <div class="jj" @click="add()">+</div>
+                    </div>
+                </div>
+                <div class="auibut">
+                    <div v-if='showbut == 1' class="aui-bar-tab-item aui-bar-tab-item1  aui-text-white" tapmode @click='addcar'>加入购物车</div>
+                    <div v-if='showbut == 1' class="aui-bar-tab-item  aui-bar-tab-item2  aui-text-white" tapmode @click='buyer'>立即购买</div>
+                    <div v-if='showbut == 2' class="aui-bar-tab-item  aui-bar-tab-item3  aui-text-white" tapmode @click='addcar'>确认</div>
+                    <div v-if='showbut == 3' class="aui-bar-tab-item  aui-bar-tab-item3  aui-text-white" tapmode @click='buyer'>确认</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/axios.min.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/aui-toast.js"></script>
+<!-- <script type="text/javascript" src="../../script/common.js"></script> -->
+<!-- <script type="text/javascript" src="../../script/mescroll.js"></script> -->
+<!-- <script type="text/javascript" src="../../script/swiper.js"></script> -->
+<!-- <script type="text/javascript" src="../../script/zepto.js"></script> -->
+<script type="text/javascript" src="../../script/public.js"></script>
+
+
+<script type="text/javascript">
+    // console.log(api);
+
+    apiready = function() {
+        var vuedata = {
+            'index': '1',
+            'goodlist': [],
+            "GoodsDetail": [],
+            'showme1': false,
+            'showme2': false,
+            'goodid': 1,
+            'goods_descript': '',
+            'count': 1,
+            'selectlist': [],
+            'clickx': [],
+            'showbut': '-1',
+            'imgbox': 13,
+            'skuid': '',
+            'skuidlist': [],
+            'clickxs': '',
+            'tokens': '',
+            'sitiid': [],
+            'goodloi': [],
+            'ck':"",
+            'colac':[]
+
+
+        }
+        var vm = new Vue({
+            el: '#box',
+            data: vuedata,
+            mounted: function() {},
+            created: function() {
+
+
+                console.log(11111111111111111111111111111111);
+                this.getfather()
+                this.getgoodclass()
+
+            },
+            methods: {
+
+                showme(i) {
+                    this.index = i
+                },
+                getfather() {
+                    this.goodid = $api.getStorage('id')
+                },
+                activeson() {
+                    // console.log(window.navigate);
+                },
+                getgoodclass() {
+                    axios.get(`http://shop.19gou.net/api/goods/GoodsDetail?goods_id=${this.goodid}`)
+                        .then(res => {
+                            this.GoodsDetail = res.data.data.detail
+                            this.selectlist = res.data.data.specData.spec_attr
+                            this.imgbox = res.data.data.detail.goods_descript
+                            console.log(res.data.data.detail);
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+                    // console.log(window);
+
+                },
+                showcnashu() {
+                    console.log(1);
+                    this.showme1 = !this.showme1
+                },
+                showbox() {
+                    this.showme1 = false
+                },
+                showselect(i) {
+                    this.showme2 = !this.showme2
+                    this.showbut = i
+                },
+                showtopselect() {
+                    this.showme1 = false
+                },
+                bankhtml() {
+                    api.closeWin();
+                },
+                buyer() {
+                    $api.setStorage('goods_id', this.goodid);
+                    $api.setStorage('goods_num', this.count);
+                    $api.setStorage('goods_sku_id', this.ck);
+
+                    api.openWin({ 
+                        name: 'goodclass',
+                             url: './orderaffirm.html',
+                             pageParam: { 
+
+                             }   
+                    });
+                },
+
+                addcar() {
+
+                    var mobiles = GetStorage('mobile')
+                    axios.get(`http://shop.19gou.net/api/cart/add?token=${ mobiles }&goods_sku_id=${this.ck}&goods_num=${this.count}&goods_id=${this.goodid}`)
+                        .then(res => {
+                            console.log(res.data.msg);
+                            if (res.data.code == 1) {
+                                Toast('加入购物车成功')
+                                this.showme2 = !this.showme2
+                            }
+                            // console.log(res.);
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+                },
+                selectp(i, it, n, j) {
+                  let len = this.selectlist.length;
+                           if (this.clickx.indexOf(i) == -1) {
+                             this.clickx[j] = i;
+                           } else if (this.clickx.indexOf(i) !== -1) {
+                             this.clickx.splice(this.clickx.indexOf(i), 1);
+                           }
+                          //  this.clickx.slice(0, len)
+                           this.colac = this.clickx.slice(0, len)
+                           let b =  this.colac.join("_");
+
+                           this.ck = b;
+                          console.log(this.ck);
+                },
+                add: function(count) {
+                    this.count++;
+                },
+                subtract: function(count) {
+                    if (this.count <= 0) {
+                        //  alert('受不了啦，宝贝不能再减少啦')
+                        this.count = 0;
+                    } else {
+                        this.count -= 1;
+                    }
+                },
+            }
+        });
+
+        // }
+
+    }
+
+    function getOrderListByPage() {
+        这里面可以直接用vuedata里面的任何一个数据
+
+    }
+</script>
+
+</html>

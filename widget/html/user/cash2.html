@@ -1,0 +1,528 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>结算中心</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/mescroll.css" />
+    <style type="text/css">
+        .detail {
+            position: relative;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .detail p {
+            height: 2rem;
+            line-height: 2rem;
+            text-align: center;
+            font-size: 1rem;
+            color: #141414;
+        }
+
+        .detail h3 {
+            display: block;
+            height: 2rem;
+            line-height: 2rem;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #e81f1f;
+            margin-bottom: 0.3rem;
+        }
+
+        .detail a {
+            display: block;
+            width: 3rem;
+            height: 2rem;
+            line-height: 2rem;
+            border: 0 none;
+            border-radius: 0.2rem;
+            margin: 0 auto;
+            background-color: #1aad19;
+            color: #fff;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .detail span {
+            display: block;
+            width: 90%;
+            margin: 0 auto;
+            padding-top: 0.5rem;
+            line-height: 2rem;
+            font-size: 0.5rem;
+            color: #808080;
+        }
+
+        .jilu h3 {
+            position: relative;
+            height: 1.5rem;
+            line-height: 2rem;
+            padding-left: 1rem;
+            text-align: left;
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            overflow: hidden;
+        }
+
+        .tips_h3 {
+            display: block;
+            line-height: 2rem;
+            font-size: 1rem;
+            color: #e81f1f;
+            border-bottom: 2px solid #f0f0f0;
+            padding-left: 0.6rem;
+        }
+
+        .jilu .line,
+        .jilu .line-no {
+            height: 3rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .jilu .line-head {
+            height: 2rem;
+            border-bottom: 1px solid #f0f0f0;
+            overflow: hidden;
+        }
+
+        .jilu .line-head p {
+            float: left;
+            width: 25%;
+            height: 1.96rem;
+            line-height: 1.96rem;
+            text-align: center;
+            color: #1a1a1a;
+            font-size: 1rem;
+        }
+
+        .jilu .line p {
+            float: left;
+            width: 25%;
+            height: 2.5rem;
+            line-height: 3rem;
+            text-align: center;
+            color: #333333;
+            font-size: 1rem;
+        }
+
+        .jilu .line p.t {
+            float: left;
+            width: 25%;
+            padding-top: 0.5rem;
+            height: 2.5rem;
+            line-height: 1rem;
+        }
+
+        .jilu .line p.s_long {
+            float: left;
+            width: 24%;
+            padding-top: 0.5rem;
+            height: 2.5rem;
+            line-height: 1rem;
+            font-size: 0.8rem;
+        }
+
+        .jilu .line2 {
+            display: block;
+            height: 1.5rem;
+            font-size: 0.5rem;
+            padding-left: 0.7rem;
+            line-height: 1.5rem;
+            color: #333333;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .jilu .line2 span {
+            margin-left: 1rem;
+            color: #e81f1f;
+            text-decoration: underline;
+        }
+
+        .table-body {
+            padding-bottom: 2rem;
+        }
+
+        .zy {
+            position: relative;
+            padding: 1.5rem 0.5rem 0.5rem 1.5rem;
+            overflow: hidden;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .zy p {
+            line-height: 1.2rem;
+            font-size: 1rem;
+        }
+
+        .zy span {
+            color: #e81f1f;
+            position: absolute;
+            top: 0.5rem;
+            left: 0.1rem;
+            height: 1rem;
+            line-height: 1rem;
+            width: 3rem;
+            text-align: right;
+            font-size: 0.9rem;
+        }
+
+        .Mask_Layer {
+            filter: progid: DXImageTransform.Microsoft.gradient(enabled='true', startColorstr='#7F000000', endColorstr='#7F000000');
+            background: rgba(0, 0, 0, 0.5);
+            height: 100%;
+            left: 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 99;
+        }
+
+        .Mask_Layer>.mado {
+            border: 0;
+            width: 10.8rem;
+            margin: 6rem auto 0;
+            border-radius: 5px;
+            padding-top: 0.42rem;
+            background-color: #fff;
+            font-family: 'Microsoft YaHei';
+        }
+
+        .Mask_Layer>.mado1 {
+            width: 14rem;
+            margin: 0.5rem auto 0;
+        }
+
+        .Mask_Layer>.mado1 p.block {
+            width: 13rem;
+            text-align: left;
+            line-height: 0.8rem;
+            margin: 0 auto 0.4rem;
+        }
+
+        .Mask_Layer>.mado1 p.or {
+            width: 13rem;
+            text-align: left;
+            line-height: 0.8rem;
+            margin: 0 auto 0.4rem;
+            color: #f60;
+        }
+
+        .Mask_Layer>.mado>.title {
+            line-height: 1.44rem;
+            font-size: 0.72rem;
+            margin-bottom: 0.26rem;
+            color: #000;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .Mask_Layer>.mado>.text {
+            line-height: 1rem;
+            font-size: 0.58rem;
+            text-align: center;
+            color: #333;
+            font-family: 'Microsoft YaHei';
+        }
+
+        .Mask_Layer>.mado>.btn {
+            display: block;
+            margin-top: 0.88rem;
+            border-top: 1px solid #c4cbcf;
+            color: #087eff;
+            text-align: center;
+            height: 1.76rem;
+            line-height: 1.76rem;
+            cursor: pointer;
+            font-size: 0.68rem;
+            color: #007aff;
+        }
+
+        .tt_tt {
+            display: block;
+            line-height: 0.6rem !important;
+            font-size: 0.5rem !important;
+            text-align: center;
+            color: #e81f1f !important;
+        }
+
+        .g-head {
+            position: relative;
+            height: 1.74rem;
+            line-height: 1.74rem;
+            font-size: 0.76rem;
+            color: #141414;
+            text-align: center;
+            font-weight: 100;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .gk .zfb-tips {
+            display: block;
+            padding: 1rem;
+            overflow: hidden;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .gk .zfb-tips p {
+            line-height: 1.6rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #333;
+            padding-bottom: 0.3rem;
+        }
+
+        .gk .zfb-tips p a {
+            font-size: 1rem;
+            color: #f7837a;
+        }
+
+        .gk .zfb-tips span {
+            display: block;
+            line-height: 1.6rem;
+            font-size: 1rem;
+            color: #222;
+        }
+
+        .main img {
+            width: 200px;
+            height: 200px;
+            float: none;
+            margin: 0 auto;
+        }
+
+        .paging {
+            position: absolute;
+            top: 220px;
+        }
+
+        .setalipay {
+            width: 4rem;
+            height: 1.5rem;
+            border-radius: 0.2rem;
+            background-color: red;
+            color: #fff;
+            font-size: 0.8rem;
+            text-align: center;
+            display: block;
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <!--滑动区域-->
+    <div class="mescroll" id="mescroll">
+        <div>
+            <div class="tixiann">
+                <div class="detail">
+                    <p>可提现金额</p>
+                    <h3 class="cash">¥0</h3>
+                    <a class="" onclick="gocash()">提现</a> </div>
+                <div class="gk">
+                    <div class="zfb-tips">
+                        <p>您当前提现支付宝账户：<a class="alipay">alipay</a></p>
+                        <span>如果您发现支付宝账户被更改了，很可能您的账户密码已经泄露，您可以在个人设置里面更改登录密码以及支付宝账户。</span>
+                    </div>
+                </div>
+                <div class="zy">
+                    <span>注意：</span>
+                    <p>1.每月<a style="color:#e81f1f;">25</a>日结算上月预估收入，上月预估收入是指订单结算时间为上月的预估收入，不包含未结算订单，每月以此类推。</p>
+                    <p>2.每月<a style="color:#e81f1f;">25</a>号结算上月至上月底全部确认收货的结算订单提成，包括淘宝，京东，拼多多以及团队提成。</p>
+                    <p>3.上月部分确认收货的未结算订单按本月结算订单结算到下月<a style="color:#e81f1f;">25</a>号显示为可提现金额。</p>
+                </div>
+                <div class="jilu">
+                    <h3>提现记录</h3>
+                    <span class="tips_h3">如有发放失败，重新提交或联系客服解决。</span>
+                    <div class="line-head">
+                        <p>提现时间</p>
+                        <p>提现金额</p>
+                        <p>提现状态</p>
+                        <p>拒绝原因</p>
+                    </div>
+                    <div class="table-body" id="goods_block">
+                        <!--  <div class="line line-no">
+                            <p class="t">2018-11-22<br>17:06:24</p>
+                            <p>¥61.09</p>
+                            <p>发放成功</p>
+                            <p class="s_long">拒绝原因</p>
+                        </div>
+
+                        <div class="line line-no">
+                            <p class="t">2018-05-03<br>12:10:30</p>
+                            <p>¥67.84</p>
+                            <p>发放成功</p>
+                            <p class="s_long"></p>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/mescroll.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        downCallback();
+        //创建MeScroll对象,内部已默认开启下拉刷新,自动执行up.callback,重置列表数据;
+        mescroll = new MeScroll('mescroll', {
+            down: {
+                callback: function(mescroll) {
+                    mescroll.resetUpScroll();
+                    downCallback();
+                }, //下拉刷新的回调,别写成downCallback(),多了括号就自动执行方法了
+                offset: 40, //下拉大于50px,松手即可触发下拉刷新的回调
+            },
+            up: {
+                callback: uploadData, //上拉回调,此处可简写; 相当于 callback: function (page) { getListData(page); }
+                clearEmptyId: "goods_block", //1.下拉刷新时会自动先清空此列表,再加入数据; 2.无任何数据时会在此列表自动提示空
+                isBounce: false, //此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
+                offset: 200, //列表滚动到距离底部小于100px,即可触发上拉加载的回调
+                noMoreSize: 1, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看
+                //isLock: true, //是否锁定上拉
+                page: {
+                    num: 0, //当前页码,默认0,回调之前加1,
+                    size: 10, //每页数据的数量;
+                    time: null //加载第一页数据服务器返回的时间 (可空);
+                },
+                lazyLoad: {
+                    use: true, // 是否开启懒加载,默认false
+                    attr: 'imgurl', // 网络图片地址的属性名 (图片加载成功会自动移除改属性): <img imgurl='网络图  src='占位图''/>
+                    showClass: 'mescroll-lazy-in', // 图片加载成功的显示动画: 渐变显示,参见mescroll.css
+                    delay: 400, // 列表滚动的过程中每500ms检查一次图片是否在可视区域,如果在可视区域则加载图片
+                    offset: 100 // 超出可视区域200px的图片仍可触发懒加载,目的是提前加载部分图片
+                },
+                toTop: { //配置回到顶部按钮
+                    src: "../../image/option/mescroll-totop.png", //默认滚动到1000px显示,可配置offset修改
+                    // html: "<p>^<br><br>顶部<p>", //标签内容,默认null; 如果同时设置了src,则优先取src
+                    offset: 500
+                },
+                htmlNodata: '<p class="upwarp-nodata">-- 已加载完毕 --</p>',
+                empty: {
+                    //  icon: "../../image/option/mescroll-empty.png", //图标,默认null
+                    tip: "~没有提现记录~", //提示
+                    //		btntext: "去逛逛 >", //按钮,默认""
+
+                },
+            }
+        });
+
+        //上拉加载的回调 page = {num:1, size:10}; num:当前页 默认从1开始, size:每页数据条数,默认10
+        function uploadData(page) {
+            var commissiondata = GetStorage('commissiondata');
+            var serverurl = GetStorage('serverurl');
+            var userinfo = GetStorage('userinfo');
+            var mobile = GetStorage('mobile');
+            setTimeout(function() {
+                api.ajax({
+                    url: serverurl + '/api/user/cashrecord?mobile=' + mobile + '&page=' + page.num + '&pagesize=' + page.size,
+                    method: 'get',
+                    timeout: 5,
+                    cache: false,
+                    dataType: 'json',
+                }, function(ret, err) {
+                    if (ret.code == 0 || ret.code == 1) {
+                        //  Alert(ret.data)
+                        var curPageData = ret.data;
+                        mescroll.endSuccess(curPageData.length);
+                        //设置列表数据
+                        setListData(curPageData);
+                    } else {
+                        mescroll.endErr();
+                        Toast('网络错误，请稍候重试');
+                    }
+                });
+            }, 400);
+        }
+    }
+
+    function loaddata() {
+        var userinfo = GetStorage('userinfo');
+        var alipay = '';
+        if (userinfo.alipay == 0) {
+            alipay = '没有设置&emsp;<b class="setalipay" onclick="setalipay()">点此设置</b>';
+        } else {
+            alipay = userinfo.alipay;
+        }
+        $('.cash').html('￥' + userinfo.money);
+        $('.alipay').html(alipay);
+    }
+
+    function downCallback() {
+        loaddata();
+    }
+
+    function setalipay() {
+        openpublic('../../html/user/alipay.html', '修改支付宝')
+    }
+
+
+    function setListData(curPageData) {
+        var userinfo = GetStorage('userinfo');
+        var inviteinfo = GetStorage('inviteinfo');
+        var commondata = GetStorage('commondata');
+        var len = curPageData.length;
+        var listDom = document.getElementById("goods_block");
+        /*下面就是往容器里面插入数据的代码*/
+        var html = '<div class="swipe-wrap" id="ad">';
+        for (var i = 0; i < len; i++) {
+            var data = curPageData[i];
+            var datetime = GetDatetime('Y-m-d<br>H:i:s', data.createtime);
+            var state = '';
+            if (data.state == 0) {
+                state = "申请中";
+            } else if (data.state == 1) {
+                state = "已支付";
+            } else {
+                state = '已拒绝';
+            }
+            var refuse_data = '';
+            if (data.refuse_data == 0) {
+                refuse_data = '无';
+            } else {
+                refuse_data = data.refuse_data;
+            }
+            html += '<div class="line line-no"><p class="t">' + datetime + '</p>';
+            html += '<p>' + data.money + '</p>';
+            html += '<p>' + state + '</p>';
+            html += '<p class="s_long">' + refuse_data + '</p></div>  ';
+        }
+        $api.append(listDom, html);
+    }
+    //提现
+    function gocash() {
+        var serverurl = GetStorage('serverurl');
+        var userinfo = GetStorage('userinfo');
+        var mobile = GetStorage('mobile');
+        api.ajax({
+            url: serverurl + '/api/user/cash?mobile=' + mobile,
+            method: 'get',
+            timeout: 5,
+            cache: false,
+            dataType: 'json',
+        }, function(ret, err) {
+            if (ret.code == 0) {
+                Toast(ret.msg);
+            } else if (ret.code == 1) {
+                Toast(ret.msg);
+                setTimeout(onelogin, 100);
+                rootuserdata();
+                setTimeout(loaddata, 500);
+            } else {
+                Toast('网络错误，请稍候重试');
+            }
+        });
+    }
+</script>
+
+</html>

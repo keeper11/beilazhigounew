@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>客服中心</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <style type="text/css">
+        body {
+            background: #fff;
+            width: 100vw;
+            height: 100%;
+            overflow-y: hidden;
+            background: #fffaf0;
+        }
+
+        .imgs {
+            width: 100vw;
+            text-align: center;
+            padding-top: 20px;
+            z-index: 9;
+        }
+
+        #header {
+            position: relative;
+        }
+
+        .headerBar {
+            font-size: 15px;
+            height: 50px;
+            line-height: 50px;
+            background: #fe5b5b;
+            color: #fff;
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 5px;
+            position: relative;
+            margin: 0;
+        }
+
+        .headerBar span {
+            font-size: 15px;
+            color: #fff;
+        }
+
+        .headerBar a {
+            display: block;
+            position: absolute;
+            color: #fff;
+            left: 0;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            background: url(../../imgs/common/bback.png) no-repeat center center;
+            -webkit-background-size: 70% 70%;
+            background-size: 70% 70%;
+            bottom: 0;
+        }
+
+        .headerBar a.feekback {
+            right: 50px;
+        }
+        /*头部返回end*/
+
+        .savePic {
+            width: 90%;
+            height: 40px;
+            margin: 5% 5%;
+            border-radius: 15px;
+            line-height: 40px;
+            text-align: center;
+            color: #fff;
+            background: #fe5b5b;
+        }
+
+        .kefuqq {
+            width: 90%;
+            height: 40px;
+            margin: 5% 5%;
+            border-radius: 15px;
+            line-height: 40px;
+            text-align: center;
+            color: #fff;
+            background: #fe5b5b;
+        }
+
+        .kefuqq .btn {
+            float: right;
+            margin-right: 1px;
+            margin-top: 1px;
+            width: 25%;
+            height: 38px;
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+            line-height: 40px;
+            background: #fff;
+            color: #f58220;
+            box-sizing: border-box;
+        }
+
+        .kefuwx {
+            width: 90%;
+            height: 40px;
+            margin: 5% 5%;
+            border-radius: 15px;
+            line-height: 40px;
+            text-align: center;
+            color: #fff;
+            background: #f58220;
+        }
+
+        .kefuwx .btn {
+            float: right;
+            margin-right: 1px;
+            margin-top: 1px;
+            width: 25%;
+            height: 38px;
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+            line-height: 40px;
+            background: #fff;
+            color: #f58220;
+            box-sizing: border-box;
+        }
+
+        .teamwx {
+            width: 90%;
+            height: 40px;
+            margin: 5% 5%;
+            border-radius: 15px;
+            line-height: 40px;
+            text-align: center;
+            color: #fff;
+            background: #c77eb5;
+        }
+
+        .teamwx .btn {
+            float: right;
+            margin-right: 1px;
+            margin-top: 1px;
+            width: 25%;
+            height: 38px;
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+            line-height: 40px;
+            background: #fff;
+            color: #c77eb5;
+            box-sizing: border-box;
+        }
+
+        .fankui {
+            width: 80%;
+            height: 40px;
+            margin: 20px 10%;
+            border-radius: 15px;
+            line-height: 40px;
+            text-align: center;
+            color: #fff;
+            background: #fdb933;
+        }
+
+        .unames {
+            text-align: center;
+            padding-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- <img src="../../icon/lianxiwomen/lianxiw.png"   class="imgs" style="width: 100%;">
+    <div class="imgs">
+        <img src="../../icon/lianxiwomen/lianxigzh.jpg" style="width: 60%;">
+        <div style="margin: 5px 0; font-size: 16px; color:#666;">豆豆粮票微信公众号</div>
+    </div> -->
+
+    <div class="kefuqq">客服QQ：<span id="qqcode"></span> <span class='btn' onclick="GoTocall()">在线交谈</span></div>
+    <div class="kefuwx">客服微信：<span id="kefuwx"></span> <span class='btn' onclick="copywxcode()">一键复制</span></div>
+    <div class="teamwx">我的邀请人微信：<span id="teamwx"></span> <span class='btn' onclick="copyteamwx()">一键复制</span></div>
+    <div class="fankui" onclick="loginopen('../../html/user/advise.html','提交建议意见')">点此提交建议意见</div>
+    <section class="aui-content-padded unames">
+        客服时间：
+    </section>
+</body>
+
+
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src='../../script/common.js'></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        reload();
+        api.setRefreshHeaderInfo({
+            // loadingImg: 'widget://image/refresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '松开刷新...'
+        }, function(ret, err) {
+            reload();
+            setTimeout(function() {
+                api.refreshHeaderLoadDone();
+            }, 1000);
+        });
+    }
+function reload() {
+  var commondata = GetStorage('commondata');
+  var userinfo = GetStorage('userinfo');
+  if (userinfo.pwx != 0) {
+      userinfowx = userinfo.pwx;
+  } else {
+      userinfowx = '没有设置';
+  }
+  if (commondata && commondata != 'null' && commondata != "undefined") {
+      $api.byId("qqcode").innerText = commondata.touch_qq;
+      $api.byId("kefuwx").innerText = commondata.touch_wx;
+      $api.byId("teamwx").innerText = userinfowx;
+      $api.dom(".unames").innerHTML = "<h3>客服时间：" + commondata.touch_time + "</h3>";
+  }
+}
+    function addEventLongPress() {
+        api.addEventListener({
+            name: 'longpress'
+        }, function(ret, err) {
+            api.actionSheet({
+                title: '是否保存二维码至相册?',
+                cancelTitle: '取消',
+                buttons: ['保存']
+            }, function(ret, err) {
+                if (ret.buttonIndex == 1) {
+                    api.saveMediaToAlbum({
+                        path: 'widget://icon/lianxiwomen/erwei.png'
+                    }, function(ret, err) {
+                        if (ret && ret.status) {
+                            alert('保存成功');
+                        } else {
+                            alert('保存失败');
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    //在线交谈
+    function GoTocall() {
+        var commondata = GetStorage('commondata');
+        if (commondata && commondata != 'null' && commondata != "undefined") {
+            api.openApp({
+                    iosUrl: "mqq://im/chat?chat_type=wpa&uin=" + commondata.touch_qq + "&version=1&src_type=web",
+                    uri: "mqq://im/chat?chat_type=wpa&uin=" + commondata.touch_qq + "",
+                },
+                function(ret, err) {
+                    if (!ret) {
+                        Toast('您还没有安装QQ');
+                    }
+                });
+        } else {
+            Toast('当前没有QQ号');
+        }
+    }
+    //一键复制
+    function copywxcode() {
+        var commondata = GetStorage('commondata');
+        if (commondata && commondata != 'null' && commondata != "undefined") {
+            var clipBoard = api.require('clipBoard');
+            clipBoard.set({
+                    value: commondata.touch_wx
+                },
+                function(ret, err) {
+                    wxBox(commondata.touch_wx);
+                });
+        } else {
+            Toast('当前没有微信号');
+        }
+    }
+    //一键复制
+    function copyteamwx() {
+        var userinfo = GetStorage('userinfo');
+        if (userinfo.pwx != 0) {
+            var clipBoard = api.require('clipBoard');
+            clipBoard.set({
+                    value: userinfo.pwx
+                },
+                function(ret, err) {
+                    wxBox(userinfo.pwx);
+                });
+        } else {
+            Toast('邀请人没有设置微信号');
+        }
+    }
+    //添加微信
+    function wxBox(wx) {
+        var dialogBox = api.require('dialogBox');
+        dialogBox.alert({
+            texts: {
+                title: '复制成功',
+                content: '微信号：' + '【 ' + wx + ' 】，\n' + '打开微信，点击 ‘ + ’ 选择添加朋友粘贴。',
+                leftBtnTitle: '取消',
+                rightBtnTitle: '打开微信',
+            },
+            styles: {
+                bg: '#fff',
+                corner: 10,
+                w: 300,
+                title: {
+                    marginT: 20,
+                    icon: 'widget://image/share/wx.png',
+                    iconSize: 40,
+                    titleSize: 20,
+                    titleColor: '#FF1F63'
+                },
+                content: {
+                    color: '#000',
+                    size: 16
+                },
+                left: {
+                    marginB: 7,
+                    marginL: 20,
+                    w: 100,
+                    h: 35,
+                    corner: 15,
+                    bg: '#07DC00',
+                    color: '#FFF',
+                    size: 16
+                },
+                right: {
+                    marginB: 7,
+                    marginL: 60,
+                    w: 100,
+                    h: 35,
+                    corner: 15,
+                    bg: '#FFA445',
+                    color: '#FFF',
+                    size: 16
+                }
+            }
+        }, function(ret) {
+            if (ret.eventType == 'left') {
+                var dialogBox = api.require('dialogBox');
+                dialogBox.close({
+                    dialogName: 'alert'
+                });
+            } else if (ret.eventType == 'right') {
+                api.openApp({
+                        androidPkg: 'com.tencent.mm',
+                        mimeType: 'text/html',
+                        iosUrl: "weixin://",
+                        uri: "weixin://"
+                    },
+                    function(ret, err) {
+                        if (!ret) {
+                            Toast('您还没有安装微信');
+                        }
+                    });
+            }
+            var dialogBox = api.require('dialogBox');
+            dialogBox.close({
+                dialogName: 'alert'
+            });
+        });
+    }
+</script>
+
+</html>

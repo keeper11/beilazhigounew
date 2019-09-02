@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>商品列表</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body>
+    <header class="aui-content aui-bar-nav aui-bar-header" id='aui-header'>
+        <div class="aui-bar aui-bar-nav aui-bar-header">
+            <a class="aui-pull-left" tapmode onclick="GoToHisBack();"> <span class="aui-iconfont aui-icon-left"></span> </a>
+            <div class="aui-title">大额券</div>
+            <div class="aui-iconfont aui-icon-close aui-pull-right" tapmode onclick="api.closeWin();">
+            </div>
+        </div>
+    </header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/aui-tab.js"></script>
+<script type="text/javascript">
+    var header = $api.byId('aui-header');
+    apiready = function() {
+        api.parseTapmode();
+        api.setStatusBarStyle({
+            style: 'dark'
+        });
+        $api.fixIos7Bar(header);
+        var headerPos = $api.offset(header);
+
+        //$api.byId('title').innerText = title;
+        api.openFrame({
+            name: 'main',
+            url: '../../html/jingdong/demo4.html',
+            bounces: false,
+            rect: {
+                x: 0,
+                y: headerPos.h,
+                w: 'auto', //api.winWidth,//
+                h: 'auto', //api.frameHeight//
+            },
+            progress: {
+                type: 'page'
+            }
+        });
+        //设置名为frame的Frame事件监听
+        api.setFrameClient({
+            frameName: 'main'
+        }, function(ret) {
+            onFrameStateChange(ret);
+        });
+        //		removeLogic();
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err) {
+            api.historyBack({
+                frameName: "main"
+            }, function(ret) {
+                if (!ret.status) { //没有历史记录了则关闭当前窗口
+                    api.closeWin();
+                }
+            });
+        });
+    }
+
+    function onFrameStateChange(ret) {
+        if (0 == ret.state) { //frame开始加载
+            //var url = ret.url;
+            //console.log('frame loading start: ' + url);
+        } else if (1 == ret.state) { //frame加载进度发生变化
+            //var p = ret.progress;
+            //console.log('frame loading: ' + p);
+        } else if (2 == ret.state) { //frame结束加载
+            //var url = ret.url;
+            //console.log('frame loading finish: ' + url);
+        } else if (3 == ret.state) { //frame标题发生变化
+            $api.dom('.aui-title').innerHTML = ret.title;
+        }
+    }
+
+    function onBrowserStateChange(ret) {
+        if (0 == ret.state) { //开始加载
+            if (!launchRemoved) {
+                launchRemoved = true;
+                removeLaunch();
+            }
+        }
+        if (2 == ret.state) {
+            if (!loadingRemoved) {
+                loadingRemoved = true;
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+    }
+
+    //历史记录后退
+    function GoToHisBack() {
+        api.historyBack({
+            frameName: "demo4"
+        }, function(ret) {
+            if (!ret.status) { //没有历史记录了则关闭当前窗口
+                api.closeWin();
+            }
+        });
+    }
+</script>
+
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>我的收款码</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/my.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/public.css" />
+</head>
+
+<body>
+	<div class="topsetcodeimg">
+		<img src="../../image/shoukuan1.png" />
+	</div>
+	<div class="upimgbox">
+		<div class="lefttipbox">
+			<div>微信收款码</div>
+			<div>平台将扫描该收款码向你提现转账</div>
+		</div>
+		<div class="rightupbox">
+			<div class="codeimgbox" style="display:none;"><img class="codeimg" src="" style="width: 72px;height:72px;">
+			</div>
+			<div class="weui_uploader_input_wrp" style="display: inline-block;" onclick="loadAvatar(this)"></div>
+		</div>
+	</div>
+
+	<div class="linethrowbox">
+		<div class="linethrow"></div>
+	</div>
+	<div class="buttonbox">
+		<div class="tiptext">
+			*请确保上传的为自己的微信/支付宝收款码，提现金额将直接转账至该收款码账户,如上传收款码错误,将导致转账失败，无法提现至你的本人账户
+		</div>
+		<div class="button" onclick="douploadimg()">
+			<span class="confrim">确认上传</span>
+		</div>
+	</div>
+	<div class="getcode">
+		<div class="titlebox">
+			<img src="../../image/wenhao.png"> 如何获取我自己的收款码？
+		</div>
+		<div class="contentbox">
+			<div class="linetext">1.在微信聊天首页,点击右上角的"+"号，选择收付款</div>
+			<div class="linetext">2.点击进入选择"二维码收款"</div>
+			<div class="linetext">3.点击"保存收款码",保存后即可在相册中找到收款码图片，并上传提现后台</div>
+		</div>
+	</div>
+	<div class="tipimagebox">
+		<div class="imgbox">
+			<img src="../../image/shoukuan2.png" />
+		</div>
+		<div class="imgbox">
+			<img src="../../image/shoukuan3.png" />
+		</div>
+		<div class="imgbox">
+			<img src="../../image/shoukuan4.png" />
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+	var userinfo = {};
+	apiready = function() {
+		getmemberinfo();
+	};
+
+	function getmemberinfo() {
+		var stguserinfo = util.storage.getuserinfo();
+		console.log("已登录的会员");
+		console.log((JSON.stringify(stguserinfo)));
+		if (stguserinfo && stguserinfo.value) {
+			userinfo = stguserinfo.value;
+			if (userinfo.wechart_income_code) {
+				$(".codeimgbox").css('display', 'inline-block');
+				$(".codeimg").attr("src", userinfo.wechart_income_code);
+			}
+
+			douploadimg();
+		}
+	}
+
+	function loadAvatar(obj) {
+		api.actionSheet({
+			title: '选择图片来源',
+			cancelTitle: '取消',
+			buttons: ['照相机', '相册']
+		}, function(ret, err) {
+			if (3 == ret.buttonIndex) {
+				return;
+			}
+			var sourceType = 'album';
+			if (1 == ret.buttonIndex) {
+				sourceType = 'camera';
+			}
+			api.getPicture({
+				sourceType: sourceType,
+				encodingType: 'jpg',
+				mediaValue: 'pic',
+				destinationType: 'base64',
+				//allowEdit : true,
+				quality: 100,
+				targetWidth: 500,
+				targetHeight: 300,
+				saveToPhotoAlbum: false
+			}, function(ret, err) {
+				console.log(ret);
+				var data = new Object();
+				data.files = [];
+				data.files.push(ret.data);
+				util.upload(data, function(ret) {
+					console.log(JSON.stringify(ret));
+					$(".codeimgbox").css('display', 'inline-block');
+					$(".codeimg").attr("src", ret.url);
+				});
+			});
+		});
+	}
+	// 点击上传
+	function douploadimg() {
+		$('.confrim').click(function() {
+			var codeimg = $('.codeimg').attr('src');
+			if (codeimg) {
+				var data = new Object();
+				data.wechart_income_code = codeimg;
+				util.member.memberupdate(data, function(res) {
+					if (res.status_code == 200) {
+						Toast('上传成功!');
+						util.storage.setuserinfo(res.data);
+						console.log('上传成功返回');
+						var jsfun = 'getmemberinfo();';
+						api.execScript({
+							name: 'withdraw',
+							frameName: 'withdraw_body',
+							script: jsfun
+						});
+						api.closeWin({
+							name: 'shoukuanma'
+						});
+					}
+				})
+			} else {
+				Toast('没有选择图片');
+			}
+		})
+	}
+</script>
+
+</html>

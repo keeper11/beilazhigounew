@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<title>网络错误</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css" />
+	<style type="text/css">
+		html,
+		body {
+			height: 100%;
+		}
+
+		header {
+			background-color: #e86415;
+		}
+
+		header ul li {
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+			display: none;
+			color: #FFFFFF;
+			position: relative;
+			font-size: 20px;
+		}
+
+		header ul li.active {
+			display: block;
+		}
+
+		#wrap {
+			position: absolute;
+			margin: auto;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			height: 350px;
+			width: 16em;
+		}
+
+		#logo {
+			width: 100%;
+			height: 150px;
+			margin-bottom: 50px;
+			background: url(../image/logo.png) no-repeat center bottom;
+			background-size: contain;
+			-webkit-background-size: contain;
+		}
+
+		#notice {
+			padding-left: 6px;
+		}
+
+		#notice p {
+			font-size: 14px;
+			color: #a6a6a6;
+			line-height: 2;
+		}
+
+		#notice p:first-child {
+			margin-bottom: 15px;
+		}
+
+		#btns {
+			margin-top: 40px;
+			text-align: center;
+		}
+
+		#btns span {
+			display: inline-block;
+			padding: 18px 32px;
+			color: #fff;
+			background-color: #77c9a6;
+			border-radius: 6px;
+			font-size: 14px;
+		}
+
+		#btns span.active {
+			background-color: #77c9a6;
+		}
+
+		#btns .reload {
+			margin-right: 20px;
+		}
+
+		#btns .reload:before {
+			content: '';
+			vertical-align: text-top;
+			margin-right: 6px;
+			display: inline-block;
+			width: 16px;
+			height: 16px;
+			background: url(../image/reload.png) no-repeat;
+			background-size: contain;
+			-webkit-background-size: contain;
+		}
+
+		#btns .set:before {
+			content: '';
+			vertical-align: text-top;
+			margin-right: 6px;
+			display: inline-block;
+			width: 16px;
+			height: 16px;
+			background: url(../image/set.png) no-repeat;
+			background-size: contain;
+			-webkit-background-size: contain;
+		}
+
+		#btns .back:before {
+			content: '';
+			vertical-align: text-top;
+			margin-right: 6px;
+			display: inline-block;
+			width: 16px;
+			height: 16px;
+			background: url(../image/back.png) no-repeat;
+			background-size: contain;
+			-webkit-background-size: contain;
+		}
+	</style>
+</head>
+
+
+<body>
+	<div id="wrap">
+		<div id="logo"></div>
+
+		<div id="notice">
+			<p>打开页面发生错误，可能有以下原因：</p>
+			<p>1. 设备没有网络或数据连接</p>
+			<p>2. 此页面暂时出现故障</p>
+		</div>
+		<div id="btns">
+			<span class="reload" tapmode='' onclick="reloadPage();">刷新</span>
+			<span class="set" tapmode='' onclick="setDef();">设置</span>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	function reloadPage() {
+		var data = api.pageParam;
+		if (data && data.failedUrl) {
+			if (api.systemType === 'ios') {
+				var script = 'location.href = \'' + data.failedUrl + '\'';
+				api.execScript({
+					frameName: data.name,
+					script: script
+				});
+				api.closeFrame();
+			} else {
+				location.href = data.failedUrl;
+			}
+		}
+	}
+
+	function setDef() {
+		api.openApp({
+			androidPkg: 'android.settings.WIFI_SETTINGS'
+		});
+	}
+	apiready = function() {
+		if (api.systemType === 'ios') {
+			var set = $api.dom('#btns .set');
+			set.innerHTML = '返回';
+			$api.addCls(set, 'back');
+			set.onclick = function() {
+				api.closeFrame();
+			}
+		}
+	};
+</script>
+
+</html>

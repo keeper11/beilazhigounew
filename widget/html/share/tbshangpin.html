@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>创建分享</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui_flex.css" />
+    <style>
+        .flex-box {
+            flex-wrap: nowrap;
+            -webkit-flex-wrap: nowrap;
+            flex-direction: row;
+            -webkit-flex-direction: row;
+            width: 100%;
+            justify-content: space-between;
+            -webkit-justify-content: space-between;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        section {
+            background-color: #f5f5f5;
+        }
+
+        .flex-list {
+            width: 100px;
+            height: 100px;
+            flex-shrink: 0;
+            -webkit-flex-shrink: 0;
+            margin-right: 0.5rem;
+            position: relative;
+        }
+
+        .flex-list-h {
+            width: 1.2rem;
+            height: 1.2rem;
+            background-image: url('../../image/dui_2.png');
+            background-size: 100% 100%;
+            position: absolute;
+        }
+
+        .down-img {
+            vertical-align: middle;
+            display: inline;
+            width: 1rem;
+        }
+
+        .active {
+            background-image: url('../../image/dui_1.png');
+        }
+
+        #canvas-box {
+            position: fixed;
+            top: -200%;
+            width: 100%;
+        }
+
+        .s-list {
+            width: 5rem;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .s-list img {
+            width: 2rem;
+            height: 2rem;
+            margin: 0 auto;
+        }
+
+        .s-btn {
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+
+        .row-list {
+            height: 7rem;
+        }
+
+        .qr-div {
+            position: absolute;
+            bottom: 0;
+            height: 1rem;
+            line-height: 1rem;
+            width: 100%;
+            text-align: center;
+            opacity: 0.8;
+            color: #eee;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .ios-share {
+            width: 8rem;
+            background-image: -webkit-linear-gradient(left, rgb(249, 128, 44), rgb(251, 58, 36));
+            text-align: center;
+            line-height: 1.5rem;
+            font-size: 1rem;
+            color: #fff;
+            border-radius: 0.25rem;
+        }
+
+        .text-content {
+            position: relative;
+            z-index: 99
+        }
+
+        .my_code {
+            width: 80%;
+            height: 80%;
+            margin: auto;
+        }
+
+        .my_code canvas {
+            height: 100%;
+            width: auto;
+        }
+
+        .goods-title {
+            height: 2rem;
+            line-height: 1rem;
+            overflow: hidden;
+        }
+
+        .new-quan {
+            position: absolute;
+            height: 20px;
+            padding-right: 5px;
+            line-height: 20px;
+            color: rgba(253, 56, 93, 1);
+            font-size: 14px;
+            margin: 7px 0
+        }
+
+        .new-quan div {
+            float: left;
+            border: 1px rgba(253, 56, 93, 1) solid;
+            line-height: 18px;
+            text-align: center;
+            padding: 0 3px;
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px
+        }
+
+        .new-quan span {
+            background: rgba(253, 56, 93, 1);
+            width: 20px;
+            height: 20px;
+            display: block;
+            text-align: center;
+            color: #fff;
+            line-height: 20px;
+            float: left;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px
+        }
+
+        .new-price {
+            position: absolute;
+            color: red;
+            font-size: 18px;
+            width: 80%;
+            float: left;
+            line-height: 20px;
+            bottom: 2rem;
+        }
+
+        .new-price a {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .new-sale {
+            position: absolute;
+            color: #555;
+            font-size: 14px;
+            width: 50%;
+            float: left;
+            text-align: left;
+            line-height: 20px;
+            bottom: 0.5rem;
+        }
+
+        .canvasimg {
+            position: relative;
+            width: 100%;
+            height: 50%;
+        }
+
+        .canvas-img {
+            width: 100%;
+        }
+
+        .user_type {
+            right: 5%;
+            left: 75%;
+            top: 100%;
+            bottom: 10%;
+            min-height: 30px;
+            min-width: 20px;
+            position: absolute;
+            margin: auto;
+            text-align: center;
+            white-space: nowrap;
+            width: auto;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            z-index: 2;
+            color: #fff;
+            font-size: 20px;
+            background-color: rgba(255, 11, 52, 0.7);
+            border-radius: 10px 0px 10px 0px;
+        }
+
+        .copytext {
+            font-size: 15px;
+            color: red;
+        }
+
+        .text-box {
+            height: 120px;
+            overflow: hidden;
+            resize: none;
+            line-height: 24px;
+            font-size: 16px;
+            color: #000;
+            border: 1px solid #ccc;
+            outline: 0 none;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        .tpwd {
+            font-size: 15px;
+            color: #555;
+        }
+
+        .text-tpwd {
+            height: 80px;
+            overflow: hidden;
+            resize: none;
+            line-height: 24px;
+            font-size: 16px;
+            color: #000;
+            border: 1px solid #ccc;
+            outline: 0 none;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            display: block;
+            width: 100%;
+            height: 85px;
+            border-top: 1px solid #f0f0f0;
+            top: auto;
+            table-layout: fixed;
+            background-color: #ffffff;
+            color: #757575;
+        }
+
+        .hr {
+            background: #F5F5F5;
+            height: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="" id="canvas-box">
+        <div class="canvasimg">
+            <img class="canvas-img" src="../../image/loaderr.png" />
+            <div class="user_type">天猫</div>
+        </div>
+        <div class="aui-row aui-padded-10">
+            <div class="aui-col-xs-7 row-list">
+                <div class="goods-title aui-font-size-16">
+                    <!--商品标题-->
+                </div>
+                <div class="new-quan"><span>券</span>
+                    <div class="quan">￥300</div>
+                </div>
+                <p class="new-price">￥14.9<a>券后价</a></p>
+                <p class="new-sale">销量2075件</p>
+            </div>
+            <div class="aui-col-xs-5 row-list">
+                <div class="my_code">
+                    <img class="qrcode-img" src="" />
+                </div>
+                <div class="aui-font-size-12 aui-text-center">长按识别二维码</div>
+            </div>
+        </div>
+    </section>
+    <section class="aui-content aui-padded-10">
+        <div class="aui-font-size-16 aui-padded-t-10 aui-padded-b-10">选择图片</div>
+        <div class="flex-box aui-flex-col img-box">
+            <div class="flex-list" id="flex">
+                <div class="flex-list-h active" tapmode onclick="selected(this)"></div>
+                <img class="qr-img" src="../../image/rolling.gif">
+                <div class="aui-font-size-12 qr-div">二维码图片</div>
+            </div>
+        </div>
+        <div class="aui-font-size-12 aui-margin-t-15">
+            <div class="aui-pull-left">已选<span class="c-num aui-text-danger">1</span>张</div>
+            <div class="aui-pull-right aui-text-danger" tapmode onclick="saveImg()">
+                <img class="down-img" src="../../image/down.png" />保存到本地相册</div>
+        </div>
+    </section>
+    <section class="aui-content aui-padded-10">
+        <div class="aui-margin-b-10 copytext" tapmode onclick="copyText()">复制商品文案(发朋友圈别忘记复制评论)</div>
+        <textarea class="text-box" cols="10" rows="50">
+        </textarea>
+        <!--  <div class="aui-font-size-12 aui-margin-t-15">
+            <div class="aui-pull-right aui-text-danger" tapmode onclick="copyText()">
+                <span class="aui-iconfont aui-icon-pencil"></span>复制并分享文案</div>
+        </div>-->
+    </section>
+    <section class="aui-content aui-padded-10">
+        <div class="aui-margin-b-10 tpwd">评论内容请勿修改</div>
+        <textarea class="text-tpwd" cols="10" rows="50">
+        </textarea>
+        <div class="aui-font-size-12 aui-margin-t-15">
+            <div class="aui-pull-right aui-text-danger" tapmode onclick="copyTpwd()">
+                复制评论【淘口令】</div>
+        </div>
+    </section>
+    <section class="hr"></section>
+    <section class="aui-padded-10 s-btn aui-content footer">
+        <div class="aui-flex-col aui-flex-between">
+            <div class="s-list" tapmode onclick="goshare()">
+                <img src="../../image/share/code.png" />
+                <div>分享二维码</div>
+            </div>
+        </div>
+    </section>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/qrcode.js"></script>
+<script type="text/javascript" src="../../script/echo.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/html2canvas.js"></script>
+<script type="text/javascript">
+    var clipBoard, sharedModule, userInfo;
+    apiready = function() {
+        api.parseTapmode();
+        clipBoard = api.require('clipBoard');
+        sharedModule = api.require('shareAction');
+        var itemid = api.pageParam.itemid;
+        var couponid = api.pageParam.couponid;
+        var itemdata = GetStorage('itemdata');
+        //   Alert(itemdata);
+        zhuanlian_haodanku(itemid, couponid, itemdata);
+        loaddata(itemdata);
+        codeimg(itemdata);
+        var text = itemdata.title; //商品标题
+        $api.dom('.text-box').innerHTML = '商品标题:' + text + '\n【优惠券】：元\n【券后价】：元\n【销量】：件\n更多优惠券商品尽在' + api.appName + ',\n邀请码：' + inviteinfo.invite + '\n   =>>>> 下载地址：' + GetStorage('appurl');
+        $api.dom('.text-tpwd').innerHTML = '￥淘口令￥\n下单链接：';
+    };
+
+    function loaddata(itemdata) {
+        var array = itemdata.small_images;
+        //  Alert(itemdata);
+        if (!array) {
+            return false;
+        }
+        var count = array.string.length;
+        var ccc = 0;
+        var imgs = [];
+        for (var i in array.string) {
+            api.download({
+                url: array.string[i],
+                savePath: 'fs://ItemImg/' + Math.floor((Math.random() * 100) + 1) + i + '.png',
+                report: false,
+                cache: false,
+                allowResume: false
+            }, function(ret, err) {
+                if (ret.state == 1) {
+                    imgs.push(ret.savePath);
+                    ccc++;
+                    if (ccc >= count) {
+                        var html = '';
+                        for (var j in imgs) {
+                            html += '<div class="flex-list" id="flex"><div class="flex-list-h" tapmode onclick="selected(this)"></div>';
+                            html += '<img src="' + imgs[j] + '" /></div>';
+                        }
+                        $('.img-box').append(html);
+                    }
+                }
+            });
+        };
+    }
+
+    //获取二维码主图
+    function codeimg(itemdata) {
+        api.download({
+            url: itemdata.pict_url,
+            savePath: 'fs://ItemImg/' + Math.floor((Math.random() * 100) + 1) + '.png',
+            report: false,
+            cache: false,
+            allowResume: false
+        }, function(ret, err) {
+            if (ret.state == 1) {
+                $api.dom('.canvas-img').src = ret.savePath;
+            }
+        });
+    }
+    // 淘宝高佣转链接口
+    function zhuanlian_haodanku(itemid, couponid, itemdata) {
+        var pinvite = GetStorage('pinvite');
+        var appdata = GetStorage('appdata');
+        var commissiondata = GetStorage('commissiondata');
+        var _url = appconfig.tbkurl + couponid + "&itemId=" + itemid;
+        var ajaxurl = "https://v2.api.haodanku.com/ratesurl/apikey/"; //好单库高佣金转链
+        api.ajax({
+            url: ajaxurl + commissiondata.apikey + "/tb_name/" + commissiondata.tb_name + "/pid/" + pinvite.tb_pid + "/itemid/" + itemid, //二合一API接口链接
+            method: 'post',
+            timeout: 5,
+            cache: false,
+            dataType: 'json',
+            data: {
+                values: {
+                    tb_name: commissiondata.tb_name,
+                    pid: pinvite.tb_pid,
+                    itemid: itemid
+                }
+            }
+        }, function(ret) {
+            if (ret.code == 1) {
+                var couponmoney = ret.data.couponmoney;
+                var url = ret.data.coupon_click_url; //+ '&activityId=' + couponid; //高佣金二合一链接
+                console.warn('好单库==> 高佣转链成功，佣金比例：' + ret.data.max_commission_rate + '%。PID==>' + pinvite.tb_pid);
+                var tburl = url;
+                if (pinvite.relationid != 0) {
+                    tburl = url + '&relationId=' + pinvite.relationid;
+                    console.log('当前是渠道ID:' + pinvite.relationid);
+                }
+                shortUrl(couponmoney, tburl, itemdata);
+                //  Alert(tburl);
+            } else {
+                zhuanlian_heima(_url, itemid, couponid, itemdata); //备用高佣金转链
+            }
+        });
+    }
+    //备用高佣转链接口
+    function zhuanlian_heima(_url, itemid, couponid, itemdata) {
+        var pinvite = GetStorage('pinvite');
+        var commissiondata = GetStorage('commissiondata');
+        var ajaxurl = "https://www.heimataoke.com/api-zhuanlian?appkey=" + commissiondata.appkey + "&appsecret=" + commissiondata.appsecret + "&sid="; //黑马高佣转链
+        api.ajax({
+            url: ajaxurl + commissiondata.sid + "&pid=" + pinvite.tb_pid + "&num_iid=" + itemid,
+            method: 'post',
+            timeout: 5,
+            cache: false,
+            dataType: 'json'
+        }, function(ret) {
+            if (ret.category_id) {
+                var coupon = ret.coupon_total_count;
+                var couponmoney = '';
+                if (coupon) {
+                    var str = ret.coupon_info;
+                    var res = str.split("减")[1];
+                    couponmoney = res.replace(/[^0-9]/ig, "");
+                } else {
+                    couponmoney = 0;
+                }
+                var url = ret.coupon_click_url; // + '&activityId=' + couponid; //高佣金二合一链接
+                console.warn('黑马淘客==> 高佣转链成功，佣金比例：' + ret.max_commission_rate + '%。');
+                var tburl = url;
+                if (pinvite.relationid != 0) {
+                    tburl = url + '&relationId=' + pinvite.relationid;
+                    console.log('当前是渠道ID:' + pinvite.relationid);
+                }
+                shortUrl(couponmoney, tburl, itemdata);
+            } else {
+                Toast('生成失败，请返回重试', 2000);
+                console.warn('高佣金授权失效，请授权');
+            }
+        });
+    }
+    //转淘口令
+    function shortUrl(couponmoney, tburl, itemdata) {
+        var commondata = GetStorage('commondata');
+        var appdata = GetStorage('appdata');
+        var inviteinfo = GetStorage('inviteinfo');
+        var text = itemdata.title; //商品标题
+        var taobaourl = encodeURIComponent(tburl);
+        var logo = encodeURIComponent(itemdata.pict_url);
+        var serverurl = GetStorage('serverurl');
+        //var url = serverurl + '/api/tborder/tpwd?text=' + encodeURIComponent(text) + '&taobaourl=' + taobaourl + '&logo=' + logo;
+        api.ajax({
+            url: serverurl + '/api/tborder/tpwd?text=' + encodeURIComponent(text) + '&taobaourl=' + taobaourl + '&logo=' + logo,
+            method: 'get',
+            timeout: 10,
+            dataType: 'json'
+        }, function(ret, err) {
+            if (ret.code == 1) {
+                var data = ret.data; //Alert(ret);
+                var user_type = '';
+                if (itemdata.user_type == 1) {
+                    $api.dom('.user_type').innerHTML = '天猫';
+                    user_type = '天猫';
+                } else {
+                    $api.dom('.user_type').innerHTML = '淘宝';
+                    user_type = '淘宝';
+                }
+                var price = parseFloat((itemdata.zk_final_price - couponmoney).toFixed(2));
+                var quan = '';
+                if (couponmoney > 0) {
+                    $api.dom('.new-quan').innerHTML = '<span>券</span><div class="quan">￥' + couponmoney + '</div>';
+                    $api.dom('.new-price').innerHTML = '￥' + price + '<a>券后价</a>';
+                    quan = '【优惠券】：' + couponmoney + '元\n【券后价】：' + price + '元\n【销量】：' + itemdata.volume + '件';
+                    tpwd = data.model + '\n领券下单链接：' + data.copy_tkl_url;
+                } else {
+                    $api.dom('.new-quan').innerHTML = '<span>券</span><div class="quan">已发完</div>';
+                    $api.dom('.new-price').innerHTML = '￥' + itemdata.zk_final_price + '<a>折扣价</a>';
+                    quan = '优惠券已发完\n【折扣价】：' + price + '元\n【销量】：' + itemdata.volume + '件';
+                    tpwd = data.model + '\n折扣下单链接：' + data.copy_tkl_url;
+                }
+                $api.dom('.text-box').innerHTML = '【' + user_type + '】' + text + '\n' + quan;
+                $api.dom('.text-tpwd').innerHTML = tpwd + '\n' + commondata.copytext;
+                $api.dom('.new-sale').innerHTML = '销量:' + itemdata.volume + '件';
+                $api.dom('.goods-title').innerHTML = text; //商品标题
+                $('.my_code').qrcode({
+                    render: "canvas",
+                    background: "#FFF",
+                    text: data.copy_tkl_url
+                });
+                setTimeout(drwImg, 500); //生成二维码图片
+            } else {
+                Toast('淘口令生成失败，请返回重试');
+                //  Alert(err);
+            }
+        });
+    }
+
+    //生成二维码图片
+    function drwImg() {
+        html2canvas(document.querySelector("#canvas-box")).then(function(canvas) {
+            // document.body.appendChild(canvas)
+            var image = new Image();
+            image.src = canvas.toDataURL("image/webp", 1);
+            var base64Str = image.src.split('base64,')[1];
+            var imgPath = "fs://qrcode/";
+            var imgName = Math.floor((Math.random() * 100) + 1) + "share.jpg";
+            var trans = api.require('trans');
+            trans.saveImage({
+                base64Str: base64Str, //base64字符串不能包含data:image/png;base64,前缀
+                album: false,
+                imgPath: imgPath,
+                imgName: imgName
+            }, function(ret, err) {
+                if (ret.status) {
+                    //console.log(imgPath + imgName);
+                    $api.dom($api.domAll('#flex')[0], 'img').src = api.fsDir + "/qrcode/" + imgName;
+                }
+            });
+        });
+    }
+    //选中图片
+    function selected(node) {
+        $api.toggleCls(node, 'active');
+        //  $api.addCls(node, 'active');
+        var nodes = $api.domAll('.active');
+        $api.dom('.c-num').innerHTML = nodes.length;
+    }
+    //保存图片到本地//安卓和IOS 使用imageCache 有区别，前者缓存的图片文件有无后缀
+    function saveImg() {
+        var nodes = $api.domAll('#flex');
+        for (var i = 0; nodes[i]; i++) {
+            var active = $api.dom(nodes[i], '.active');
+            //    var active = $(nodes[i], '.active').find(i);
+            if (active) {
+                if (i == 0) {
+                    api.saveMediaToAlbum({
+                        path: $api.dom(nodes[i], 'img').src
+                    }, function(ret, err) {
+                        if (ret && ret.status) {
+                            Toast('二维码图片保存成功');
+                        }
+                    });
+                } else { //获取图片后缀须要自己完善，这里只适合我当前图片的路径。
+                    api.saveMediaToAlbum({
+                        path: $api.dom(nodes[i], 'img').src
+                    }, function(ret, err) {
+                        if (ret && ret.status) {
+                            Toast('保存成功');
+                        }
+                    });
+                }
+            } else {
+                Toast('请选择图片');
+            }
+        }
+    }
+
+    //分享二维码商品
+    function goshare() {
+        var text = $api.dom('.text-box').value;
+        //  var title_tpwd = $api.dom('.text-tpwd').value;
+        if (text.indexOf("商品标题") != -1) {
+            Toast('二维码合成中，请稍候');
+            return false;
+        }
+        var title = text; //+ '\n' + title_tpwd;
+        //  $api.toast('图片合成中', '请稍候..', 2000);
+        html2canvas(document.querySelector("#canvas-box")).then(function(canvas) {
+            // document.body.appendChild(canvas)
+            var image = new Image();
+            image.src = canvas.toDataURL("image/webp", 1);
+            var base64Str = image.src.split('base64,')[1];
+            var imgPath = "fs://qrcode/";
+            var imgName = Math.floor((Math.random() * 100) + 1) + "share.jpg";
+            var trans = api.require('trans');
+            trans.saveImage({
+                base64Str: base64Str, //base64字符串不能包含data:image/png;base64,前缀
+                album: false,
+                imgPath: imgPath,
+                imgName: imgName
+            }, function(ret, err) {
+                if (ret.status) {
+                    //  console.log(imgPath + imgName);
+                    var url = imgPath + imgName;
+                    ShareImg(url, title);
+                }
+            });
+        });
+    }
+
+    function ShareImg(url, title) {
+        var appdata = GetStorage('appdata');
+        var inviteinfo = GetStorage('inviteinfo');
+        clipBoard.set({
+                value: title
+            },
+            function(ret, err) {
+                //Toast('邀请码：' + inviteinfo.invite + '，复制成功')
+            });
+        sharedModule = api.require('shareAction');
+        sharedModule.share({
+            //  images: [img],
+            path: url,
+            type: 'image'
+        });
+    }
+
+    //复制分享文案
+    function copyText() {
+        var commondata = GetStorage('commondata');
+        var title_box = $api.dom('.text-box').value;
+        var title_tpwd = $api.dom('.text-tpwd').value;
+        var apptext = '';
+        if (commondata.copy == 1) {
+            apptext = '\n更多优惠券商品尽在' + api.appName + ',\n邀请码：' + inviteinfo.invite + '\n   =>>>> 下载地址：' + GetStorage('appurl');
+        }
+        var title = title_box + '\n' + title_tpwd + apptext;
+        if (title.indexOf("商品标题") != -1) {
+            Toast('商品信息正在获取');
+            return false;
+        }
+        clipBoard.set({
+            value: title
+        }, function(ret, err) {
+            if (ret) {
+                Toast('复制成功');
+                ShareUrl(title);
+            }
+        });
+    }
+    //复制评论
+    function copyTpwd() {
+        var title = $api.dom('.text-tpwd').value;
+        if (title.indexOf("淘口令") != -1) {
+            Toast('淘口令正在获取');
+            return false;
+        }
+        clipBoard.set({
+            value: title
+        }, function(ret, err) {
+            if (ret) {
+                Toast('复制成功');
+            }
+        });
+    }
+    //分享邀请链接
+    function ShareUrl(title) {
+        var appdata = GetStorage('appdata');
+        var commondata = GetStorage('commondata');
+        var inviteinfo = GetStorage('inviteinfo');
+        //  var title = $api.dom('.text-box').value;
+        sharedModule.share({
+            text: title,
+            type: 'text'
+        });
+    };
+</script>
+
+</html>

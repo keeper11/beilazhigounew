@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>建议意见</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui_flex.css" />
+    <style>
+        .flex-box {
+            flex-wrap: nowrap;
+            -webkit-flex-wrap: nowrap;
+            flex-direction: row;
+            -webkit-flex-direction: row;
+            width: 100%;
+            justify-content: space-between;
+            -webkit-justify-content: space-between;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        section {
+            background-color: #f5f5f5;
+        }
+
+        .flex-list {
+            width: 140px;
+            height: 140px;
+            flex-shrink: 0;
+            -webkit-flex-shrink: 0;
+            margin-right: 0.5rem;
+            position: relative;
+        }
+
+        .flex-list-h {
+            width: 1.2rem;
+            height: 1.2rem;
+            background-image: url('../../image/dui_2.png');
+            background-size: 100% 100%;
+            position: absolute;
+        }
+
+        .down-img {
+            vertical-align: middle;
+            display: inline;
+            width: 1rem;
+        }
+
+        .active {
+            background-image: url('../../image/dui_1.png');
+        }
+
+        #canvas-box {
+            position: fixed;
+            top: -200%;
+            width: 100%;
+        }
+
+        .s-list {
+            width: 8rem;
+            font-size: 0.8rem;
+            text-align: center;
+            color: red;
+        }
+
+        .s-btn {
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+
+        .row-list {
+            height: 7rem;
+        }
+
+        .qr-div {
+            position: absolute;
+            bottom: 0;
+            height: 1rem;
+            line-height: 1rem;
+            width: 100%;
+            text-align: center;
+            opacity: 0.8;
+            color: #eee;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .ios-share {
+            width: 8rem;
+            background-image: -webkit-linear-gradient(left, rgb(249, 128, 44), rgb(251, 58, 36));
+            text-align: center;
+            line-height: 1.5rem;
+            font-size: 1rem;
+            color: #fff;
+            border-radius: 0.25rem;
+        }
+
+        .text-content {
+            position: relative;
+            z-index: 99
+        }
+
+        .my_code {
+            width: 80%;
+            height: 80%;
+            margin: auto;
+        }
+
+        .my_code canvas {
+            height: 100%;
+            width: auto;
+        }
+
+        .goods-title {
+            height: 2rem;
+            line-height: 1rem;
+            overflow: hidden;
+        }
+
+        .new-quan {
+            position: absolute;
+            height: 20px;
+            padding-right: 5px;
+            line-height: 20px;
+            color: rgba(253, 56, 93, 1);
+            font-size: 14px;
+            margin: 7px 0
+        }
+
+        .new-quan div {
+            float: left;
+            border: 1px rgba(253, 56, 93, 1) solid;
+            line-height: 18px;
+            text-align: center;
+            padding: 0 3px;
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px
+        }
+
+        .new-quan span {
+            background: rgba(253, 56, 93, 1);
+            width: 20px;
+            height: 20px;
+            display: block;
+            text-align: center;
+            color: #fff;
+            line-height: 20px;
+            float: left;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px
+        }
+
+        .new-price {
+            position: absolute;
+            color: red;
+            font-size: 18px;
+            width: 80%;
+            float: left;
+            line-height: 20px;
+            bottom: 2rem;
+        }
+
+        .new-price a {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .new-sale {
+            position: absolute;
+            color: #555;
+            font-size: 14px;
+            width: 50%;
+            float: left;
+            text-align: left;
+            line-height: 20px;
+            bottom: 0.5rem;
+        }
+
+        .canvasimg {
+            position: relative;
+            width: 100%;
+            height: 50%;
+        }
+
+        .canvas-img {
+            width: 100%;
+        }
+
+        .user_type {
+            right: 5%;
+            left: 75%;
+            top: 100%;
+            bottom: 10%;
+            min-height: 30px;
+            min-width: 20px;
+            position: absolute;
+            margin: auto;
+            text-align: center;
+            white-space: nowrap;
+            width: auto;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            z-index: 2;
+            color: #fff;
+            font-size: 20px;
+            background-color: rgba(255, 11, 52, 0.7);
+            border-radius: 10px 0px 10px 0px;
+        }
+
+        .text-box {
+            height: 170px;
+            overflow: hidden;
+            resize: none;
+            line-height: 24px;
+            font-size: 16px;
+            color: #000;
+            border: 1px solid #ccc;
+            outline: 0 none;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            display: block;
+            width: 100%;
+            height: 50px;
+            border-top: 1px solid #f0f0f0;
+            top: auto;
+            table-layout: fixed;
+            background-color: #ffffff;
+            color: #757575;
+        }
+
+        .hr {
+            background: #F5F5F5;
+            height: 50px;
+        }
+
+        .searchbar-input {
+            width: 100%;
+            height: 40px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .searchbar-input input {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="aui-content aui-padded-10">
+        <div class="aui-font-size-16 aui-padded-t-10 aui-padded-b-10">请输入建议类型</div>
+        <div class="searchbar-input">
+            <input type="name" placeholder="比如：分享,功能建议,举报违规" maxlength="20" id="search-input">
+        </div>
+    </section>
+    <section class="aui-content aui-padded-10 ">
+        <div class="aui-margin-b-10">请输入建议或意见</div>
+        <div class="text-box">
+            <textarea placeholder="建议或意见" cols="10" rows="10" id="text-box">
+        </textarea>
+        </div>
+        <div class="aui-font-size-12 aui-margin-t-15">
+            <div class="aui-pull-right aui-text-danger">
+                <span class=""></span>请勿输入负面词语，违者封号处理。</div>
+        </div>
+    </section>
+    <section class="hr"></section>
+    <section class="aui-padded-10 s-btn aui-content footer">
+        <div class="aui-flex-col aui-flex-between">
+            <div class="s-list" tapmode onclick="goadvise()">
+                <div>立即提交</div>
+            </div>
+        </div>
+    </section>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/swiper.js"></script>
+<script type="text/javascript" src="../../script/echo.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        clipBoard = api.require('clipBoard');
+        sharedModule = api.require('shareAction');
+
+    };
+
+    function goadvise() {
+        var serverurl = GetStorage('serverurl');
+        var mobile = GetStorage('mobile');
+        var type = $api.byId("search-input").value;
+        var text = $api.byId('text-box').value;
+        //  Alert(text);
+        if (type.length <= 0) {
+            Toast('请输入建议意见类型');
+        } else if (text.trim() == 0) {
+            Toast('请输入建议或意见');
+        } else {
+            api.ajax({
+                url: serverurl + '/api/user/advise?mobile=' + mobile + '&type=' + type + '&text=' + text,
+                method: 'get',
+                timeout: 5,
+                cache: false,
+                dataType: 'json',
+            }, function(ret, err) {
+                if (ret.code == 0) {
+                    Toast(ret.msg);
+                } else if (ret.code == 1) {
+                    Toast(ret.msg);
+                } else {
+                    Toast('网络错误，请稍候重试');
+                }
+            });
+        }
+    }
+</script>
+
+</html>

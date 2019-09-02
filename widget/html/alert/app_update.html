@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>弹窗</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style type="text/css">
+        html,
+        body {
+            background: none;
+        }
+
+        .alertBox {
+            position: relative;
+            width: 66%;
+            height: auto;
+            position: fixed;
+            top: 50%;
+            margin-top: -41%;
+            left: 17%;
+            box-shadow: 0 0 4px #fff;
+            border-radius: 5px;
+            /*border: 1px solid #eee;*/
+            background: #fff;
+        }
+
+        .alertBox .closeAlert {
+            position: absolute;
+            top: 0;
+            right: 5px;
+            font-size: 30px;
+            color: rgb(218, 53, 79);
+        }
+
+        .alertBox .copyTitle {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        .alertBox .updateTop {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 20%;
+        }
+
+        .alertBox .textBox {
+            color: #343434;
+            font-size: 13px;
+            line-height: 1.2;
+            padding: 10px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            min-height: 110px;
+            width: 100%;
+        }
+
+        .alertBox .textBox h1 {
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .alertBox .textBox h2 {
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .alertBox .textBox .text {
+            font-size: 12px;
+            padding-right: 10px;
+            line-height: 1.3;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .alertBox .btn {
+            width: 100%;
+            text-align: center;
+            /*display: flex;
+        justify-content: space-around;*/
+        }
+
+        .alertBox .updatebtn {
+            width: 30%;
+            padding-bottom: 10px;
+        }
+
+        .alertBox .default {
+            width: 30%;
+            padding-bottom: 10px;
+        }
+
+        .alertBox .update {
+            background: #ff7700;
+        }
+
+        .alertBox .gray {
+            padding: 5px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            font-size: 12px;
+            color: #999;
+            margin: 6px auto;
+            display: block;
+            text-align: center;
+        }
+
+        .alertBox .circleBox {
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .alertBox .circleBox .img {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .alertBox .circleBox .img img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .alertBox .pregressBox {
+            margin: 15px auto;
+            height: 5px;
+            background: #c5c4c8;
+            border-radius: 2px;
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+            display: none;
+        }
+
+        .alertBox .pregressBox .progressBar {
+            display: block;
+            height: 100%;
+            background: rgb(248, 73, 94);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3%;
+            transition: width .5s ease;
+        }
+    </style>
+
+</head>
+
+<body>
+    <section class="alertBox">
+        <div class="closeAlert" onclick="closeUpdate();" tapmode>×</div>
+        <img src="../../icon/index/updateApp.png" class="copyTitle">
+        <img src="../../icon/index/updateTop.png" class="updateTop">
+        <div class="textBox" id="textBox">
+            <h1 id="newVersionNo"></h1>
+            <h2 id="newVersionTime"></h2>
+            <div class="text" id="updateText">
+            </div>
+        </div>
+        <div class="btn">
+            <img class="default" id="default" src="../../icon/index/updatebtn.png" alt="" onclick="app_update()">
+            <!-- <button type="button" class="default" onclick="closeUpdate()" id="default">下次再说</button> -->
+            <!-- <button type="button" class="default update" onclick="app_update()" id="default">立即升级</button> -->
+        </div>
+        <div class="pregressBox" id="pregressBox">
+            <span class="progressBar" id="progressBar"></span>
+        </div>
+    </section>
+</body>
+<script type="text/javascript" src='../../script/api.js'></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src='../../script/common.js'></script>
+<script type="text/javascript">
+    apiready = function() {
+        initUpdate();
+    }
+
+    function initUpdate() {
+
+    }
+
+    function app_update() {
+
+        if (api.systemType == 'android') {
+            api.download({
+                url: updateResult.source,
+                report: true
+            }, function(ret, err) {
+                if (ret && 0 == ret.state) { /* 下载进度 */
+                    // 进度ret.percent ，数字
+                    $api.dom('#default').style.display = 'none'
+                    $api.dom('#pregressBox').style.display = 'block'
+                    $api.dom('#progressBar').style.width = ret.percent + '%';
+                }
+                if (ret && 1 == ret.state) { /* 下载完成 */
+                    var savePath = ret.savePath;
+                    api.installApp({
+                        appUri: savePath
+                    });
+                }
+            });
+        } else if (api.systemType == 'ios') {
+            if (updateResult.source) {
+                api.installApp({
+                    appUri: updateResult.source
+                });
+            }
+        }
+    }
+</script>
+
+</html>

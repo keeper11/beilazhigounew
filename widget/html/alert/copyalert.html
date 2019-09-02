@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>弹窗</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style type="text/css">
+        html,
+        body {
+            background: none;
+        }
+
+        .alertBox {
+            width: 260px;
+            height: 320px;
+            position: absolute;
+            margin: auto;
+            left: 50%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            border: 1px solid #eee;
+            border-radius: 15px;
+            background: #fff;
+        }
+
+        .alertBox .closeAlert {
+            position: absolute;
+            right: 0;
+            left: 0;
+            margin: 0 auto;
+            bottom: -50px;
+            color: #aaa;
+            background: #fff;
+            text-align: center;
+            border: 1px solid #aaa;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            font-size: 35px;
+        }
+
+        .alertBox .copyTitle {
+            border-radius: 10px;
+            width: 100%;
+        }
+
+        .alertBox .textBox {
+            color: #343434;
+            font-size: 16px;
+            padding: 5px 10px 0 10px;
+            display: -webkit-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .alertBox .default {
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+            width: 90%;
+            background: #000;
+            margin: 5px auto;
+            color: #fff;
+            display: block;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .alertBox .gray {
+            padding: 5px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            font-size: 14px;
+            color: #666;
+            margin: 6px auto;
+            display: block;
+            text-align: center;
+        }
+
+        .alertBox .circleBox {
+            text-align: center;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .alertBox .circleBox .img {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .alertBox .circleBox .img img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .list ul li {
+            width: 33.33%;
+            padding: 0px 15px 15px 15px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <section class="alertBox">
+        <div class="closeAlert" tapmode onclick="CloseFrame()">×</div>
+        <img src="../../image/copy.png" class="copyTitle">
+        <div class="textBox" id="textBox">
+
+        </div>
+        <!--<button type="button" class="default" onclick="searchPdd()">搜索拼多多</button>-->
+        <div class="gray">请选择搜索</div>
+        <div class="circleBox">
+            <div class="list">
+                <ul>
+                    <li class="img" onclick="searchTB()">
+                        <img src="../../image/synav0.png" />
+                    </li>
+                    <li class="img" onclick="searchJD()">
+                        <img src="../../image/synav1.png" />
+                    </li>
+                    <li class="img" onclick="searchPdd()">
+                        <img src="../../image/synav2.png" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</body>
+
+<script type="text/javascript" src='../../script/api.js'></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    var content;
+    apiready = function() {
+        api.parseTapmode();
+        var content = api.pageParam.content;
+        $api.dom('.textBox').innerHTML = content || '没有商品标题';
+    }
+
+    function searchTB() {
+        api.openWin({
+            name: '淘宝',
+            url: '../template/win.html',
+            allowEdit: true,
+            pageParam: {
+                title: '淘宝',
+                url: '../template/tb_search.html',
+                params: {
+                    kw: content
+                }
+            }
+        });
+    }
+
+    function searchJD() {
+        api.openWin({
+            name: '京东',
+            url: '../template/win.html',
+            allowEdit: true,
+            pageParam: {
+                title: '京东',
+                url: '../template/jd_search.html',
+                params: {
+                    kw: content
+                }
+            }
+        });
+    }
+
+    function searchPdd() {
+        api.openWin({
+            name: '拼多多',
+            url: '../template/win.html',
+            allowEdit: true,
+            pageParam: {
+                title: '拼多多',
+                url: '../template/search.html',
+                params: {
+                    kw: content
+                }
+            }
+        });
+    }
+
+    function searchMGJ() {
+        api.openWin({
+            name: '蘑菇街',
+            url: '../template/win.html',
+            allowEdit: true,
+            pageParam: {
+                title: '蘑菇街',
+                url: '../template/mgj_search.html',
+                params: {
+                    kw: content
+                }
+            }
+        });
+    }
+</script>
+
+</html>

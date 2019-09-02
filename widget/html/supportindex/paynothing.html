@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/aui.css">
+    <style media="screen">
+        .aui-bar-nav {
+            background-color: #fff;
+            color: #000;
+            padding-top: 20px;
+        }
+        .aui-title{
+          color: #333333;
+          font-size: 20px;
+          font-family:SimHei;
+
+        }
+        .paycnt{
+          width: 84px;
+          margin: 0 auto;
+          margin-top: 34px;
+          margin-bottom: 20px;
+        }
+        .paytext{
+          width: 100%;
+          text-align: center;
+          font-size: 20px;
+          font-family:SimHei;
+          color: #F1246D;
+          font-weight:bold;
+
+        }
+        .paybut{
+          /*width: 100%*/
+          margin:0 auto;
+          display: flex;
+          padding: 1rem;
+        }
+        .paybut .aui-btn{
+          height: 36px;
+          line-height: 36px;
+          font-size: 16px;
+          border-radius: 10px;
+        }
+        .paybut .aui-btn1{
+          color: #999;
+          border:1px solid rgba(153,153,153,1);
+        }
+        .paybut .aui-btn2{
+          color: #F1206B;
+          border:1px solid rgba(241,32,107,1);
+        }
+    </style>
+</head>
+
+<body>
+  <div id="boxs">
+
+    <header class="aui-bar aui-bar-nav">
+        <div class="aui-pull-left aui-btn" @click='bankhtml'>
+            <span class="aui-iconfont aui-icon-left" style="color:#000"></span>
+        </div>
+        <div class="aui-title">支付失败</div>
+    </header>
+    <div class="paycnt">
+      <img src="../../image\soppeticon/shibai.png" alt="">
+    </div>
+    <p class="paytext">订单支付失败,请重新支付！</p>
+    <div class="paybut">
+      <div class="aui-btn aui-btn1 aui-btn-block aui-btn-outlined" @click='goorder'>返回订单</div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/axios.min.js"></script>
+
+
+<script type="text/javascript">
+    apiready = function() {
+        var vuedata = {
+            'cartlist': [],
+            'cartname': "",
+            'goodnum':'',
+            'indexs':'2'
+        }
+        var vm = new Vue({
+            el: '#boxs',
+            data: vuedata,
+            mounted: function() {
+
+            },
+            created: function() {
+
+
+            },
+            methods: {
+              goorder(){
+                api.openWin({     
+                    name: 'myorder',
+                         url: './myorder.html',
+                         pageParam: {
+     
+                    }   
+                })
+              },
+              bankhtml() {
+                  api.closeWin();
+              },
+
+
+            },
+        });
+    }
+
+    function getOrderListByPage() {
+        这里面可以直接用vuedata里面的任何一个数据
+
+    }
+</script>
+</html>

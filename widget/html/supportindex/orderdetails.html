@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/aui.css">
+    <style media="screen">
+        .aui-bar-nav {
+            background-color: rgba(0, 0, 0, 0);
+            color: #fff;
+            padding-top: 20px;
+            font-family: SimHei;
+            /*margin-bottom: 30px*/
+        }
+
+        .topcol {
+            background: linear-gradient(90deg, rgba(253, 23, 116, 1) 0%, rgba(217, 37, 59, 1) 100%);
+        }
+
+        .topcol .topmsg {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .topcol .topmsg img {
+            width: 160px;
+            height: 130px;
+        }
+
+        .topcol .topmsg .pq {
+            font-size: 20px;
+            color: #fff;
+            font-family: SimHei;
+        }
+        .topcol .topmsg .pq p{
+          font-size: 16px;
+          color: #fff;
+          font-family: SimHei;
+}
+        .dizhibox {
+            display: flex;
+            padding: 30px;
+            /*justify-content: space-around;*/
+            align-items: center;
+            background-color: #fff;
+        }
+
+        .dizhibox img {
+            width: 50px;
+            height: 50px;
+            margin-right: 30px;
+        }
+
+        .dizhibox .stiebox {
+            width: 70%;
+        }
+
+        .goodmsg {
+            background-color: #fff;
+            margin-top: 18px;
+        }
+
+        .goodmsg .goodtop {
+            display: flex;
+            padding: 24px 30px;
+            justify-content: space-between;
+        }
+
+        .goodmsg .goodtop .imgbox {
+            width: 124px;
+            height: 124px;
+            background-color: #ccc;
+            border-radius: 6px;
+            margin-right: 18px;
+        }
+        .goodmsg .goodtop .imgbox img{
+          width: 124px;
+          height: 124px;
+}
+        .goodmsg .goodtop .goodtext {
+            width: 150px;
+        }
+        .goodmsg .goodtop .goodtext div{
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;}
+        .goodmsg .butbox {
+            width: 100%;
+            /*text-align: right;*/
+            display: flex;
+            justify-content: flex-end;
+            padding: 24px;
+            padding-top: 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .goodmsg .butbox .aui-btn-outlined {
+            width: 100px;
+            height: 40px;
+            background: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(153, 153, 153, 1);
+            border-radius: 18px;
+            line-height: 40px;
+            font-size: 16px;
+        }
+
+        .ordernum {
+            padding: 25px 30px;
+            font-family: SimHei;
+            background-color: #fff;
+        }
+
+        .ordernum p {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .ordernum .p1 {
+            color: #999999;
+            font-size: 16px;
+        }
+
+        .ordernum .p2 {
+            color: #333333;
+            font-size: 18px;
+        }
+
+        .ordernum .p3 {
+            color: #EF0C5D;
+        }
+
+        .ordernum .b1 {
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #ccc;
+            ;
+        }
+
+        .information {
+            padding: 25px 30px;
+            font-family: SimHei;
+            background-color: #fff;
+            margin-top: 18px;
+        }
+
+        .information div {
+            display: flex;
+            /*justify-content: space-between;*/
+            line-height: 40px;
+            color: #666666;
+            font-size: 18px;
+        }
+
+        .information div .lbox {
+            width: 40%;
+        }
+    </style>
+</head>
+
+<body>
+  <div id="box">
+
+
+    <div class="topcol">
+
+        <header class="aui-bar aui-bar-nav">
+            <div class="aui-pull-left aui-btn" style="font-size:22px;" @click='gohtml'>
+                <span class="aui-iconfont aui-icon-left"></span>订单详情
+            </div>
+        </header>
+        <!--  -->
+        <div class="topmsg">
+            <!-- <div class="pq" v-if=' index == 1'>卖家已发货
+
+            </div> -->
+            <div class="pq" v-if='index == 0'>等待买家付款
+              <p>剩23小时58分钟自动关闭</p>
+            </div>
+            <div class="pq" v-if='index == 1'>已付款
+              <p>等待卖家发货</p>
+            </div>
+            <div class="pq" v-if='index == 2'>卖家已发货
+              <p>等待卖家发货</p>
+            </div>
+            <!-- <img src="../../image/soppeticon/guanbibox.png" alt=""> -->
+            <img src="../../image/soppeticon/zhuangtai1.png" alt="" v-if='index == 0'>
+            <img src="../../image/soppeticon/zhuangtai3.png" alt="" v-if='index == 1'>
+            <img src="../../image/soppeticon/zhuangtai4.png" alt="" v-if='index == 2'>
+        </div>
+
+        <!-- 地址 -->
+    </div>
+    <div class="dizhibox">
+        <img src="../../image/soppeticon/dizhi.png" alt="">
+        <div class="stiebox">
+            <p>{{sitelist.name }}<span>{{ sitelist.phone }}</span></p>
+            <div class="stie">
+              {{sitelist.province}}{{sitelist.city}}{{sitelist.area}}{{sitelist.address}}
+            </div>
+        </div>
+    </div>
+
+    <div class="goodmsg" v-for='item in goodslist'>
+        <div class="goodtop">
+            <div class="imgbox">
+          <img :src="item.image" alt="">
+            </div>
+            <div class="goodtext">
+                <div>{{item.goods_name}}</div>
+                <p>{{item.goods_attr}}</p>
+            </div>
+            <div style="text-align:right">
+                <p>￥{{ item.goods_price}}</p>
+                <p>x{{ item.total_num }}</p>
+            </div>
+        </div>
+        <div class="butbox"  @click='goaftersale(item.id)'>
+            <div class="aui-btn aui-btn-block aui-btn-outlined">申请售后</div>
+        </div>
+    </div>
+    <div class="ordernum">
+        <p class="p1"><span>商品总价</span><span>￥{{ orderlist.total_price }}</span></p>
+        <p class="p1"><span>运费（快递）</span><span>￥{{ orderlist.express_price }}</span></p>
+        <p class="p2 b1"><span>订单总价</span><span>￥{{ orderlist.total_price }}</span></p>
+        <p class="p2"><span>实付款</span><span class="p3">￥{{ orderlist.total_price }}</span></p>
+    </div>
+    <div class="information">
+        <p>订单信息</p>
+        <div>
+            <p class="lbox">订单编号：</p>
+            <p>{{ orderlist.order_no }}</p>
+        </div>
+        <div>
+            <p class="lbox">支付宝交易号：</p>
+            <p>{{ orderlist.transaction_id }}</p>
+        </div>
+        <div>
+            <p class="lbox">创建时间：</p>
+            <p>{{ orderlist.creattime_text }}</p>
+        </div>
+        <div>
+            <p class="lbox">成交时间：</p>
+            <p>{{  orderlist.pay_time }}</p>
+        </div>
+    </div>  </div>
+</body>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/axios.min.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+
+<script type="text/javascript">
+    apiready = function() {
+
+
+
+    var vuedata = {
+        "index": "1",
+        'orderlist':[],
+        'sitelist':[],
+        'goodslist':[],
+        'ordid':'',
+        'mobiles':''
+    }
+    var vm = new Vue({
+        el: '#box',
+        data: vuedata,
+        mounted: function() {
+          this.gettoken()
+          this.getapimsg()
+          this.getordermsg()
+
+        },
+        created: function() {
+        },
+        methods: {
+          gettoken(){
+          this.mobiles = $api.getStorage('mobile')
+        },
+          getapimsg(){
+            this.ordid= api.pageParam.id;
+            this.index = api.pageParam.index;
+          },
+          getordermsg(){
+            axios.get(`http://shop.19gou.net/api/order/detail?token=${this.mobiles}&id=${this.ordid}`)
+                .then(res => {
+                    console.log(res.data.data.order.address);
+                    this.sitelist = res.data.data.order.address
+                    this.goodslist = res.data.data.order.goods
+                    this.orderlist = res.data.data.order
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+          },
+
+          goaftersale(ids){
+
+                //ajax 封装测试
+                // _APP.ajax({ 
+                //     url:'/api/index/goodsList',
+                //     data:{
+                //         cat_id:ids
+                //     },
+                //     success:function(ret){
+                //         alert(_JS(ret))
+                //     }
+                // })
+                // return;
+
+                $api.setStorage('good_id', ids);
+                api.openWin({     
+                    name: 'refund',
+                         url: './refund.html',
+                         pageParam: {   
+                
+                      }   
+                });
+          },
+          gohtml(){
+            api.closeWin();
+          },
+
+
+
+        }
+    });
+}
+    function getOrderListByPage() {
+        这里面可以直接用vuedata里面的任何一个数据
+
+    }
+</script>
+</html>

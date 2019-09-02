@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+	<title>用户登录</title>
+	<link rel="stylesheet" type="text/css" href="../../css/reg_login.css">
+	<style type="text/css">
+		html,
+		body {
+			height: 100%;
+		}
+
+		.btnok .CIACloud-font {
+			font-size: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="login_content_wrapper" style="display: block; opacity: 1;">
+		<div id="login_tele_wrapper" style="display: block; opacity: 1;">
+			<h3 class="login_content_h3 none">手机号登录</h3>
+			<div class="login_input_div">
+				<div id="login_tele_left" class="left">
+					+
+					<input type="tel" id="country" class="login_tele_code_input" maxlength="4" value="86" readonly="readonly">
+				</div>
+				<div id="CountriesRegions" class="right rel" onclick="Toast('当前仅支持中国大陆手机用户')">
+					中国
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="login_input_div">
+				<span class="input_title">手机号</span>
+				<input type="tel" id="phone" class="login_input" placeholder="填写手机号码" maxlength="11">
+				<div class="login_input_clear">
+					<span class="login_input_clear_icon"></span>
+				</div>
+			</div>
+			<div class="login_input_div">
+				<span class="input_title">密&emsp;码</span>
+				<input type="password" id="pwd" class="login_input" placeholder="请输入登录密码" maxlength="16">
+				<img class="eye" src="../../image/bkj.png" />
+			</div>
+			<a class="btnok" onclick="CheckSubmit()" style="background-color:#ff0000">立即登录</a>
+			<!--<a class="btnok" onclick="onelogin()">一键登录</a>-->
+			<div onclick="GoPwd()">
+				<p class="login_content_foot_tip rel left">
+					<a class="login_no_request_code_link">忘记密码</a>
+				</p>
+			</div>
+			<div onclick="GoReg()">
+				<p class="login_content_foot_tip rel right">
+					<a class="login_no_request_code_link">没有账号</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+		api.parseTapmode();
+		//加载用户账号缓存
+			$(".eye").click(function() {
+			var arr = this.src.split("/");
+			if (arr[arr.length - 1] == "bkj.png") {
+				this.src = "../../image/kj.png";
+				$(this).prev().attr("type", "text");
+			} else {
+				this.src = "../../image/bkj.png";
+				$(this).prev().attr("type", "password");
+			}
+		})
+	}
+
+	//.加载用户手机号
+	function loadphone() {
+		var phone = GetStorage('phone');
+		if (phone != null) { //.填充手机号码到登录表单
+			$api.attr($api.byId("phone"), 'value', phone);
+		}
+	}
+
+	function CheckSubmit() {
+		var phone = $api.byId('phone').value;
+		var country = $api.byId("country").value;
+		var pwd = $api.byId('pwd').value;
+		if (phone.length <= 0) {
+			Toast('请输入手机号码');
+		} else if (isNaN(phone)) {
+			Toast('手机号必须纯数字');
+		} else if (phone < 13000000000) {
+			Toast('手机号格式错误');
+		} else if (phone > 19999999999) {
+			Toast('手机号格式错误');
+		} else if (pwd.length <= 0) {
+			Toast('请设置登录密码');
+		} else if (pwd.length < 6) {
+			Toast('登录密码太过简单');
+		} else {
+			login(phone, pwd);
+		}
+	}
+//20190804过滤掉系统默认的账号12345678910
+if( GetStorage('mobile')==12345678910)
+{
+  RmStorage('mobile')
+}
+	function login(phone, pwd) {
+		var serverurl = GetStorage('serverurl');
+		var deviceName = api.deviceName;
+		var deviceId = api.deviceId;
+		var device = deviceName + ':' + deviceId
+		api.ajax({
+			url: serverurl + '/api/user/login?account=' + phone + '&password=' + pwd + '&deviceid=' + device,
+			method: 'get',
+			timeout: 5,
+			cache: false,
+			dataType: 'json',
+			data: {}
+		}, function(ret, err) {
+			if (ret.code == 0) {
+				Toast(ret.msg);
+			} else if (ret.code == 1) {
+				Toast(ret.msg);
+				var data = ret.data;
+				SetStorage('mobile', phone);
+				setdata(data);
+				rootuserdata();
+			} else {
+				Toast('网络错误，请稍候重试');
+				RmStorage('serverurl');
+				getServer();
+			}
+		});
+	}
+</script>
+
+</html>

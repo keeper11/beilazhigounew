@@ -1,0 +1,572 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我的淘宝订单</title>
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/mescroll.css">
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.css">
+    <style type="text/css">
+        body {
+            width: 100%;
+            background: #fff;
+            /*rgba(0, 0, 0, 0);*/
+        }
+
+        .team {
+            margin: 0 auto;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .team_info {
+            height: 32px;
+            width: 100%;
+            padding-left: 0.16rem;
+            border-bottom: 1px solid #e6e6e6;
+        }
+
+        .team_info span {
+            float: left;
+            width: 33.3%;
+            height: 30px;
+            line-height: 32px;
+            font-size: 0.8rem;
+            color: #000000;
+        }
+
+        .team_info a {
+            color: red;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        ul {
+            list-style-type: none
+        }
+
+        a {
+            text-decoration: none;
+            color: #18B4FE;
+        }
+        /*模拟的标题*/
+
+        .header {
+            z-index: 9990;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            line-height: 8px;
+            padding-top: 3px;
+            text-align: center;
+            background-color: white;
+        }
+
+        .header .btn-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 12px;
+        }
+
+        .header .btn-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 12px 8px;
+        }
+
+        .header .tip {
+            margin-top: 0px;
+            font-size: 10px;
+            color: gray;
+        }
+        /*菜单*/
+
+        .header .naver {
+            margin-top: 0px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header .naver p {
+            display: inline-block;
+            width: 23%;
+            padding: 12px 0;
+        }
+
+        .header .naver .active {
+            border-bottom: 0px solid #FF6990;
+            color: #FF6990;
+        }
+        /*列表*/
+
+        .swiper-container {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        /*隐藏*/
+
+        .hide {
+            display: none;
+        }
+
+        .goodsList {
+            width: 100%;
+            height: auto;
+            margin-top: 0px;
+        }
+
+        .goodsListItem {
+            height: 90px;
+            width: 100%;
+            display: box;
+            display: -webkit-box;
+            display: -moz-box;
+            border-top: 1px solid #F2F2F2;
+            box-sizing: border-box;
+            padding: 2px;
+            background-color: #fff;
+        }
+
+        .imgBox {
+            top: 5px;
+            left: 5px;
+            width: 80px;
+            height: 80px;
+            flex-grow: 0;
+            position: relative;
+        }
+
+        .imgBox img {
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        .goodInfoBox {
+            flex-grow: 1;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            margin-left: 10px;
+            padding: 5px 0;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            -webkit-box-flex: 1;
+            -moz-box-flex: 1;
+            box-flex: 1;
+        }
+
+        .goodInfoTitle {
+            width: 98%;
+            height: 20px;
+            line-height: 20px;
+            font-size: 0.9rem;
+            color: #222;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            word-break: break-all;
+            overflow: hidden;
+        }
+
+        .aboutNick {
+            width: 100%;
+            height: 20px;
+            line-height: 20px;
+        }
+
+        .aboutNick .nick {
+            margin-right: 15px;
+            font-size: 0.8rem;
+            color: #111;
+        }
+
+        .aboutNick .nickname {
+            font-size: 0.8rem;
+            color: #333;
+        }
+
+        .orderid {
+            left: 10px;
+            width: 90%;
+            height: 20px;
+            line-height: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .orderid .order {
+            font-size: 14px;
+            color: #111;
+        }
+
+        .orderid .order_val {
+            font-size: 16px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .cosPrice {
+            width: 100%;
+            height: 20px;
+            line-height: 20px;
+            font-size: 0.8rem;
+            color: #222;
+            overflow: hidden;
+        }
+
+        .cosPrice .price {
+            font-size: 0.8rem;
+            float: left;
+            color: #111!important;
+        }
+
+        .cosPrice .rate {
+            font-size: 0.8rem;
+            float: right;
+            margin-right: 30px;
+            color: #111!important;
+        }
+
+        .goodInfoBox .rate_unm {
+            color: red;
+            font-weight: bold;
+        }
+
+        .goodInfoBox .commission_unm {
+            color: red;
+            font-weight: bold;
+        }
+
+        .goodInfoBox .price_unm {
+            color: red;
+            font-weight: bold;
+        }
+
+        .predict {
+            width: 100%;
+            height: 20px;
+            line-height: 20px;
+            font-size: 0.8rem;
+            color: #222;
+            overflow: hidden;
+        }
+
+        .predict .status {
+            float: right;
+            height: 2rem;
+            width: 7rem;
+        }
+
+        .predict .status .v1,
+        .predict .status .v2,
+        .predict .status .v3,
+        .predict .status .v4 {
+            float: right;
+            padding: 0 0.4rem;
+            height: 1rem;
+            line-height: 1rem;
+            background-color: #cd0248;
+            border: 0 none;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            color: #fff;
+            margin-right: 30px;
+        }
+
+        .predict .status .v2 {
+            background-color: #0F8BE6;
+        }
+
+        .predict .status .v3 {
+            background-color: #999;
+        }
+
+        .predict .status .v4 {
+            background-color: #18BC9C;
+        }
+
+        .goodInfoTitle>img {
+            width: 14px;
+            height: 14px;
+            position: relative;
+            top: 2px;
+            margin-right: 4px;
+        }
+
+        .bz_single {
+            width: 100%;
+            height: 2rem;
+            line-height: 2rem;
+            border-top: 1px solid #e6e6e6;
+            border-bottom: 5px solid #e6e6e6;
+            overflow: hidden;
+            font-size: 0.8rem;
+            color: #4e4e4e;
+            text-align: center;
+        }
+
+        .bz_single .orderTime {
+            width: 50%;
+            float: left;
+            color: #111;
+        }
+
+        .bz_single .finishTime {
+            width: 50%;
+            float: right;
+            color: #dc2888;
+        }
+    </style>
+</head>
+
+<body>
+    <!--标题-->
+    <div class="header">
+        <!--菜单-->
+        <div id="nav" class="naver">
+            <p class="active" i="0">全部</p>
+            <p i="1">已付款</p>
+            <p i="2">已结算</p>
+            <p i="3">已失效</p>
+        </div>
+        <div class="team">
+            <div class="team_info"><span>昨日预估：<a class="yesterday_sum">0</a>元</span><span>今日预估：<a class="today_sum">0</a>元</span><span>付款订单：<a class="today_count">0</a>笔</span></div>
+        </div>
+    </div>
+    <!--轮播-->
+    <div id="swiper" class="swiper-container">
+        <div class="swiper-wrapper">
+            <!--首页-->
+            <div id="mescroll0" class="swiper-slide mescroll">
+                <ul class="goodsList" id="goods_block0">
+                    <!--<a> <li class="goodsListItem">
+                            <div class="imgBox"><img src="../../image/defaultuser.jpg" /></div>
+                            <div class="goodInfoBox">
+                                <div class="goodInfoTitle">商品标题商品标题商品标题商品标题商品标题商品标题</div>
+                                <div class="aboutNick"><span class="nick">所属店铺：</span><span class="nickname">天猫店天猫店</span></div>
+                                <div class="cosPrice">
+                                    <span class="price">付款金额：<span class="price_unm">121</span>元</span> <span class="rate">提成:<span class="rate_unm">12.01</span>%</span>
+                                </div>
+                                <div class="predict">
+                                    <span class="commission">预估收入：<span class="commission_unm">121.252</span>元</span> <span class="status"><span class="v1">已付款</span></span>
+                                </div>
+                            </div>
+                        </li>
+                        <div class="orderid"><span class="order">订单编号：</span><span class="order_val">2323232323232323232</span></div>
+                        <div class="bz_single"><span class="orderTime">' + orderTime + ' 创建</span><span class="finishTime">' + finishTime + ' 结算</span></div>
+                    </a>-->
+                </ul>
+            </div>
+
+            <!--奶粉-->
+            <div id="mescroll1" class="swiper-slide mescroll">
+                <ul class="goodsList" id="goods_block1"></ul>
+            </div>
+
+            <!--面膜-->
+            <div id="mescroll2" class="swiper-slide mescroll">
+                <ul class="goodsList" id="goods_block2"></ul>
+            </div>
+
+            <!--图书-->
+            <div id="mescroll3" class="swiper-slide mescroll">
+                <ul class="goodsList" id="goods_block3"></ul>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/aui-tab.js"></script>
+<script type="text/javascript" src="../../script/mescroll.js"></script>
+<script type="text/javascript" src="../../script/swiper.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        var timestamp = Date.parse(new Date()) / 1e3; //当前时间戳 精确到秒
+        var datatime = GetDatetime('Y-m-d H:i', timestamp);
+        var curNavIndex = 0; //首页0; 奶粉1; 面膜2; 图书3;品牌单;
+        var mescrollArr = new Array(5); //5个菜单所对应的4个mescroll对象
+        //初始化首页
+        mescrollArr[0] = initMescroll("mescroll0", "goods_block0");
+        /*初始化轮播*/
+        var swiper = new Swiper('#swiper', {
+            onTransitionEnd: function(swiper) {
+                var i = swiper.activeIndex; //轮播切换完毕的事件
+                changePage(i);
+            }
+        });
+        /*初始化菜单*/
+        $("#nav p").click(function() {
+                var i = Number($(this).attr("i"));
+                swiper.slideTo(i); //以轮播的方式切换列表
+            })
+            /*切换列表*/
+        function changePage(i) {
+            if (curNavIndex != i) {
+                //更改列表条件
+                $("#nav p").each(function(n, dom) {
+                        if (dom.getAttribute("i") == i) {
+                            dom.classList.add("active");
+                        } else {
+                            dom.classList.remove("active");
+                        }
+                    })
+                    //隐藏当前回到顶部按钮
+                mescrollArr[curNavIndex].hideTopBtn();
+                //取出菜单所对应的mescroll对象,如果未初始化则初始化
+                if (mescrollArr[i] == null) {
+                    mescrollArr[i] = initMescroll("mescroll" + i, "goods_block" + i);
+                } else {
+                    //检查是否需要显示回到到顶按钮
+                    var curMescroll = mescrollArr[i];
+                    var curScrollTop = curMescroll.getScrollTop();
+                    if (curScrollTop >= curMescroll.optUp.toTop.offset) {
+                        curMescroll.showTopBtn();
+                    } else {
+                        curMescroll.hideTopBtn();
+                    }
+                }
+                //更新标记
+                curNavIndex = i;
+            }
+        }
+        /*创建MeScroll对象*/
+        function initMescroll(mescrollId, clearEmptyId) {
+            //创建MeScroll对象,内部已默认开启下拉刷新,自动执行up.callback,刷新列表数据;
+            mescroll = new MeScroll(mescrollId, {
+                //上拉加载的配置项
+                up: {
+                    callback: getListData, //上拉回调,此处可简写; 相当于 callback: function (page) { getListData(page); }
+                    clearEmptyId: clearEmptyId, //相当于同时设置了clearId和empty.warpId; 简化写法;默认null
+                    isBounce: false, //此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): https://www.mescroll.com/qa.html#q10
+                    noMoreSize: 1, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
+                    page: {
+                        num: 0, //当前页码,默认0,回调之前加1,
+                        size: 10, //每页数据的数量;
+                        time: null //加载第一页数据服务器返回的时间 (可空);
+                    },
+                    lazyLoad: {
+                        use: true, // 是否开启懒加载,默认false
+                        attr: 'imgurl', // 网络图片地址的属性名 (图片加载成功会自动移除改属性): <img imgurl='网络图  src='占位图''/>
+                        showClass: 'mescroll-lazy-in', // 图片加载成功的显示动画: 渐变显示,参见mescroll.css
+                        delay: 400, // 列表滚动的过程中每500ms检查一次图片是否在可视区域,如果在可视区域则加载图片
+                        offset: 10 // 超出可视区域200px的图片仍可触发懒加载,目的是提前加载部分图片
+                    },
+                    toTop: { //配置回到顶部按钮
+                        src: "../../image/option/mescroll-totop.png", //默认滚动到1000px显示,可配置offset修改
+                        offset: 500
+                    },
+                    htmlNodata: '<p class="upwarp-nodata">-- 已加载完毕 --</p>',
+                    empty: {
+                        icon: "../../image/option/mescroll-empty.png", //图标,默认null
+                        tip: "暂无相关数据~", //提示
+                    },
+                }
+            });
+            return mescroll;
+        }
+
+        /*联网加载列表数据  page = {num:1, size:10}; num:当前页 从1开始, size:每页数据条数 */
+        function getListData(page) {
+            //联网加载数据
+            var keyword = ["1", "2", "3", "4"]; //1，全部； 2，已付款；3，已结算；4，已失效；
+            var status = keyword[curNavIndex]; //订单状态
+            var dataIndex = curNavIndex; //记录当前联网的nav下标,防止快速切换时,联网回来curNavIndex已经改变的情况;
+            //	Alert(sort)
+            var commissiondata = GetStorage('commissiondata');
+            var serverurl = GetStorage('serverurl');
+            var userinfo = GetStorage('userinfo');
+            var mobile = GetStorage('mobile');
+            setTimeout(function() {
+                api.ajax({
+                    url: serverurl + '/api/tborder/team_tborder?mobile=' + mobile + '&page=' + page.num + '&pagesize=' + page.size + '&status=' + status,
+                    method: 'get',
+                    timeout: 5,
+                    cache: false,
+                    dataType: 'json',
+                }, function(ret, err) {
+                    if (ret.code == 0 || ret.code == 1) {
+                        //  Alert(ret);
+                        var count = ret.data.orderdata;
+                        $('.yesterday_sum').html(count.yesterday_sum);
+                        $('.today_sum').html(count.today_sum);
+                        $('.today_count').html(count.today_count);
+                        //  Alert(ret.data.listdata)
+                        var curPageData = ret.data.listdata;
+                        mescrollArr[dataIndex].endSuccess(curPageData.length);
+                        //设置列表数据
+                        setListData(curPageData, dataIndex, page);
+                    } else {
+                        //  mescroll.endErr();
+                        mescrollArr[dataIndex].endErr();
+                        Toast('网络错误，请稍候重试');
+                    }
+                });
+            }, 400);
+        }
+    }
+
+    /*设置列表数据
+     * pageData 当前页的数据*/
+    function setListData(curPageData, dataIndex, page) {
+        var userinfo = GetStorage('userinfo');
+        var inviteinfo = GetStorage('inviteinfo'); //本级邀请码配置
+        var commondata = GetStorage('commondata');
+        var listDom = document.getElementById("goods_block" + dataIndex);
+        var len = curPageData.length; /*下面就是往容器里面插入数据的代码*/
+        var html = '';
+        //    return false;
+        for (var i = 0; i < len; i++) {
+            var data = curPageData[i];
+            var orderTime = GetDatetime('Y-m-d H:i:s', data.create_time) + ' 创建';
+            var finishTime = '';
+            if (data.earning_time != 0) {
+                var finishTime = GetDatetime('Y-m-d H:i:s', data.earning_time) + ' 结算';
+            }
+            var status = '';
+            if (data.refund_status == 0) {
+                if (data.tk_status == 12) {
+                    status = '<span class="v1">已付款</span>';
+                } else if (data.tk_status == 3) {
+                    status = '<span class="v2">已结算</span>';
+                } else if (data.tk_status == 13) {
+                    status = '<span class="v3">已失效</span>';
+                } else {
+                    status = '<span class="v4">维权退货</span>';
+                }
+            } else {
+                status = '<span class="v4">维权退货</span>';
+            }
+            var rate = parseFloat((data.total_commission_rate * data.p_commission_rate / 1e2 * 0.9).toFixed(2));
+            html += '<a><li class="goodsListItem"><div class="imgBox"><img src="../../image/rolling.gif" imgurl="' + data.pict_url + '" /></div>';
+            html += '<div class="goodInfoBox"><div class="goodInfoTitle">' + data.item_title + '</div>';
+            html += '<div class="aboutNick"><span class="nick">所属店铺：</span><span class="nickname">' + data.nick + '</span></div>';
+            html += '<div class="cosPrice"><span class="price">付款金额：<span class="price_unm">' + data.alipay_total_price + '</span>元</span> <span class="rate">提成:<span class="rate_unm">' + rate + '</span>%</span>';
+            html += '</div><div class="predict"><span class="commission">预估收入：<span class="commission_unm">' + data.p_commission + '</span>元</span><span class="status">' + status + '</span>';
+            html += '</div></div></li><div class="orderid"><span class="order">订单编号：</span><span class="order_val">' + data.trade_id + '</span></div>';
+            html += '<div class="bz_single"><span class="orderTime">' + orderTime + '</span><span class="finishTime">' + finishTime + '</span></div></a>';
+        }
+        $api.append(listDom, html);
+    }
+</script>
+
+</html>

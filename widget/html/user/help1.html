@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>帮助中心</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/mescroll.css">
+    <style type="text/css">
+        .text-white {
+            color: #ffffff !important;
+        }
+
+        .aui-grid [class*=aui-col-] {
+            padding: 0.75rem 0;
+        }
+
+        .main img {
+            width: 200px;
+            height: 200px;
+            float: none;
+            margin: 40px auto;
+        }
+
+        .paging {
+            text-align: center;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!--滑动区域-->
+    <div id="mescroll" class="mescroll">
+        <div>
+            <section class="aui-content" id="goods_block">
+                <!--     <ul class="aui-list aui-list-in aui-margin-b-15">
+                    <li class="aui-list-item" tapmode data-url="" data-title="淘宝订单" onclick="">
+                        <div class="aui-list-item-inner aui-list-item-arrow">
+                            <div class="aui-list-item-title">淘宝订单</div>
+                        </div>
+                    </li>
+                       <li class="aui-list-item" tapmode data-url="" data-title="购物车" onclick="">
+                        <div class="aui-list-item-inner aui-list-item-arrow">
+                            <div class="aui-list-item-title">购物车</div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item" tapmode data-url="" data-title="卡券包" onclick="">
+                        <div class="aui-list-item-inner aui-list-item-arrow">
+                            <div class="aui-list-item-title">卡券包</div>
+                        </div>
+                    </li>
+                </ul>-->
+            </section>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/mescroll.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        mescroll = new MeScroll("mescroll", {
+            down: {
+                auto: false //是否在初始化完毕之后自动执行下拉回调callback; 默认true; (注: down的callback默认调用 mescroll.resetUpScroll(); )
+            },
+            up: {
+                callback: uploadData, //上拉回调,此处可简写; 相当于 callback: function (page) { getListData(page); }
+                clearEmptyId: "goods_block", //1.下拉刷新时会自动先清空此列表,再加入数据; 2.无任何数据时会在此列表自动提示空
+                isBounce: false, //此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): https://www.mescroll.com/qa.html#q10
+                offset: 200, //列表滚动到距离底部小于100px,即可触发上拉加载的回调
+                noMoreSize: 1, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看
+                //isLock: true, //是否锁定上拉
+                page: {
+                    num: 0, //当前页码,默认0,回调之前加1,
+                    size: 10, //每页数据的数量;
+                    time: null //加载第一页数据服务器返回的时间 (可空);
+                },
+                lazyLoad: {
+                    use: true, // 是否开启懒加载,默认false
+                    attr: 'imgurl', // 网络图片地址的属性名 (图片加载成功会自动移除改属性): <img imgurl='网络图  src='占位图''/>
+                    showClass: 'mescroll-lazy-in', // 图片加载成功的显示动画: 渐变显示,参见mescroll.css
+                    delay: 400, // 列表滚动的过程中每500ms检查一次图片是否在可视区域,如果在可视区域则加载图片
+                    offset: 10 // 超出可视区域200px的图片仍可触发懒加载,目的是提前加载部分图片
+                },
+                toTop: { //配置回到顶部按钮
+                    src: "../../image/option/mescroll-totop.png", //默认滚动到1000px显示,可配置offset修改
+                    // html: "<p>^<br><br>顶部<p>", //标签内容,默认null; 如果同时设置了src,则优先取src
+                    offset: 500
+                },
+                htmlNodata: '<p class="upwarp-nodata">-- 已加载完毕 --</p>',
+                empty: {
+                    icon: "../../image/option/mescroll-empty.png", //图标,默认null
+                    tip: "暂无相关数据~", //提示
+                },
+            }
+        });
+    }
+
+    function uploadData(page) {
+        var serverurl = GetStorage('serverurl');
+        var mobile = GetStorage('mobile');
+        setTimeout(function() {
+            api.ajax({
+                url: serverurl + '/api/user/sorts?name=help&page=' + page.num + '&pagesize=' + page.size,
+                method: 'get',
+                timeout: 5,
+                cache: false,
+                dataType: 'json',
+            }, function(ret, err) {
+                if (ret.code == 1) {
+                    //  Alert(ret.data)
+                    var curPageData = ret.data;
+                    mescroll.endSuccess(curPageData.length);
+                    //设置列表数据
+                    setListData(curPageData, page);
+                } else {
+                    //联网失败的回调,隐藏下拉刷新和上拉加载的状态;
+                    mescroll.endErr();
+                    var listDom = document.getElementById("goods_block");
+                    var html = '<div class="main">';
+                    html += '<img src="../../image/option/mescroll-empty.png"></div>';
+                    html += '<div class="paging">--没有数据--</div>';
+                    $api.html(listDom, html);
+                }
+            });
+        }, 500);
+    }
+    /*设置列表数据
+     * pageData 当前页的数据*/
+    function setListData(curPageData, page) {
+        var userinfo = GetStorage('userinfo');
+        var inviteinfo = GetStorage('inviteinfo');
+        var commondata = GetStorage('commondata');
+        var listDom = document.getElementById("goods_block");
+        var len = curPageData.length; /*下面就是往容器里面插入数据的代码*/
+        var html = '<ul class="aui-list aui-list-in aui-margin-b-15">';
+        for (var i = 0; i < len; i++) {
+            var data = curPageData[i];
+            html += '<li class="aui-list-item" tapmode data-name="' + data.name + '" data-title="' + data.nickname + '" data-id="' + data.title_id + '" onclick="opendefault(this)">';
+            html += '<div class="aui-list-item-inner aui-list-item-arrow">';
+            html += '<div class="aui-list-item-title">' + ((page.num - 1) * page.size + i + 1).toString() + '. ' + data.nickname + '</div> </div></li>';
+        }
+        html += '</ul>';
+        $api.append(listDom, html);
+    }
+</script>
+
+</html>

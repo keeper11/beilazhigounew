@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/aui.css">
+    <style media="screen">
+        .aui-bar-nav {
+            background-color: #fff;
+            color: #000;
+            padding-top: 20px;
+        }
+        .aui-title {
+            color: #333333;
+            font-size: 20px;
+            font-family: SimHei;
+        }
+        .goods_des{
+          padding:20px;
+          display: flex;
+          align-items: center;
+          background-color: #fff;
+          border-radius: 5px;
+        }
+        .goods_des_img{
+          width: 107px;
+          height: 107px;
+          background: #ddd;
+          border-radius:10px;
+          display: block;
+        }
+        .goods_des_img img{
+          width: 100%;
+          height: 100%;
+        }
+        .goods_des_del{
+          margin-left: 15px;
+          width: 67%;
+        }
+        .goods_des_del p:nth-child(1){
+          margin-bottom: 10px;
+          font-size: 13px;
+          color: #333;
+          font-family: SimHei;
+          line-height: 16px;
+        }
+        .goods_des_del p:nth-child(2){
+          font-size: 12px;
+          line-height: 16px;
+          color: #999;
+        }
+        .return_goods{
+          padding:26px 16px 26px 26px;
+          background-color: #fff;
+          margin-top: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+        }
+        .return_goods div{
+
+        }
+        .return_goods_img1{
+          width: 22px;
+          height: 22px;
+          margin-right: 16px;
+        }
+        .return_goods_img2{
+          height: 13px;
+          width: 8px;
+          position: absolute;
+          right: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <header class="aui-bar aui-bar-nav">
+            <div class="aui-pull-left aui-btn" style="color:#333;font-size:19px;font-family:SimHei;">
+                <span class="aui-iconfont aui-icon-left" style="color:#333;"></span>&nbsp;&nbsp;申请售后
+            </div>
+        </header>
+        <div class="goods_des">
+            <div class="goods_des_img"><img :src="imgs" alt=""></div>
+            <div class="goods_des_del">
+              <p>{{ names }}</p>
+              <p>{{ skuids }}</p>
+            </div>
+        </div>
+        <div class="return_goods">
+              <img class='return_goods_img1' src="../../image/soppeticon/tui.png" alt="">
+            <div @click='gorefund'>
+              <p style="margin-bottom:5px;font-size:14px;color:#333;font-family:SimHei;">我要退货退款</p>
+              <p style="font-size:13px;color:#999;font-family:SimHei;">已收到货，需要退还已收到的货物</p>
+            </div>
+            <img class='return_goods_img2' src="../../image/soppeticon/back.png" alt="">
+        </div>
+    </div>
+    <script type="text/javascript" src="../../script/api.js"></script>
+    <script type="text/javascript" src="../../script/vue.js"></script>
+    <script src="../../script/picker.min.js"></script>
+    <script type="text/javascript" src="../../script/city.js"></script>
+    <!-- <script type="text/javascript" src="../../script/index.js"></script> -->
+    <script type="text/javascript" src="../../script/axios.min.js"></script>
+    <script type="text/javascript" src="../../script/public.js"></script>
+    <script type="text/javascript">
+        apiready = function() {
+
+            var vuedata = {
+              'names':'',
+              'imgs':'',
+              'skuids':''
+            }
+            var vm = new Vue({
+                el: '#box',
+                data: vuedata,
+                mounted: function() {
+
+                },
+                created: function() {
+              this.getgoodmsg()
+                },
+                methods: {
+                    gorefund(){
+                      api.openWin({     
+                          name: 'refund',
+                               url: './refund.html',
+                               pageParam: {   
+
+                            }   
+                      });
+                    },
+                    getgoodmsg(){
+                      this.names = api.pageParam.name;
+                      this.imgs = api.pageParam.img;
+                      this.skuids = api.pageParam.skuid;
+                      console.log(this.names);
+                      console.log(this.skuids);
+                  console.log(this.imgs);
+                    }
+
+                },
+            });
+        }
+
+        function getOrderListByPage() {
+            这里面可以直接用vuedata里面的任何一个数据
+
+        }
+    </script>
+
+</body>
+
+</html>

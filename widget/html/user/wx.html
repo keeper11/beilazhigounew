@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+	<title>修改微信号</title>
+	<link rel="stylesheet" type="text/css" href="../../css/reg_login.css">
+	<style type="text/css">
+		.nickname {
+			color: #000;
+			font-size: 14px;
+			left: 20px;
+			position: absolute;
+		}
+
+		.wx {
+			color: #000;
+			font-size: 14px;
+			left: 20px;
+			position: absolute;
+		}
+
+		.login_input {
+			position: relative;
+			width: 100%;
+			height: 20px;
+			line-height: 10px;
+			font-size: 18px;
+			color: #000;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+			background-color: #fff
+		}
+
+		.text {
+			width: 100%;
+			color: #000;
+			font-size: 16px;
+			word-wrap: break-word;
+			line-height: 20px;
+			position: absolute;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="login_content_wrapper" style="display: block; opacity: 1;">
+		<div id="login_tele_wrapper" style="display: block; opacity: 1;">
+			<h3 class="login_content_h3 none">修改微信号</h3>
+			<div class="login_input">
+				<div class="text">填写后，您邀请的会员会看到您的微信号。</div>
+			</div>
+			<div class="login_input_div">
+				<span class="input_title">微信号</span>
+				<input type="tel" id="wx" placeholder="请填写微信号" class="login_input" maxlength="20">
+			</div>
+
+			<a class="btnok" onclick="CheckSubmit()" style="background-color:#ff0000">提交修改</a>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+	var moduleSMSSDK = null;
+	apiready = function() {
+		api.parseTapmode();
+	}
+
+	//.注册代码
+	function CheckSubmit() {
+		var serverurl = GetStorage('serverurl');
+		var wx = $api.byId('wx').value;
+		if (wx.length <= 0) {
+			Toast('请填写微信号');
+		} else {
+			api.ajax({
+				url: serverurl + '/api/user/changewx?mobile=' + GetStorage('mobile') + '&wx=' + wx,
+				method: 'get',
+				timeout: 5,
+				cache: false,
+				dataType: 'json',
+			}, function(ret, err) {
+				if (ret.code == 0) {
+					Toast(ret.msg);
+				} else if (ret.code == 1) {
+					Toast(ret.msg);
+					onelogin();
+					rootuserdata();
+				}
+			});
+		}
+	}
+</script>
+
+</html>

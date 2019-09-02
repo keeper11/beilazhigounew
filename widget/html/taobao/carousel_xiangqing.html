@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>商品详情</title>
+    <link rel="stylesheet" type="text/css" href="../../css/header.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/mescroll.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.css" />
+    <style type="text/css">
+        body {
+            background: #fff;
+        }
+
+        .swiper-wrapper {
+            width: 100%;
+            height: 280px;
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 280px;
+        }
+
+        .mescroll {
+            position: fixed;
+            top: 2px;
+            bottom: 0;
+            width: 100%;
+            height: auto;
+        }
+        /*展示上拉加载的数据列表*/
+    </style>
+</head>
+
+<body>
+    <div class="header_pr header_goods" id="aui-header">
+        <header class="icon_header">
+            <a class="iconfont icon-zuojiantou" tapmode onclick="GoToHisBack()"></a>
+            <div class="title">
+                <div class="row-s">
+                    <a anchors="anchors_info" class="col-12-4 text-center active">商品</a>
+                    <a anchors="anchors_title" class="col-12-4 text-center">详情</a>
+                    <a anchors="anchors_ant" class="col-12-4 text-center">推荐</a>
+                </div>
+            </div>
+            <a class="iconfont icon-share" tapmode onclick="Share()"></a>
+        </header>
+    </div>
+
+    <div class="header_bg"></div>
+
+    <div class="layout row" id="anchors_info">
+
+        <div class="goods_swiper">
+            <div class="swiper-container swiper-container" id="swiper">
+                <div class="swiper-wrapper" id="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="../../image/rolling.gif">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../image/rolling.gif">
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+
+        <div class="goods_info" id="goods_info">
+            <h1 class="col-mar type_title"><span>天猫</span></h1>
+            <!--商品标题-->
+            <div class="info row-s col-mar">
+                <div class="col-12-6 text-left col-money quanhou">
+                    券后价 <span class=""><i>¥</i></span></div>
+                <div class="col-12-6 text-right volume">已售0</div>
+                <div class="col-12-6 text-left col-888 zk_final_price">天猫价 ¥</div>
+                <div class="col-12-6 text-right auth">
+                    <span><i class="iconfont icon-detail_icon col-money"></i>包邮</span>
+                    <!--    <span><i class="iconfont icon-detail_icon col-money"></i>运费险</span>-->
+                </div>
+            </div>
+            <div class="goods_quan row-s">
+                <a class="row getGoodsLink">
+                    <div class="col-12-8 money">
+                        <p><span>XX</span> 元优惠券</p>
+                        使用期限:20xx-xx-xx－20xx-xx-xx </div>
+                    <div class="col-12-4 name"><span>立即领券</span></div>
+                </a>
+                <img src="../../image/goods_quan.png">
+            </div>
+            <div class="goods_desc col-mar col-888">赠运费险</div>
+        </div>
+        <div class="hr"></div>
+        <div class="goods_shop">
+            <div class="info col-mar shopinfo"><img src="../../image/rolling.gif">
+                <div class="text">
+                    <h3>旗舰店</h3>
+                    <p class="col-main"><i class="iconfont "></i></p>
+                    <p class="new"> </p>
+                </div>
+            </div>
+            <div class="tab row-s">
+                <div class="col-12-4">宝贝描述:4.8<span class="iconfont icon-point_blance lv_p"></span></div>
+                <div class="col-12-4">卖家服务:4.7<span class="iconfont icon-point_low lv_d"></span></div>
+                <div class="col-12-4">物流服务:4.7<span class="iconfont icon-point_low lv_d"></span></div>
+            </div>
+        </div>
+        <div class="hr"></div>
+        <div class="goods_reco" id="anchors_title">
+            <h3>图文详情</h3>
+            <div class="hr"></div>
+            <div class="imglist" id="imglist">
+                <!--    <img src="../../image/rolling.gif" />-->
+            </div>
+        </div>
+
+
+        <div id="anchors_ant">
+
+            <div class="goods_reco" id="goods_item_list">
+                <h3>更多推荐</h3>
+                <div class="hr"></div>
+                <div id="upscrollWarp">
+                    <ul class="goods-list" id="goods_block">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="hr"></div>
+        <div class="hr"></div>
+        <div class="hr"></div>
+        <div class="hr"></div>
+        <div class="hr"></div>
+        <div class="hr"></div>
+        <div class="hr"></div>
+        <div class="hr"></div>
+        <div class="hr"></div>
+        <!-- 购物车快捷入口 必须加在layout上面 -->
+        <div class="goods_shop_cart">
+            <div class="cent row-s">
+                <div class="col-12-4 text-center but" tapmode onclick="closeToWin()">
+                    <p class="img">
+                        <i class="iconfont icon-home" style="color:red;"></i>
+                    </p>
+                    主页
+                </div>
+                <!-- 领券  淘口令 -->
+                <div class="col-12-8 centers">
+                    <div class="btn  btn-block row-s">
+                        <a class="col-12-6 share_button" tapmode onclick="Share()">分享</a>
+                        <a class="col-12-6 two openquan" tapmode onclick="openquan()">领券购买</a>
+                    </div>
+                </div>
+            </div>
+            <div class="goods_shop_cart_bg"></div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/header.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/swiper.js"></script>
+<script type="text/javascript" src="../../script/mescroll.js"></script>
+<script type="text/javascript" src="../../script/echo.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+        $api.fixIos7Bar(header);
+        taobao_itemid();
+        uploadData();
+        var itemid = api.pageParam.itemid;
+        setTimeout(function() {
+            goodsInfo(itemid);
+        }, 500);
+        setTimeout(function() {
+            itemInfo(itemid);
+        }, 800);
+        setTimeout(buyalert, 5000); //打开弹窗
+        setTimeout(Echo, 100);
+    }
+
+    function Echo() {
+        setInterval(function() {
+            var connectionType = api.connectionType;
+            if (connectionType != 'none') {
+                echo.init({
+                    offset: 0,
+                    throttle: 100,
+                    unload: false,
+                    callback: function(element, op) {}
+                });
+                echo.render();
+            } else {
+                echo.detach(); //移除加载图片
+            }
+        }, 500);
+    }
+
+    function uploadData() {
+        var commondata = GetStorage('commondata');
+        var itemid = api.pageParam.itemid;
+        var haodanku = "http://v2.api.haodanku.com/get_similar_info/apikey/"; //好单库链接
+        setTimeout(function() {
+            api.ajax({
+                    url: haodanku + commondata.apikey + '/back/20/itemid/' + itemid,
+                    method: 'get',
+                    timeout: 5,
+                    cache: 'true',
+                    dataType: 'json',
+                },
+                function(ret, err) {
+                    if (ret) {
+                        var curPageData = ret.data;
+                        setListData(curPageData); //自行实现
+                    } else {
+                        var listDom = document.getElementById("goods_block");
+                        var html = '<div style="text-align:center"><img src="../../image/option/mescroll-empty.png" style="width:200PX;"></div>';
+                        html += '<div class="paging" style="text-align:center;padding-top:5px;">-- 没有网络或网络错误 --<br>请检查网络后下拉刷新!!</div>';
+                        //      html += '<div class="aui-btn aui-btn-danger aui-btn-block aui-btn-outlined" onclick="reloadPage();">点击刷新</div>';
+                        $api.html(listDom, html);
+                    }
+                });
+        }, 500);
+    }
+
+    function setListData(curPageData) {
+        var userinfo = GetStorage('userinfo');
+        var inviteinfo = GetStorage('inviteinfo');
+        var commondata = GetStorage('commondata');
+        var len = curPageData.length;
+        var listDom = document.getElementById("goods_block");
+        /*下面就是往容器里面插入数据的代码*/
+        var html = '<div class="swipe-wrap" id="ad">';
+        for (var i = 0; i < len; i++) {
+            var data = curPageData[i];
+            var tbm = "";
+            if (data.shoptype == 'B') {
+                tbm = '<img src="../../image/tmall.png" style="width:13px;"/>&nbsp;';
+            } else {
+                tbm = '<img src="../../image/taobao.png" style="width:13px;"/>&nbsp;';
+            };
+            var price = parseFloat(data.itemendprice); //.toFixed(2));
+            var first = (inviteinfo.first_cut / 100) * (data.tkrates / 100);
+            var share = '';
+            if (userinfo.memberlevel != 1 || commondata.fenxiang == 1) {
+                share = '<span class="share"><b>分享赚￥' + parseFloat((price * first).toFixed(2)) + '</b></span>';
+            }
+            //图片链接判断
+            var pic = "";
+            if ((data.itempic).indexOf("http") != -1) {
+                pic = data.itempic;
+            } else {
+                pic = 'https:' + data.itempic;
+            };
+            //销量万位转换判断
+            var sales = "";
+            if (data.itemsale < 9999) {
+                sales = data.itemsale;
+            } else {
+                sales = (data.itemsale / 1e4).toFixed(1) + "万";
+            };
+            html += '<div class="goods-item" tapmode data-couponid="' + data.activityid + '"data-itemid="' + data.itemid + '" onclick="openxiangqing(this)">';
+            html += '<a class="img">' + share + '<span class="coupon-wrapper  theme-bg-color-1">券<i>￥</i><b>' + parseFloat(data.couponmoney) + '</b></span>'; //' <span class="today-wrapper"><b>NEW</b></span>';
+            html += '<img src="../../image/load.gif" data-echo="' + pic + '"></a>';
+            html += '<a class="title"><div class="text">' + tbm + data.itemtitle + '</div></a>';
+            html += '<div class="price-wrapper"><span class="price">￥<span>' + price + '</span></span><span class="price_yj">￥' + parseFloat(data.itemprice) + '</span>';
+            html += '<div class="sold-wrapper"><span class="text">月销</span><span class="sold-num">' + sales + '件</span></div>';
+            html += '</div></div>';
+        }
+        $api.append(listDom, html);
+        //api.refreshHeaderLoadDone();
+        lock = false;
+    }
+
+    function taobao_itemid() {
+        var itemid = api.pageParam.itemid;
+        var couponid = api.pageParam.couponid;
+        var commondata = GetStorage('commondata');
+        var commissiondata = GetStorage('commissiondata');
+        var mediadata = GetStorage('mediadata');
+        var zhetaoke = 'https://api.zhetaoke.com:10001/api/open_item_info.ashx?appkey=';
+        api.ajax({
+            url: zhetaoke + commondata.zhetaoke_appkey + '&sid=' + commissiondata.zhetaoke_sid + '&num_iids=' + itemid, //商品API接口链接
+            encode: true,
+            method: 'get',
+            timeout: 5,
+            dataType: 'json'
+        }, function(ret, err) {
+            if (ret.tbk_item_info_get_response) {
+                var itemdata = ret.tbk_item_info_get_response.results.n_tbk_item[0];
+                SetStorage('itemdata', itemdata);
+                var user_type = itemdata.user_type;
+                if (user_type == 1) {
+                    type = '天猫';
+                } else {
+                    type = '淘宝';
+                }
+                var title = itemdata.title;
+                var html0 = '<span>' + type + '</span>' + title;
+                $('.type_title').html(html0);
+                $('.volume').html('已售' + itemdata.volume + '件 ');
+                var array = itemdata.small_images;
+                if (!array) {
+                    var html = '<div class="swiper-slide"><img src="../../image/rolling.gif" data-echo="' + itemdata.pict_url + '"></div>';
+                    $('.swiper-wrapper').html(html);
+                    return false;
+                }
+                var html = '';
+                for (var i = 0; i < array.string.length; i++) {
+                    html += '<div class="swiper-slide"><img src="../../image/rolling.gif" data-echo="' + array.string[i] + '"></div>';
+                }
+                $('.swiper-wrapper').html(html);
+                setTimeout(swiper, 100);
+            }
+        });
+    }
+
+    function goodsInfo(itemid) {
+        var userinfo = GetStorage('userinfo');
+        var inviteinfo = GetStorage('inviteinfo');
+        var commondata = GetStorage('commondata');
+        api.ajax({
+            url: 'https://api.zhetaoke.com:10001/api/api_detail.ashx?appkey=' + commondata.zhetaoke_appkey + '&tao_id=' + itemid,
+            encode: true,
+            method: 'get',
+            timeout: 5,
+            dataType: 'json'
+        }, function(ret, err) {
+            if (ret.status == 200) {
+                var curPageData = ret.content[0];
+                //  Alert(curPageData)
+                $('.goods_desc').html(curPageData.jianjie);
+                if (curPageData.yunfeixian != 0) {
+                    $('.auth').append('<span><i class="iconfont icon-detail_icon col-money"></i>运费险</span>');
+                }
+                var user_type = curPageData.user_type;
+                if (user_type == 1) {
+                    type = '天猫';
+                } else {
+                    type = '淘宝';
+                }
+                $('.zk_final_price').html(type + '价 ￥' + curPageData.size);
+                var price = parseFloat(curPageData.quanhou_jiage); //.toFixed(2));
+                var first = (inviteinfo.first_cut / 100) * (curPageData.tkrate3 / 100);
+                if (userinfo.memberlevel != 1 || commondata.fenxiang == 1) {
+                    share = parseFloat((price * first).toFixed(2));
+                    $('.share_button').html('分享赚￥' + share);
+                    var html1 = '';
+                    if (curPageData.coupon_info_money > 0) {
+                        html1 += '<div class="goods_quan row-s"><a class="row getGoodsLink">';
+                        html1 += '<div class="col-12-8 money"><p><span>' + curPageData.coupon_info_money + '</span> 元优惠券</p>使用期限:' + curPageData.coupon_start_time + '—' + curPageData.coupon_end_time + ' </div>';
+                        html1 += '<div class="col-12-4 name"tapmode onclick="openquan()"><span>立即领券</span></div></a><img src="../../image/goods_quan.png">';
+                        $('.goods_quan').html(html1);
+                        $('.openquan').html('领券再返￥' + share);
+                        $('.quanhou').html('券后价 <span class=""><i>¥</i>' + parseFloat(curPageData.quanhou_jiage).toFixed(2) + '</span>');
+                    } else {
+                        html1 += '<div class="goods_quan row-s"><a class="row getGoodsLink">';
+                        html1 += '<div class="col-12-8 money"><p><span></span> 优惠券已发完</p>使用期限:无 </div>';
+                        html1 += '<div class="col-12-4 name"tapmode onclick="openquan()"><span>去购买</span></div></a><img src="../../image/goods_quan.png">';
+                        $('.goods_quan').html(html1);
+                        $('.openquan').html('购买返￥' + share);
+                        $('.quanhou').html('折扣价 <span class=""><i>¥</i>' + parseFloat(curPageData.quanhou_jiage).toFixed(2) + '</span>');
+                    }
+                } else {
+                    var html1 = '';
+                    if (curPageData.coupon_info_money > 0) {
+                        html1 += '<div class="goods_quan row-s"><a class="row getGoodsLink">';
+                        html1 += '<div class="col-12-8 money"><p><span>' + curPageData.coupon_info_money + '</span> 元优惠券</p>使用期限:' + curPageData.coupon_start_time + '—' + curPageData.coupon_end_time + ' </div>';
+                        html1 += '<div class="col-12-4 name"tapmode onclick="openquan()"><span>领券购买</span></div></a><img src="../../image/goods_quan.png">';
+                        $('.goods_quan').html(html1);
+                        $('.openquan').html('立即领券');
+                        $('.quanhou').html('券后价 <span class=""><i>¥</i>' + parseFloat(curPageData.quanhou_jiage).toFixed(2) + '</span>');
+                    } else {
+                        html1 += '<div class="goods_quan row-s"><a class="row getGoodsLink">';
+                        html1 += '<div class="col-12-8 money"><p><span></span> 优惠券已发完</p>使用期限:无 </div>';
+                        html1 += '<div class="col-12-4 name"tapmode onclick="openquan()"><span>去购买</span></div></a><img src="../../image/goods_quan.png">';
+                        $('.goods_quan').html(html1);
+                        $('.openquan').html('去购买');
+                        $('.quanhou').html('折扣价 <span class=""><i>¥</i>' + parseFloat(curPageData.quanhou_jiage).toFixed(2) + '</span>');
+                    }
+                }
+            }
+        });
+    }
+
+    function itemInfo(itemid) {
+        var serverurl = GetStorage('serverurl');
+        api.ajax({
+            url: serverurl + '/api/tborder/iteminfo?id=' + itemid,
+            encode: true,
+            method: 'get',
+            timeout: 5,
+            dataType: 'json'
+        }, function(ret, err) {
+            if (ret.code == 1) {
+                var item = ret.data.item;
+                var seller = ret.data.seller;
+                var itemimage = item.images;
+                //   Alert(item);
+                var html0 = '';
+                for (var i = 0; i < itemimage.length; i++) {
+                    html0 += '<img src="../../image/rolling.gif" data-echo="https:' + itemimage[i] + '"/><div class="hr"></div>';
+                    $('.imglist').html(html0)
+                }
+                var evaluates = seller.evaluates;
+                //Alert(JSON.stringify(evaluates));
+                var html1 = '';
+                for (var i = 0; i < evaluates.length; i++) {
+                    var icon = '';
+                    if (evaluates[i].levelText == '低') {
+                        icon = 'icon-point_low lv_d';
+                    } else if (evaluates[i].levelText == '平') {
+                        icon = 'icon-point_blance lv_p';
+                    } else {
+                        icon = 'icon-point_high lv_g';
+                    }
+                    html1 += '<div class="col-12-4">' + evaluates[i].title + ':' + evaluates[i].score + '<span class="iconfont ' + icon + '"></span></div>';
+                    $('.tab').html(html1);
+                }
+                //  Alert(seller.shopIcon)
+                //图片链接判断
+                var pic = "";
+                if (!seller.shopIcon) {
+                    pic = '../../image/rolling.gif';
+                } else {
+                    pic = 'https:' + seller.shopIcon;
+                };
+                if (seller.shopType == 'B') {
+                    var html = '<img src="../../image/rolling.gif" data-echo="' + pic + '">';
+                    html += '<div class="text"><h3>' + seller.shopName + '</h3>';
+                    html += '<p class="col-main"><i class="iconfont icon-detail_tmall"></i></p><p class="new"> </p></div>';
+                    $('.shopinfo').html(html);
+                } else {
+                    var html = '<img src="../../image/rolling.gif" data-echo="' + pic + '">';
+                    html += '<div class="text"><h3>' + seller.shopName + '</h3>';
+                    html += '<p class="col-main"><i class="iconfont icon-detail_taobao"></i></p><p class="new"> </p></div>';
+                    $('.shopinfo').html(html);
+                }
+            }
+        });
+    }
+
+    function swiper() {
+        var swiper = new Swiper(document.getElementById("swiper"), {      
+            pagination: '.swiper-pagination',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            speed: 800,
+            autoplay: 5000,
+            observer: true,
+            observerParents: true,
+            autoplayDisableOnInteraction: false
+        });
+    }
+
+
+    function openquan() {
+        var itemid = api.pageParam.itemid;
+        var couponurl = api.pageParam.couponurl;
+        openTBcoupon(couponurl, itemid);
+    }
+    //历史记录后退
+    function GoToHisBack() {
+        api.historyBack({
+            frameName: api.winName
+        }, function(ret) {
+            if (!ret.status) { //没有历史记录了则关闭当前窗口
+                api.closeWin();
+                // api.execScript({name: 'root',script: 'indexfirst();'});
+            }
+        });
+    }
+
+    function Share() {
+        var itemid = api.pageParam.itemid;
+        var couponurl = api.pageParam.couponrul;
+        var couponid = api.pageParam.couponid;
+        var userinfo = GetStorage('userinfo');
+        if (!GetStorage('mobile')) {
+            Toast('您还没有登录');
+            GoLogin();
+            return false;
+        }
+        if (userinfo.memberlevel == 1) {
+            if (!GetStorage('sharetimes') || GetStorage('sharetimes') < timestamp) {
+                Alert('普通会员分享商品不能获取返利，请分享邀请海报邀请好友或完成自购订单数量升级VIP会员。');
+                SetStorage('sharetimes', timestamp + 864000);
+            }
+        }
+        api.openWin({
+            name: 'page',
+            url: '../../html/share/tb_win.html',
+            vScrollBarEnabled: false,
+            pageParam: {
+                itemid: itemid,
+                couponid: couponid
+            }
+        });
+    }
+    //关闭所有详情窗口回到首页
+    function closeToWin() {
+        api.closeToWin({
+            name: 'root'
+        });
+    }
+</script>
+
+</html>

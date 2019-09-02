@@ -1,0 +1,225 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>搜索结果</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+        }
+
+        .aui-searchbar {
+            background: transparent;
+        }
+
+        .aui-bar-nav .aui-searchbar-input {
+            background-color: #ffffff;
+        }
+
+        .search {
+            height: 28px;
+            line-height: 28px;
+            font-size: 18px;
+            font-weight: bolder;
+            color: #FF0934;
+            background: #FFC619;
+            border-radius: 5px;
+            min-width: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="aui-content aui-bar-nav aui-bar-header" id='aui-header'>
+        <div class="aui-bar aui-bar-nav aui-bar-header" id="search">
+            <div class="aui-pull-left aui-btn" tapmode onclick="GoToHisBack()">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </div>
+            <div class="aui-title" style="left:1.5rem; right: 3rem;">
+                <div class="aui-searchbar">
+                    <div class="aui-searchbar-input aui-border-radius">
+                        <i class="aui-iconfont aui-icon-search"></i>
+                        <form action="javascript:gosearch()">
+                            <input type="search" placeholder="请输入或粘贴宝贝标题" id="search-input"></form>
+                        <div class="aui-searchbar-clear-btn">
+                            <i class="aui-iconfont aui-icon-close"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="aui-pull-right aui-btn" tapmode onclick="gosearch()">
+                <span class="search">搜券</span>
+            </div>
+        </div>
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item ">
+                <div class="aui-list-item-label-icon">
+                    <i class="iconfont icon-qiaquan aui-text-danger"></i>
+                </div>
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title" id="title">全网商品</div>
+                    <div class="aui-list-item-right">
+                        <input type="checkbox" id="checkAddress" class="aui-switch aui-pull-right" onchange="showcoupon()">
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/aui-tab.js"></script>
+<script type="text/javascript">
+    var header = $api.byId('aui-header');
+    apiready = function() {
+        api.parseTapmode();
+        api.setStatusBarStyle({
+            style: 'dark'
+        });
+        $api.fixIos7Bar(header);
+        opensearch();
+    }
+
+    //复制，监听粘帖板搜索
+    function opensearch() {
+        //  var words = GetStorage('_words');
+        //  var _words = words;
+        var words = api.pageParam.words;
+        if (words) {
+            SetStorage('words', words);
+            $api.dom('#search-input').value = words; //赋值
+            funIniGroup();
+            showcoupon(); //监听复制搜索
+        } else {
+            funIniGroup();
+        }
+    }
+    //打开子窗口组
+    function funIniGroup() {
+        // var header = $api.byId('aui-header');
+        $api.fixIos7Bar(header);
+        var headerPos = $api.offset(header);
+        //  $api.dom('.aui-title').innerHTML = name;
+        api.openFrameGroup({
+            name: 'group',
+            background: '#fff',
+            scrollEnabled: false,
+            historyGestureEnabled: true,
+            preload: 0,
+            bounces: false,
+            allowEdit: true,
+            rect: {
+                x: 0,
+                y: headerPos.h,
+                w: 'auto',
+                h: 'auto'
+            },
+            index: 0,
+            frames: [{
+                name: 'frame0',
+                url: '../../html/user/jdlingquan.html',
+            }, {
+                name: 'frame1',
+                url: '../../html/jingdong/search.html',
+                pageParam: {
+                    words: GetStorage('words'),
+                    coupon: "1",
+                },
+            }, {
+                name: 'frame2',
+                url: '../../html/jingdong/search.html',
+                pageParam: {
+                    words: GetStorage('words'),
+                    coupon: "0",
+                },
+            }]
+        });
+    }
+    //搜索
+    function gosearch() {
+        var word = $api.val($api.byId("search-input")); //关键词获取
+        if (word) {
+            words = word; //更新关键词
+            api.closeFrameGroup({
+                name: 'group'
+            });
+            SetStorage('words', words);
+            $api.dom('#search-input').value = words; //赋值
+            funIniGroup();
+            showcoupon();
+        } else {
+            Toast('请粘贴商品标题', '3000', 'top');
+        }
+    }
+
+    //优惠券开关
+    function showcoupon() {
+        var word = $api.val($api.byId("search-input")); //关键词获取
+        if (word) {
+            words = word; //更新关键词
+            SetStorage('words', words);
+            var checkAddress = document.getElementById('checkAddress');
+            if (checkAddress.checked) {
+                $api.byId("title").innerText = "优惠券商品";
+                api.setFrameGroupIndex({
+                    name: 'group',
+                    index: '1',
+                    reload: true,
+                    scroll: false
+                });
+            } else {
+                $api.byId("title").innerText = "全网商品";
+                api.setFrameGroupIndex({
+                    name: 'group',
+                    index: '2',
+                    reload: true,
+                    scroll: false
+                });
+            }
+        } else {
+            Toast('请粘贴商品标题', '3000', 'top');
+        }
+    }
+    //历史记录后退
+    function GoToHisBack() {
+        api.historyBack({
+            frameName: api.winName
+        }, function(ret) {
+            if (!ret.status) { //没有历史记录了则关闭当前窗口
+                api.closeWin();
+            }
+        });
+    }
+
+
+    var searchBar = document.querySelector(".aui-searchbar");
+    var searchBarInput = document.querySelector(".aui-searchbar input");
+    var searchBarBtn = document.querySelector(".aui-searchbar .aui-searchbar-btn");
+    var searchBarClearBtn = document.querySelector(".aui-searchbar .aui-searchbar-clear-btn");
+    if (searchBar) {
+        searchBarInput.oninput = function() {
+            if (this.value.length) {
+                searchBarClearBtn.style.display = 'block';
+                //  searchBarBtn.classList.add("aui-text-info");
+                //  searchBarBtn.textContent = "搜索";
+            }
+        }
+    }
+    searchBarClearBtn.onclick = function() {
+        this.style.display = 'none';
+        searchBarInput.value = '';
+        //      searchBarBtn.classList.remove("aui-text-info");
+        //    searchBarBtn.textContent = "取消";
+    }
+</script>
+
+</html>

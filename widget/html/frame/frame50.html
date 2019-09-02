@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>个人中心</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style type="text/css">
+        .text-white {
+            color: #ffffff !important;
+        }
+
+        .aui-grid [class*=aui-col-] {
+            padding: 0.75rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部 -->
+    <section class="aui-content" id="user-info" tapmode data-url="https://dl.sitezt.cn/app/login.html" data-title="用户登录" onclick="GoLogin()">
+        <div class="aui-list aui-media-list aui-list-noborder aui-bg-FF7500">
+            <div class="aui-list-item-middle">
+                <div class="aui-media-list-item-inner ">
+                    <div class="aui-list-item-media" style="width:5rem;">
+                        <img src="../../icon/icon150x150.png" class="aui-img-round">
+                    </div>
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text text-white aui-font-size-20" id="appName">APP</div>
+                        <div class="aui-list-item-text text-white aui-font-size-14" id="deviceNum"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<section class="aui-content">
+    <ul class="aui-list aui-list-in aui-margin-b-15">
+        <li class="aui-list-item" tapmode data-url="https://h5.m.taobao.com/mlapp/olist.html?pid=" data-title="淘宝订单" onclick="openTBurl(this);">
+
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-title">淘宝订单</div>
+            </div>
+        </li>
+        <li class="aui-list-item" tapmode data-url="https://h5.m.taobao.com/mlapp/cart.html?pid=" data-title="购物车" onclick="openTBurl(this);">
+
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-title">购物车</div>
+            </div>
+        </li>
+        <li class="aui-list-item" tapmode data-url="https://h5.m.taobao.com/app/cpkg/portal.html?pid=" data-title="卡券包" onclick="openTBurl(this);">
+
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-title">卡券包</div>
+            </div>
+        </li>
+    </ul>
+    <ul class="aui-list aui-list-in">
+        <li class="aui-list-item" tapmode onclick="Share()">
+            <div class="aui-list-item-label-icon">
+                <i class="iconfont icon-share aui-text-pink"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-title">分享APP</div>
+            </div>
+        </li>
+        <li class="aui-list-item" tapmode data-url="../../html/user/help.html" data-title="帮助中心" onclick="openWin(this)">
+            <div class="aui-list-item-label-icon">
+                <i class="iconfont icon-help aui-text-info"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-title">帮助中心</div>
+            </div>
+        </li>
+        <li class="aui-list-item" tapmode data-url="../../html/user/touch.html" data-title="服务中心" onclick="openWin(this)">
+            <div class="aui-list-item-label-icon">
+                <i class="iconfont icon-lianxi aui-text-purple"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-title">联系客服</div>
+            </div>
+        </li>
+    </ul>
+</section>
+</body>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        console.warn('打开个人中心页面');
+        $api.byId("appName").innerText = api.appName;
+        reload();
+    }
+
+    function reload() {
+        var appdata = GetStorage('appdata');
+        if (appdata && appdata != 'undefined') {
+            $api.byId("deviceNum").innerText = '游客您好！' + '(' + appdata.tb_pid.split("_")[3] + ')';
+        }
+    }
+
+    function Share() {
+        var appdata = GetStorage('appdata');
+        var commondata = GetStorage('commondata');
+        var sharedModule = api.require('shareAction');
+        if (commondata && commondata != 'undefined') {
+            sharedModule.share({
+                text: "【" + api.appName + "】" + commondata.apptext + '\n   =>>>> 下载地址：' + GetStorage('appurl'),
+                type: 'text',
+                //  path: _pic1
+            });
+        } else {
+            Toast('分享内容不能为空，\n请退出APP重新打开。')
+        }
+    }
+    //.去登录
+    function GoLogin() {
+        var delay = 0;
+        if ("ios" != api.systemType) {
+            delay = 300;
+        }
+        api.openWin({
+            name: 'login',
+            url: '../../html/common/common.html',
+            vScrollBarEnabled: false,
+            delay: delay,
+            slidBackType: 'edge',
+            pageParam: {
+                url: '../../html/user/login.html',
+                title: '登录'
+            },
+        });
+    }
+</script>
+
+</html>

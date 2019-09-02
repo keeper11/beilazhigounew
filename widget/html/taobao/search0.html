@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>搜索商品列表</title>
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/mescroll.css">
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.css">
+    <link rel="stylesheet" type="text/css" href="../../css/search.css">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        ul {
+            list-style-type: none
+        }
+
+        a {
+            text-decoration: none;
+            color: #18B4FE;
+        }
+        /*模拟的标题*/
+
+        .header {
+            z-index: 9990;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            line-height: 8px;
+            padding-top: 3px;
+            text-align: center;
+            background-color: white;
+        }
+
+        .header .btn-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 12px;
+        }
+
+        .header .btn-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 12px 8px;
+        }
+
+        .header .tip {
+            0px;
+            font-size: 10px;
+            color: gray;
+        }
+        /*菜单*/
+
+        .header .nav {
+            0px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header .nav p {
+            display: inline-block;
+            width: 24%;
+            padding: 12px 0;
+        }
+
+        .header .nav .active {
+            border-bottom: 1px solid #FF6990;
+            color: #FF6990;
+        }
+        /*列表*/
+
+        .swiper-container {
+            position: fixed;
+            top: 40px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        /*展示上拉加载的数据列表*/
+
+        .data-list li {
+            position: relative;
+            padding: 10px 8px 10px 120px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-list .pd-img {
+            position: absolute;
+            left: 18px;
+            top: 18px;
+            width: 80px;
+            height: 80px;
+        }
+
+        .data-list .pd-name {
+            font-size: 16px;
+            line-height: 20px;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        .data-list .pd-price {
+            8px;
+            color: red;
+        }
+
+        .data-list .pd-sold {
+            font-size: 12px;
+            8px;
+            color: gray;
+        }
+        /*隐藏*/
+
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!--标题-->
+    <div class="header">
+        <!--菜单-->
+        <div id="nav" class="nav">
+            <p class="active" i="0">综合</p>
+            <p i="1">最新</p>
+            <p i="2">销量</p>
+            <p i="3">价格</p>
+        </div>
+    </div>
+
+    <!--轮播-->
+    <div id="swiper" class="swiper-container">
+        <div class="swiper-wrapper">
+
+            <!--首页-->
+            <div id="mescroll0" class="swiper-slide mescroll">
+                <ul id="dataList0" class="data-list">
+                    <!--<li>
+							<img class="pd-img" src="../../res/img/pd1.jpg"/>
+							<p class="pd-name">商品标题商品标题商品标题商品标题商品标题商品</p>
+							<p class="pd-price">200.00 元</p>
+							<p class="pd-sold">已售50件</p>
+						</li>-->
+                </ul>
+                <ul class="goodsList" id="goods_block0">
+                    <!--			<a >
+						<li class="goodsListItem" tapmode data-url="" data-title="粉丝福利购" data-itemid="" onclick="openTB1(this);">
+							<div class="imgBox"><img class="lazy" src="" /></div>
+							<div class="goodInfoBox">
+								<div class="goodInfoTitle">tbm dataitemtitle </div>
+								<div class="aboutNum"> <span class="oldPrice">售价</span> <span class="sales">已售件</span> </div>
+								<div class="newPrice">券后价 ￥ <span></span> </div>
+								<div class="ticketNum">
+									<div class="ticketPrice">
+										<span class="quan">券</span> <span class="quanPrice">2222元</span> </div>
+									<div class="ticket">&nbsp;剩余1000张 </div>
+								</div>
+							</div>';
+							<div class="toDetail"> <img src="" alt="" />
+								<div>领券</div>
+							</div>
+						</li>
+					</a>-->
+                </ul>
+            </div>
+
+            <!--奶粉-->
+            <div id="mescroll1" class="swiper-slide mescroll">
+                <ul id="dataList1" class="data-list"></ul>
+                <ul class="goodsList" id="goods_block1"></ul>
+            </div>
+
+            <!--面膜-->
+            <div id="mescroll2" class="swiper-slide mescroll">
+                <ul id="dataList2" class="data-list"></ul>
+                <ul class="goodsList" id="goods_block2"></ul>
+            </div>
+
+            <!--图书-->
+            <div id="mescroll3" class="swiper-slide mescroll">
+                <ul id="dataList3" class="data-list"></ul>
+                <ul class="goodsList" id="goods_block3"></ul>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/mescroll.js"></script>
+<script type="text/javascript" src="../../script/swiper.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+            api.parseTapmode();
+            var curNavIndex = 0; //首页0; 奶粉1; 面膜2; 图书3;品牌单;
+            var mescrollArr = new Array(5); //5个菜单所对应的4个mescroll对象
+            //初始化首页
+            mescrollArr[0] = initMescroll("mescroll0", "goods_block0");
+            /*初始化轮播*/
+            var swiper = new Swiper('#swiper', {
+                onTransitionEnd: function(swiper) {
+                    var i = swiper.activeIndex; //轮播切换完毕的事件
+                    changePage(i);
+                }
+            });
+
+            /*初始化菜单*/
+            $("#nav p").click(function() {
+                    var i = Number($(this).attr("i"));
+                    swiper.slideTo(i); //以轮播的方式切换列表
+                })
+                /*切换列表*/
+            function changePage(i) {
+                if (curNavIndex != i) {
+                    //更改列表条件
+                    $("#nav p").each(function(n, dom) {
+                            if (dom.getAttribute("i") == i) {
+                                dom.classList.add("active");
+                            } else {
+                                dom.classList.remove("active");
+                            }
+                        })
+                        //隐藏当前回到顶部按钮
+                    mescrollArr[curNavIndex].hideTopBtn();
+                    //取出菜单所对应的mescroll对象,如果未初始化则初始化
+                    if (mescrollArr[i] == null) {
+                        mescrollArr[i] = initMescroll("mescroll" + i, "goods_block" + i);
+                    } else {
+                        //检查是否需要显示回到到顶按钮
+                        var curMescroll = mescrollArr[i];
+                        var curScrollTop = curMescroll.getScrollTop();
+                        if (curScrollTop >= curMescroll.optUp.toTop.offset) {
+                            curMescroll.showTopBtn();
+                        } else {
+                            curMescroll.hideTopBtn();
+                        }
+                    }
+                    //更新标记
+                    curNavIndex = i;
+                }
+            }
+            /*创建MeScroll对象*/
+            function initMescroll(mescrollId, clearEmptyId) {
+                //创建MeScroll对象,内部已默认开启下拉刷新,自动执行up.callback,刷新列表数据;
+                var mescroll = new MeScroll(mescrollId, {
+                    down: {
+                        callback: function(mescroll) {
+                            tbpage = '0';
+                            mescroll.resetUpScroll();
+                        }
+                    },
+                    //上拉加载的配置项
+                    up: {
+                        callback: getListData, //上拉回调,此处可简写; 相当于 callback: function (page) { getListData(page); }
+                        clearEmptyId: clearEmptyId, //相当于同时设置了clearId和empty.warpId; 简化写法;默认null
+                        isBounce: false, //此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): https://www.mescroll.com/qa.html#q10
+                        noMoreSize: 1, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
+                        page: {
+                            num: 0, //当前页码,默认0,回调之前加1,
+                            size: 10, //每页数据的数量;
+                            time: null //加载第一页数据服务器返回的时间 (可空);
+                        },
+                        lazyLoad: {
+                            use: true, // 是否开启懒加载,默认false
+                            attr: 'imgurl', // 网络图片地址的属性名 (图片加载成功会自动移除改属性): <img imgurl='网络图  src='占位图''/>
+                            showClass: 'mescroll-lazy-in', // 图片加载成功的显示动画: 渐变显示,参见mescroll.css
+                            delay: 400, // 列表滚动的过程中每500ms检查一次图片是否在可视区域,如果在可视区域则加载图片
+                            offset: 10 // 超出可视区域200px的图片仍可触发懒加载,目的是提前加载部分图片
+                        },
+                        empty: { //列表第一页无任何数据时,显示的空提示布局; 需配置warpId或clearEmptyId才生效;
+                            //warpId:null, //父布局的id; 如果此项有值,将不使用clearEmptyId的值;
+                            icon: "../../image/option/mescroll-empty.png", //图标,默认null
+                            tip: "亲,没有您要找的优惠券商品~<br>请点击只显示优惠券商品搜索", //提示
+                            //	btntext: "点击去淘宝优惠库搜索>", //按钮,默认""
+                        },
+                        toTop: { //配置回到顶部按钮
+                            src: "../../image/option/mescroll-totop.png", //默认滚动到1000px显示,可配置offset修改
+                            offset: 500
+                        },
+                        htmlNodata: '<p class="upwarp-nodata">-- 已加载完毕 --</p>',
+                        empty: {
+                            icon: "../../image/option/mescroll-empty.png", //图标,默认null
+                            tip: "暂无相关数据~", //提示
+                            //		btntext: "去逛逛 >", //按钮,默认""
+                            //	btnClick: function() { //点击按钮的回调,默认null
+                            //			alert("点击了按钮,具体逻辑自行实现");}
+                        },
+                    }
+                });
+                return mescroll;
+            }
+
+            /*联网加载列表数据  page = {num:1, size:10}; num:当前页 从1开始, size:每页数据条数 */
+            function getListData(page) {
+                //联网加载数据
+                var keyword = ["0", "1", "2", "4", "3", "5"]; //价格销量排序
+                var sort = keyword[curNavIndex];
+                var coupon = api.pageParam.coupon;
+                var word = encodeURIComponent(api.pageParam.words);
+                var dataIndex = curNavIndex; //记录当前联网的nav下标,防止快速切换时,联网回来curNavIndex已经改变的情况;
+                var haodanku = "https://v2.api.haodanku.com/supersearch/apikey/"; //好单库链接
+                api.ajax({
+                        url: haodanku + commissiondata.apikey + '/keyword/' + word + '/back/' + page.size + '/min_id/' + page.num + '/sort/' + sort + '/tb_p/' + tbpage + '/is_coupon/' + coupon, //分类商品API接口链接
+                        encode: false,
+                        method: 'get',
+                        timeout: 30,
+                        cache: 'true',
+                        dataType: 'json',
+                        returnAll: false,
+                        data: {}
+                    },
+                    function(ret, err) {
+                        if (ret) {
+                            tbpage = ret.tb_p;
+                            console.log('淘宝分页数，第' + ret.tb_p + '页。');
+                            var curPageData = ret.data;
+                            mescrollArr[dataIndex].endSuccess(curPageData.length);
+                            //设置列表数据
+                            setListData(curPageData, dataIndex, page);
+                        } else {
+                            //联网失败的回调,隐藏下拉刷新和上拉加载的状态;
+                            mescrollArr[dataIndex].endErr();
+                            var listDom = document.getElementById("goods_block" + dataIndex);
+                            var html = '<div style="text-align:center"><img src="../../image/option/mescroll-empty.png" style="width:200PX;"></div>';
+                            html += '<div class="paging" style="text-align:center;padding-top:5px;">-- 没有网络或网络错误 --<br>请检查网络后下拉刷新!!</div>';
+                            //		html += '<div class="aui-btn aui-btn-danger" onclick="reloadPage();">点击刷新</div></p>';
+                            $api.html(listDom, html);
+                        }
+                    });
+            }
+        }
+        /*设置列表数据
+         * pageData 当前页的数据
+         * dataIndex 数据属于哪个nav */
+        //列表添加模板
+    function setListData(curPageData, dataIndex, page) {
+        var listDom = document.getElementById("goods_block" + dataIndex);
+        var len = curPageData.length;
+        var imgUrlPre = "../../image/detail.png";
+        var htmlall = '';
+        for (var i = 0; i < len; i++) {
+            var data = curPageData[i];
+            //天猫店铺判断
+            var tbm = "";
+            if (data.shoptype == 'B') {
+                tbm = '<img src="../../image/tmall.png"style="width:13px;"/>&nbsp;';
+            } else {
+                tbm = '<img src="../../image/taobao.png"style="width:13px;"/>&nbsp;';
+            };
+            var source = data.item_from == '121212' ? '' : ''; //'<div class="featured">精选</div>';
+            //图片链接判断
+            var pic = "";
+            if ((data.itempic).indexOf("http") != -1) {
+                pic = data.itempic;
+            } else {
+                pic = 'http:' + data.itempic;
+            };
+            //销量万位转换判断
+            var sales = "";
+            if (data.itemsale < 9999) {
+                sales = data.itemsale;
+            } else {
+                sales = (data.itemsale / 1e4).toFixed(1) + "万";
+            };
+            //拼装列表
+            if (data.couponmoney > 0) {
+                var html = '<a><li class="goodsListItem" tapmode data-couponid="' + data.activityid + '" data-itemid="' + data.itemid + '"data-title="粉丝福利购" onclick="openxiangqing(this)">';
+                html += '<div class="imgBox">' + source + '<img src="../../image/load.png" imgurl="' + pic + '" /></div>';
+                html += '<div class="goodInfoBox"><div class="goodInfoTitle">' + tbm + data.itemtitle + '</div>';
+                html += '<div class="aboutNum"> <span class="oldPrice">售价' + parseFloat(data.itemprice) + '元</span> <span class="sales">已售' + sales + '件</span> </div>';
+                html += '<div class="newPrice">券后价 ￥ <span>' + parseFloat(data.itemendprice) + '</span>元</div> <div class="ticketNum"><div class="ticketPrice">';
+                html += '<span class="quan">券</span> <span class="quanPrice">' + parseFloat(data.couponmoney) + '元</span> </div>';
+                //	html += '<div class="ticket">&nbsp;剩余' + value1.coupon_self + '张 </div>';
+                html += ' </div> </div>';
+                html += '<div class="toDetail"> <img src="' + imgUrlPre + '" alt="" /> <div>领券</div> </div></li></a>';
+            } else {
+                var html = '<a><li class="goodsListItem" tapmode data-couponid="' + data.activityid + '" data-itemid="' + data.itemid + '"data-title="粉丝福利购" onclick="openxiangqing(this)">';
+                html += '<div class="imgBox">' + source + '<img  src="../../image/load.png" imgurl="' + pic + '" /></div>';
+                html += '<div class="goodInfoBox"><div class="goodInfoTitle">' + tbm + data.itemtitle + '</div>';
+                html += '<div class="aboutNum"> <span class="oldPrice">售价' + parseFloat(data.itemprice) + '元</span> <span class="sales">已售' + sales + '件</span> </div>';
+                html += '<div class="newPrice">优惠价 ￥ <span>' + parseFloat(data.itemendprice) + '</span>元</div> <div class="ticketNum"><div class="ticketPrice">';
+                html += '<span class="quan">券</span> <span class="quanPrice">已发完</span> </div>';
+                html += ' </div> </div>';
+                html += '<div class="toDetail"> <img src="' + imgUrlPre + '" alt="" /> <div>查看</div> </div></li></a>';
+            }
+
+            htmlall += html;
+        };
+        //	return htmlall;
+        $api.append(listDom, htmlall);
+        //api.refreshHeaderLoadDone();
+        lock = false;
+    }
+</script>
+
+</html>

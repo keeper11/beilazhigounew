@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>商品列表</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style type="text/css">
+        .aui-iconfont:active {
+            background: #F2727A;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="aui-content aui-bar-nav aui-bar-header" id='aui-header'>
+        <div class="aui-bar aui-bar-nav aui-bar-header">
+            <div class="aui-iconfont aui-icon-left aui-pull-left" tapmode onclick="GoToHisBack();"> </div>
+            <div class="aui-title">聚划算</div>
+            <div class="aui-iconfont aui-icon-close aui-pull-right" tapmode onclick="CloseWin();">
+            </div>
+        </div>
+        <div class="aui-tab aui-border-b" id="tab">
+            <div class="aui-tab-item aui-active">人气 ↓</div>
+            <div class="aui-tab-item">最新 ↓</div>
+            <div class="aui-tab-item">销量 ↓</div>
+            <div class="aui-tab-item">价格 ↑</div>
+            <div class="aui-tab-item">价格 ↓</div>
+        </div>
+    </header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/aui-tab.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        funIniGroup();
+    }
+    function funIniGroup() {
+        var header = $api.byId('aui-header');
+        $api.fixIos7Bar(header);
+        var headerPos = $api.offset(header);
+        var name = api.pageParam.title;
+        var cid = api.pageParam.cid;
+        var sort = api.pageParam.sort;
+        //  $api.dom('.aui-title').innerHTML = name;
+        api.openFrameGroup({
+                name: 'group',
+                background: '#fff',
+                scrollEnabled: false,
+                historyGestureEnabled: true,
+                preload: 0,
+                bounces: false,
+                allowEdit: true,
+                rect: {
+                    x: 0,
+                    y: headerPos.h,
+                    w: 'auto',
+                    h: 'auto'
+                },
+                index: 0,
+                frames: [{
+                    name: 'frame0',
+                    url: 'demo2.html',
+                    pageParam: {
+                        //    words: words,
+                        sort: '1',
+                    },
+                }, {
+                    name: 'frame1',
+                    url: 'demo2.html',
+                    pageParam: {
+                        //    words: words,
+                        sort: '2',
+                    },
+                }, {
+                    name: 'frame2',
+                    url: 'demo2.html',
+                    pageParam: {
+                        //    words: words,
+                        sort: '3',
+                    },
+                }, {
+                    name: 'frame3',
+                    url: 'demo2.html',
+                    pageParam: {
+                        // words: words,
+                        sort: '4',
+                    },
+                }, {
+                    name: 'frame4',
+                    url: 'demo2.html',
+                    pageParam: {
+                        //    words: words,
+                        sort: '7',
+                    },
+                }]
+            },
+            function(ret, err) {
+                var index_ = ret.index;
+                switch (index_) {
+                    case 0:
+                        historyBack(index_);
+                        break;
+                    case 1:
+                        historyBack(index_);
+                        break;
+                    case 2:
+                        historyBack(index_);
+                        break;
+                    case 3:
+                        historyBack(index_);
+                        break;
+                    case 4:
+                        historyBack(index_);
+                        break;
+                }
+            });
+
+        function historyBack(index_) {
+            api.addEventListener({
+                name: 'keyback'
+            }, function(ret, err) {
+                api.historyBack({
+                    frameName: 'frame' + index_
+                }, function(ret) {
+                    if (!ret.status) { //没有历史记录了则关闭当前窗口
+                        api.closeWin();
+                    }
+                });
+            });
+        }
+    }
+    //随意思切换TAB栏
+    var tab = new auiTab({
+        element: document.getElementById("tab"),
+    }, function(ret) {
+        console.log(ret);
+        if (ret) {
+            var tag = (ret.index) - 1;
+            api.setFrameGroupIndex({
+                name: 'group',
+                index: tag,
+                reload: false,
+                scroll: false
+            });
+        }
+    })
+
+    //历史记录后退
+    function GoToHisBack() {
+        api.historyBack({
+            frameName: "group"
+        }, function(ret) {
+            if (!ret.status) { //没有历史记录了则关闭当前窗口
+                api.closeWin();
+            }
+        });
+    }
+</script>
+
+</html>

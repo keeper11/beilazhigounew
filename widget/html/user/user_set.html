@@ -1,0 +1,222 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>个人设置中心</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui_flex.css" />
+    <style type="text/css">
+        .text-white {
+            color: #ffffff !important;
+        }
+
+        .aui-grid [class*=aui-col-] {
+            padding: 0.75rem 0;
+        }
+
+        .aui-brr {
+            border-radius: 10px;
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        .s-list {
+            width: 8rem;
+            font-size: 0.8rem;
+            text-align: center;
+            color: red;
+        }
+
+        .s-btn {
+            width: 100%;
+            position: fixed;
+            bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部 -->
+    <section class="aui-content" id="user-info">
+        <div class="aui-list aui-media-list aui-list-noborder aui-bg-FF7500">
+            <div class="aui-list-item-middle">
+                <div class="aui-media-list-item-inner ">
+                    <div class="aui-list-item-media" style="width:5rem;left:12px;">
+                        <img src="../../image/defaultuser.jpg" class="aui-img-round">
+                    </div>
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text text-white aui-font-size-16" id="nickname_a">木有昵称：</div>
+                        <div class="aui-list-item-text text-white aui-font-size-14" id="jointime">注册时间：</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="aui-content aui-margin-b-10 aui-br">
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item" id="clear-cache" tapmode onclick="openpublic('../../html/user/nickname.html','修改昵称')">
+
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title" id="nickname">昵称：木有昵称</div>
+                    <div class="aui-list-item-right">
+                        <h3><span id="badge">修改</span></h3></div>
+                </div>
+            </li>
+
+
+        </ul>
+    </section>
+    <section class="aui-content aui-margin-b-10 aui-br">
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item" id="clear-cache" tapmode onclick="openpublic('../../html/user/fixpwd.html','修改密码')">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">修改登录密码</div>
+                    <div class="aui-list-item-right">
+                        <h3><span id="badge">修改</span></h3></div>
+                </div>
+            </li>
+        </ul>
+    </section>
+    <section class="aui-content aui-margin-b-10 aui-br">
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item" id="clear-cache" tapmode onclick="openpublic('../../html/user/wx.html','修改微信号')">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">我的微信号</div>
+                    <div class="aui-list-item-right">
+                        <h3><span id="wx">设置微信便于粉丝联系</span></h3></div>
+                </div>
+            </li>
+        </ul>
+    </section>
+    <section class="aui-content aui-margin-b-10 aui-br">
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item" id="clear-cache" tapmode onclick="openpublic('../../html/user/alipay.html','修改支付宝')">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">支付宝账号</div>
+                    <div class="aui-list-item-right">
+                        <h3><span id="alipay">没有设置请设置</span></h3></div>
+                </div>
+            </li>
+        </ul>
+    </section>
+    <section class="aui-padded-10 s-btn aui-content aui-border-t">
+        <div class="aui-flex-col aui-flex-between">
+            <div class="s-list" tapmode onclick="clearuser()">
+                <div>退出登录</div>
+            </div>
+        </div>
+    </section>
+</body>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        reload();
+        api.setRefreshHeaderInfo({
+            // loadingImg: 'widget://image/refresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '松开刷新...'
+        }, function(ret, err) {
+            reload();
+            setTimeout(function() {
+                api.refreshHeaderLoadDone();
+            }, 1000);
+        });
+    }
+
+    function reload() {
+        var userinfo = GetStorage('userinfo');
+        var nickname = '';
+        if (userinfo.nickname == 0) {
+            nickname = '昵称：木有昵称';
+        } else {
+            nickname = '昵称：' + userinfo.nickname;
+        }
+        var wx = '';
+        if (userinfo.wx == 0) {
+            wx = "没有设置";
+        } else {
+            wx = userinfo.wx;
+        }
+        var alipay = '';
+        if (userinfo.alipay == 0) {
+            alipay = '没有设置';
+        } else {
+            alipay = userinfo.alipay;
+        }
+        var datetime = GetDatetime('Y-m-d H:i:s', userinfo.jointime);
+        $api.byId('nickname').innerText = nickname;
+        $api.byId('nickname_a').innerText = nickname;
+        $api.byId('jointime').innerText = '注册时间：\n' + datetime;
+        $api.byId('wx').innerText = wx;
+        $api.byId('alipay').innerText = alipay;
+    }
+
+    function Share() {
+        var appdata = GetStorage('appdata');
+        var commondata = GetStorage('commondata');
+        var sharedModule = api.require('shareAction');
+        if (commondata && commondata != 'undefined') {
+            sharedModule.share({
+                text: "【" + api.appName + "】" + commondata.apptext + '\n   =>>>> 下载地址：' + GetStorage('appurl'),
+                type: 'text',
+                //  path: _pic1
+            });
+        } else {
+            Toast('分享内容不能为空，\n请退出APP重新打开。')
+        }
+    }
+    //.去登录
+    function GoLogin() {
+        var delay = 0;
+        if ("ios" != api.systemType) {
+            delay = 300;
+        }
+        api.openWin({
+            name: 'login',
+            url: '../../html/common/common.html',
+            delay: delay,
+            slidBackType: 'edge',
+            pageParam: {
+                url: '../../html/user/login.html',
+                title: '登录'
+            },
+        });
+    }
+
+    function clearuser() {
+        api.confirm({
+            title: '提醒',
+            msg: '真的要退出吗？',
+            buttons: ['确定', '取消']
+        }, function(ret, err) {
+            if (ret.buttonIndex == 1) {
+                RmStorage('mobile');
+                Toast('退出成功');
+                setTimeout(function() {
+                    api.execScript({
+                        name: 'root',
+                        frameName: 'frame5',
+                        script: 'reload();'
+                    });
+                }, 500);
+                setTimeout(function() {
+                    api.closeToWin({
+                        name: 'root'
+                    });
+                }, 2000);
+            }
+        });
+    }
+</script>
+
+</html>

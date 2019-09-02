@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>我的收益</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/my.css" />
+</head>
+<style media="screen">
+			 .shop_infos	.backnow{
+			 	/*margin: 0 auto;*/
+				width: 92%;
+				margin: 0 auto;
+				margin-bottom: 10px;
+				/*margin: 0 1rem;*/
+				padding: 0 0.5rem;
+				background-color: #fff;
+				box-sizing: border-box;
+				border-radius:0 0 10px 10px;
+
+				}
+				.shop_infos	.backnow div{
+					background-color: #fff;
+					display: flex;
+					justify-content: space-around;
+					text-align: center;
+					margin: 0 auto;
+					line-height: 40px;
+					padding: 0 0.5rem;
+				}
+				.shop_infos	.backnow div p{
+				flex: 1;
+				}
+				.shop_infos	.backnow .bgac{
+					background:rgba(243,242,250,1);
+					color: #333333;
+					font-size: 16px;
+				}
+</style>
+<body>
+	<div class="income_bg">
+		<div class="shophead">
+			<div class="shop_earn">
+				累计收益(元)
+			</div>
+			<text class="shop_number" id="credit">￥0</text>
+		</div>
+		<div class="incomelist">
+			<div class="nav_top ui-row orderlist">
+				<ul>
+					<li class="active" data-incometype="0">今日</li>
+					<li data-incometype="1">昨日</li>
+					<li data-incometype="2">本月</li>
+					<li data-incometype="3">上月</li>
+				</ul>
+			</div>
+		</div>
+		<div class="shop_infos">
+			<div class="alluser-infor-box">
+				<div class="user-infor-box-item active">
+					<div class="usernum profit">&emsp;
+						<text class="timename">今日</text>总收益
+						<text class="my_color" id="amount">0.00</text>元
+					</div>
+				</div>
+				<div class="profit_bg"></div>
+				<div class="user-infor-box">
+
+					<div class="profit_style">
+						<div class="hx"></div>
+						<text>自购收益</text>
+					</div>
+					<div class="backnow">
+						<div class="bgac"><p>平台</p><p>收入（元）</p></div>
+						<div><p>淘宝</p><p class="tuijianamount">￥0</p></div>
+						<div><p>福购</p><p class="myamounfugou">￥0</p></div>
+
+						<!-- <div><p>京东</p><p class="myamountjd">￥0</p><p class="myorderjd">0</p></div>
+						<div><p>拼多多</p><p class="myamountpdd">￥0</p><p class="myorderpdd">0</p></div>
+						//20190826屏蔽掉京东/拼多多钱包明细；<p>订单量（笔）</p>line77//<p class="myordertb">0</p>line78
+					-->
+					</div>
+
+					<div class="profit_style">
+						<div class="hx"></div>
+						<text>推荐收益</text>
+					</div>
+					<div class="backnow">
+						<div class="bgac"><p>平台</p><p>收入（元）</p></div>
+						<div><p>淘宝</p><p class="myamounttb">￥0</p></div>
+						<div><p>福购</p><p class="myamounfugou">￥0</p></div>
+
+						<!-- <div><p>京东</p><p class="teamamountjd">￥0</p><p class="teamorderjd">0</p></div>
+						<div><p>拼多多</p><p class="teamamountpdd">￥0</p><p class="teamorderpdd">0</p></div>
+						//20190826屏蔽掉京东/拼多多钱包明细；
+-->
+					</div>
+
+					<div class="profit_style">
+						<div class="hx"></div>
+						<text>社群收益</text>
+					</div>
+
+
+					<div class="backnow">
+						<div class="bgac"><p>平台</p><p>收入（元）</p></div>
+						<div><p>淘宝</p><p class="vipordertb">￥0</p></div>
+						<div><p>福购</p><p class="myamounfugou">￥0</p></div>
+						<!-- <div><p>京东</p><p class="vipamounttb">￥0</p><p class="viporderpdd">￥0</p></div>
+						<div><p>拼多多</p><p class="viporderjd">￥0</p><p class="vipamountpdd">￥0</p></div>
+						//20190826屏蔽掉京东/拼多多钱包明细；
+-->
+					</div>
+					<div class="profit_style">
+						<div class="hx"></div>
+						<text>公司奖励</text>
+					</div>
+					<div class="backnow">
+						<div class="bgac"><p>平台</p><p>收入（元）</p></div>
+						<!-- <div><p>淘宝</p><p class="teamamounttb">￥0</p></div>公司奖励（团队收益） -->
+						<div><p>淘宝</p><p class="teamamounttb">￥0</p></div>
+						<div><p>福购</p><p class="myamounfugou">￥0</p></div>
+						<!-- <div><p>京东</p><p class="vipamounttb">￥0</p><p class="viporderpdd">￥0</p></div>
+						<div><p>拼多多</p><p class="viporderjd">￥0</p><p class="vipamountpdd">￥0</p></div>
+						//20190826屏蔽掉京东/拼多多钱包明细；
+-->
+					</div>
+					<!-- <div class="profit_list_jd_pdd">
+						<div class="profit_list">
+							<div class="porfit_pdd">
+								<text>淘宝收入</text>
+								<text class="myamounttb">￥0</text>
+							</div>
+							<div class="porfit_pdd">
+								<text>京东收入</text>
+								<text class="myamountjd">￥0</text>
+							</div>
+							<div class="porfit_pdd">
+								<text>拼多多收入</text>
+								<text class="myamountpdd">￥0</text>
+							</div>
+						</div>
+						<div class="porfit_order_list">
+							<div class="order_pdd_bg">淘宝订单量</div>
+							<div class="order_pdd_scroll">
+								<div class="order_progress order_progress_gai"></div>
+								<div class="order_nmuber myordertb">0</div>
+							</div>
+						</div>
+						<div class="porfit_order_list">
+							<div class="order_pdd_bg">京东订单量</div>
+							<div class="order_pdd_scroll">
+								<div class="order_progress order_progress_gai"></div>
+								<div class="order_nmuber myorderjd">0</div>
+							</div>
+						</div>
+						<div class="porfit_order_list">
+							<div class="order_pdd_bg">拼多多订单量</div>
+							<div class="order_pdd_scroll">
+								<div class="order_progress order_progress_gai"></div>
+								<div class="order_nmuber myorderpdd">0</div>
+							</div>
+						</div>
+					</div> -->
+
+					<!-- <div class="profit_style">
+						<div class="hx"></div>
+						<text>粉丝福利收益</text>
+					</div>
+					<div class="profit_list_jd_pdd">
+						<div class="profit_list">
+							<div class="porfit_pdd">
+								<text>淘宝收入</text>
+								<text class="teamamounttb">￥0</text>
+							</div>
+							<div class="porfit_pdd">
+								<text>京东收入</text>
+								<text class="teamamountjd">￥0</text>
+							</div>
+							<div class="porfit_pdd">
+								<text>拼多多收入</text>
+								<text class="teamamountpdd">￥0</text>
+							</div>
+						</div>
+						<div class="porfit_order_list">
+							<div class="order_pdd_bg">淘宝订单量</div>
+							<div class="order_pdd_scroll">
+								<div class="order_progress order_progress_gai"></div>
+								<div class="order_nmuber teamordertb">0</div>
+							</div>
+						</div>
+						<div class="porfit_order_list">
+							<div class="order_pdd_bg">京东订单量</div>
+							<div class="order_pdd_scroll">
+								<div class="order_progress order_progress_gai"></div>
+								<div class="order_nmuber teamorderjd">0</div>
+							</div>
+						</div>
+						<div class="porfit_order_list">
+							<div class="order_pdd_bg">拼多多订单量</div>
+							<div class="order_pdd_scroll">
+								<div class="order_progress order_progress_gai"></div>
+								<div class="order_nmuber teamorderpdd">0</div>
+							</div>
+						</div> -->
+
+					</div>
+					<!-- <div class="profit_style">
+						<div class="hx"></div>
+						<text>合伙人订单收益	</text>
+					</div> -->
+					<!-- <div class="partner_profit">
+						<div class="partner_number tb_bg">
+							<text>淘宝订单量</text>
+							<text class="vipordertb">0</text>
+						</div>
+						<div class="partner_number tb_bg">
+							<text>淘宝预估收入</text>
+							<text class="vipamounttb">￥0</text>
+						</div>
+						<div class="partner_number jd_bg">
+							<text>京东订单量</text>
+							<text class="viporderjd">0</text>
+						</div>
+						<div class="partner_number jd_bg">
+							<text>京东预估收入</text>
+							<text class="vipamountjd">￥0</text>
+						</div>
+						<div class="partner_number">
+							<text>拼多多订单量</text>
+							<text class="viporderpdd">0</text>
+						</div>
+						<div class="partner_number">
+							<text>拼多多预估收入</text>
+							<text class="vipamountpdd">￥0</text>
+						</div>
+					</div> -->
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+		api.parseTapmode();
+		data = new Object();
+		switchMystatistic();
+		uploadData();
+	};
+
+	function uploadData() {
+		var serverurl = GetStorage('serverurl');
+		var mobile = GetStorage('mobile');
+		// $('.credit').text(GetStorage('ljsouyi'));
+		console.log(JSON.stringify(data));
+		api.ajax({
+			url: serverurl + '/api/user/statistics?mobile=' + mobile + '&type=' + data.incometype,
+			method: 'get',
+			timeout: 5,
+			cache: false,
+			dataType: 'json',
+		}, function(ret, err) {
+			if (ret.code == 1) {
+				//	Alert(ret.data)
+				var data = ret.data;
+				setListData(data);
+				console.log(data);
+			}
+		});
+	}
+
+	function setListData(data) {
+		console.log('渲染数据成功');
+		console.log(data);
+		var daytotal = parseFloat(data.tb_sum) + parseFloat(data.tb_vip_count) +parseFloat(data.tb_team_sum)
+		$("#amount").text(daytotal.toFixed(2) );
+		$("#credit").text('￥' + GetStorage('ljsouyi'));
+		$('.myordertb').text(data.tb_count);
+
+		// $('.myorderjd').text(data.jd_count);
+
+		// $('.myorderpdd').text(data.pdd_count);
+		$('.myamounttb').text('￥' + data.tb_sum);
+		// $('.myamountjd').text('￥' + data.jd_sum);
+
+		// $('.myamountpdd').text('￥' + data.pdd_sum);
+
+		$('.teamordertb').text(data.tb_team_count);
+		// $('.teamorderjd').text(data.jd_team_count);
+		// $('.teamorderpdd').text(data.pdd_team_count);
+		$('.teamamounttb').text('￥' + data.tb_team_sum);
+		// $('.teamamountjd').text('￥' + data.jd_team_sum);
+		// $('.teamamountpdd').text('￥' + data.pdd_team_sum);
+
+		$('.vipordertb').text(data.tb_vip_count);
+		// $('.viporderjd').text(data.jd_vip_count);
+		// $('.viporderpdd').text(data.pdd_vip_count);
+		  $('.vipamounttb').text('￥' + data.tb_vip_sum);
+		// $('.vipamountjd').text('￥' + data.jd_vip_sum);
+		// $('.vipamountpdd').text('￥' + data.pdd_vip_sum);
+
+	}
+
+	function switchMystatistic() {
+		$('.nav_top ul li').click(function() {
+			$(this).addClass('active').siblings().removeClass('active');
+			data.incometype = $(this).attr("data-incometype");
+			//		console.log(JSON.stringify(data));
+			uploadData();
+			$('.timename').text($('.nav_top ul li.active').text());
+		})
+	}
+</script>
+
+</html>

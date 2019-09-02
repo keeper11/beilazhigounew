@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>升级会员</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/category.css" />
+    <style type="text/css">
+        html,
+        body {
+            background: #fff;
+            /*rgba(0, 0, 0, 0);*/
+        }
+        /*
+        .layout {
+            max-width: auto;
+        }
+      这里的width height 大于图片的宽高*/
+
+        div {
+            width: 100%;
+            height: auto;
+            margin: 0 auto;
+            background: #fff;
+        }
+
+        .main {
+            bottom: 10px;
+            display: block;
+            width: 100%;
+            height: 30px;
+            text-align: center;
+        }
+
+        .main img {
+            width: 150px;
+            height: 150px;
+            float: none;
+            margin: 40px auto;
+        }
+
+        .paging {
+            position: absolute;
+            top: 220px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            display: block;
+            width: 100%;
+            height: 60px;
+            border-top: 1px solid #f0f0f0;
+            top: auto;
+            table-layout: fixed;
+            background-color: #ffffff;
+            color: #757575;
+        }
+
+        .bt1 {
+            display: inline-block;
+            width: 100%;
+            background: linear-gradient(to right, #4eec57, #45b14b);
+            text-align: center;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 25px;
+            color: #ffffff;
+            font-size: 12px;
+            margin-top: 10px auto;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .bt {
+            display: inline-block;
+            width: 30%;
+            background: linear-gradient(to right, #FF6145, #FF3649);
+            text-align: center;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 25px;
+            color: #ffffff;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+      <!--加载loading-->
+    	<div class="loading_main">
+    		<img src="../../image/loading_main.gif" />
+    		<span>加载中,请稍后...</span>
+    	</div>
+    </div>
+    <div class="footer">
+        <div class="container" tapmode onclick="member('../../html/user/shenqing.html','会员申请')">
+            <span class="bt down2">立即申请</span>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        loaddata();
+    }
+
+    function loaddata() {
+        var serverurl = GetStorage('serverurl');
+        var name = api.pageParam.name;
+        var id = api.pageParam.id;
+        //  Alert(name + '<<<' + serverurl + '>>>' + id);
+        api.ajax({
+            url: serverurl + '/api/user/sort?name=member&title_id=1',
+            method: 'get',
+            timeout: 5,
+            cache: false,
+            dataType: 'json',
+        }, function(ret, err) {
+            if (ret.code == 0) {
+                Toast(ret.msg);
+            } else if (ret.code == 1) {
+                //Alert(ret.data.content)
+                $api.dom(".layout").innerHTML = ret.data.content;
+            } else {
+                var html = '<div class="main">';
+                html += '<img src="../../image/option/mescroll-empty.png"></div>';
+                html += '<div class="paging" style="text-align:center;padding-top:5px;">--网络错误--</div>';
+                $api.dom(".layout").innerHTML = html;
+                Toast('网络错误，请稍候重试'); //
+            }
+        });
+    }
+
+    function member(url, title) {
+        var serverurl = GetStorage('serverurl');
+        var name = api.pageParam.name;
+        var id = api.pageParam.id;
+        //  Alert(name + '<<<' + serverurl + '>>>' + id);
+        api.ajax({
+            url: serverurl + '/api/user/member?mobile=' + GetStorage('mobile'),
+            method: 'get',
+            timeout: 5,
+            cache: false,
+            dataType: 'json',
+        }, function(ret, err) {
+            if (ret.code == 0) {
+                Toast(ret.msg);
+            } else if (ret.code == 1) {
+                opencommon(url, title);
+            }
+        });
+    }
+</script>
+
+</html>

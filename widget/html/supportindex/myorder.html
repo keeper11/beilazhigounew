@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/aui.css">
+    <style media="screen">
+        .aui-bar-nav {
+            background-color: #F4F4F4;
+            color: #fff;
+            padding-top: 20px;
+            /*margin-bottom: 30px*/
+        }
+        .aui-title {
+            color: #000;
+            font-size: 20px;
+            font-family: SimHei;
+        }
+
+        .aui-tab {
+            background-color: #F4F4F4;
+        }
+
+        .aui-tab div {
+            font-size: 17px;
+            font-family: SimHei;
+            border-bottom: 2px solid #F4F4F4;
+        }
+
+        .aui-tab .active {
+            color: #F1206B;
+            border-bottom: 2px solid #F1206B;
+        }
+
+        .orderlist {
+            margin: 1rem 0.5rem;
+            /*width: 100%;*/
+            /*height: 230px;*/
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+        .orderlist .pstate {
+            text-align: right;
+            color: #F1206B;
+            font-size: 14px;
+            font-family: SimHei;
+        }
+
+        .orderbox {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 10px;
+        }
+
+        .orderlist .imgbox img{
+            width: 90px;
+            height: 90px;
+            background-color: #F2F2F2;
+            margin-right: 10px;
+        }
+
+        .orderlist .orderbox .ordertext {
+            width: 60%;
+            color: #333333;
+            font-family: SimHei;
+        }
+        .orderlist .orderbox .ordertext  div{
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;}
+        .orderlist .orderbox .ordertext .pbaby {
+            /*padding: 4px;*/
+            background-color: #F2F2F2;
+            width: 60%;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            white-space:nowrap;
+        }
+
+        .orderlist .gongji {
+            text-align: right;
+            color: #333333;
+            font-size: 16px;
+            font-family: SimHei;
+            font-weight: 400;
+        }
+
+        .orderlist .butbox {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+
+        .orderlist .butbox .but {
+            width: 80px;
+            height: 30px;
+            line-height: 30px;
+            margin-left: 0.5rem;
+            font-size: 14px;
+            border-radius: 15px;
+            color: #ccc;
+        }
+
+        .orderlist .butbox .but2 {
+            color: #F1206B;
+            border-color: #F1206B;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='box'>
+
+        <!-- <header class="aui-bar aui-bar-nav">
+            <div class="aui-pull-left aui-btn">
+                <span class="aui-iconfont aui-icon-left" style="color:#000"></span>
+            </div>
+            <div class="aui-title">我的订单</div>
+        </header> -->
+
+
+
+        <div class="aui-tab">
+            <div class="aui-tab-item tapmode" :class="{'active':index == 5}" @click='showord(5)'>全部</div>
+            <div class="aui-tab-item tapmode" :class="{'active':index == 0}" @click='showord(0)'>待付款</div>
+            <div class="aui-tab-item tapmode" :class="{'active':index == 1}" @click='showord(1)'>待发货</div>
+            <div class="aui-tab-item tapmode" :class="{'active':index == 2}" @click='showord(2)'>待收货</div>
+        </div>
+
+
+        <!-- 全部 -->
+        <div class="orderlist" v-for='item in orderlist' v-if="index == item.state ">
+          <p class="pstate" v-if='item.state == 0'>等待买家付款</p>
+          <p class="pstate" v-if='item.state == 1'>卖家已发货</p>
+          <p class="pstate" v-if='item.state == 2'>待收货</p>
+            <p class="pstate" v-if='item.state == 3'>交易成功</p>
+            <div class="orderbox"  v-for='obj in item.goods' @click='goorddetails(item.id,item.state)' >
+                <div class="imgbox">
+                  <img :src="obj.images" alt="">
+                </div>
+                <div class="ordertext">
+                    <div>{{ obj.goods_name }}</div>
+                    <p class="pbaby">{{ obj.goods_attr }}</p>
+                </div>
+                <div>
+                    <p>￥{{ obj.goods_price}}</p>
+                    <p>X{{obj.total_num}}</p>
+                </div>
+            </div>
+            <p v-if='index ==2'>快递单号：4651315616</p>
+            <p class="gongji">共1件商品 合计 ：￥{{ item.total_price }}</p>
+            <div class="butbox" v-if='index == 0'>
+                <div class="aui-btn aui-btn-block aui-btn-outlined but but1"  @click='gocancel(item.id)'>取消订单</div>
+                <div class="aui-btn aui-btn-block aui-btn-outlined but but2" @click='gopay(item.id)'>付款</div>
+            </div>
+            <div class="butbox" v-if='index == 2'>
+                <div class="aui-btn aui-btn-block aui-btn-outlined but but2" @click='yesorder(item.id)'>确认收货</div>
+            </div>
+        </div>
+
+
+
+        <div class="orderlist" v-for='item in orderlist' v-if="index == 5">
+          <p class="pstate" v-if='item.state == 0'>等待买家付款</p>
+          <p class="pstate" v-if='item.state == 1'>卖家已发货</p>
+          <p class="pstate" v-if='item.state == 2'>待收货</p>
+            <p class="pstate" v-if='item.state == 3'>交易成功</p>
+            <div class="orderbox"  v-for='obj in item.goods' @click='goorddetails(item.id,item.state)'>
+                <div class="imgbox">
+                  <img :src="obj.images" alt="">
+                </div>
+                <div class="ordertext">
+                    <div>{{ obj.goods_name }}</div>
+                    <p class="pbaby">{{ obj.goods_attr }}</p>
+                </div>
+                <div>
+                    <p>￥{{ obj.goods_price}}</p>
+                    <p>X{{obj.total_num}}</p>
+                </div>
+            </div>
+            <p v-if='item.state ==2'>快递单号：4651315616</p>
+
+            <p class="gongji">共1件商品 合计 ：￥{{ item.total_price }}</p>
+            <div class="butbox" v-if='item.state == 0'>
+                <div class="aui-btn aui-btn-block aui-btn-outlined but but1" @click='gocancel(item.id)'>取消订单</div>
+                <div class="aui-btn aui-btn-block aui-btn-outlined but but2" @click='gopay(item.id)'>付款</div>
+            </div>
+            <div class="butbox" v-if='item.state == 2'>
+                <div class="aui-btn aui-btn-block aui-btn-outlined but but2" @click='yesorder(item.id)'>确认收货</div>
+            </div>
+            <div class="butbox" v-if='item.state == 3'>
+              <div class="aui-btn aui-btn-block aui-btn-outlined but but1">删除订单</div>
+
+            </div>
+        </div>
+
+
+
+    </div>
+</body>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/axios.min.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+
+<script type="text/javascript">
+    apiready = function() {
+
+
+
+    var vuedata = {
+        "index": "5",
+        'orderlist':[],
+        'mobiles':''
+    }
+    var vm = new Vue({
+        el: '#box',
+        data: vuedata,
+        mounted: function() {
+        },
+        created: function() {
+          this.gettoken()
+          this.getorder()
+            // this.getidnexs()
+        },
+        methods: {
+          // getidnexs(){
+          //   this.index = api.pageParam.indexs
+          // },
+          gettoken(){
+          this.mobiles = $api.getStorage('mobile')
+        },
+            showord(i) {
+                this.index = i
+                this.getorder()
+                console.log(i);
+            },
+            getorder(){
+              axios.get(`http://shop.19gou.net/api/order/my?token=${this.mobiles}`)
+                  .then(res => {
+                      console.log(res);
+                      this.orderlist = res.data.data
+                  })
+                  .catch(function(error) {
+                      console.log(error);
+                  });
+            },
+            goorddetails(i,n){
+
+              // console.log(i,n);
+              api.openWin({     
+                  name: 'orderdetails',
+                       url: './orderdetails.html',
+                       pageParam: {
+                        id: i,
+                        index:n     
+                  }   
+              });
+            },
+            yesorder(i){
+              // console.log(i);
+              axios.get(`http://shop.19gou.net/api/order/order_receipt?token=${this.mobiles}&order_id=${i}`)
+                  .then(res => {
+                      console.log(res);
+                      if(res.data.code){
+                        Toast('操作成功')
+                        this.getorder()
+                      }
+                  })
+                  .catch(function(error) {
+                      console.log(error);
+                  });
+            },
+            gocancel(i){
+              axios.get(`http://shop.19gou.net/api/order/order_cancel?token=${this.mobiles}&order_id=${i}`)
+                  .then(res => {
+                      console.log(res);
+                      if(res.data.code){
+                          Toast('操作成功')
+                        this.getorder()
+                      }
+                  })
+                  .catch(function(error) {
+                      console.log(error);
+                  });
+                  console.log(window);
+            },
+            gopay(i){
+              var aliPayPlus = api.require('aliPayPlus');
+              axios.get(
+                  `http://shop.19gou.net/api/order/order_pay?token=${this.mobiles}&order_id=${ i }}&type=alipay`
+              )
+              .then(function(res) {
+                      console.log(res.data.code);
+
+                      if (res.data.code == 1) {
+                          aliPayPlus.payOrder({
+                              orderInfo: res.data.data.pay
+                          }, function(ret, err) {
+                              if (ret.code == 9000) {
+                                  api.openWin({     
+                                      name: 'paywin',
+                                           url: './paywin.html',
+                                           pageParam: {    }   
+                                  });
+                              } else {
+                                  api.openWin({     
+                                      name: 'paywin',
+                                           url: './paynothing.html',
+                                           pageParam: {     }   
+                                  });
+                              }
+
+                          });
+
+                      }
+
+                  })
+                  .catch(function(error) {
+                      console.log(error);
+                  });
+
+            }
+        },
+
+    });
+}
+    function getOrderListByPage() {
+        这里面可以直接用vuedata里面的任何一个数据
+
+    }
+</script>
+
+</html>

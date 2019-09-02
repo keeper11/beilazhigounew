@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>领券方法</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/profile.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <style type="text/css">
+        html,
+        body {
+            background: rgba(0, 0, 0, 0);
+        }
+
+        center {
+            color: #512766;
+            margin-top: 3px;
+            font-size: 0.7em;
+        }
+
+        div {
+            width: 95%;
+            height: 100%;
+            border: thin solid #D3D3D3;
+            margin: 0 auto;
+            border-radius: 10px;
+        }
+        /*这里的width height 大于图片的宽高*/
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="aui-content-padded" style="text-align:center;padding-top:5px;">
+        ✪✪▼复制标题搜券▼✪✪
+    </section>
+    <section class="aui-content-padded">
+        <h4>１.打开京东APP，进入宝贝详情页，长按复制宝贝标题。</h4>
+    </section>
+    <div>
+        <img src="../../image/help/jd1.png">
+    </div>
+    <section class="aui-content-padded unames">
+        <!--  <h4>２.打开搜券APP长按搜索框粘帖宝贝标题后点击搜券。</h4>-->
+    </section>
+    <div>
+        <img src="../../image/help/jd2.png">
+    </div>
+    <section class="aui-content-padded">
+        <h4>３.点击商品【领券】自动跳转京东二合一领券页面。</h4>
+    </section>
+    <div>
+        <img src="../../image/help/jd3.png">
+    </div>
+    <section class="aui-content-padded">
+        <h4>４.点击【立即领取】，领取优惠券自动跳转商品详情页。</h4>
+    </section>
+    <div>
+        <img src="../../image/help/jd4.png">
+    </div>
+    <section class="aui-content-padded">
+        <h4>５.立即购买并提交订单，即享受优惠券折扣价格啦。</h4>
+    </section>
+    <div>
+        <img src="../../image/help/jd5.png">
+    </div>
+    <section class="aui-content-padded unames1">
+        <!--  <h4>６.立即购买并支付，即享受优惠券折扣价格啦。</h4>-->
+    </section>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        $api.dom(".unames").innerHTML = "<h4>２.打开" + api.appName + "APP长按搜索框粘帖宝贝标题后点击搜券。</h4>";
+        $api.dom(".unames1").innerHTML = "<h4>６." + api.appName + "APP省钱快捷方便，分享还能赚钱，祝您购物愉快！</h4>";
+    }
+</script>
+
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>视频单</title>
+	<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/swiper.css">
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		#topNav {
+			width: 100%;
+			overflow: hidden;
+			font: 16px/32px hiragino sans gb, microsoft yahei, simsun;
+			border-bottom: 1px solid #f8f8f8;
+		}
+
+		#topNav .swiper-slide {
+			padding: 0 5px;
+			letter-spacing: 2px;
+			width: 3rem;
+			text-align: center;
+		}
+
+		#topNav .swiper-slide span {
+			transition: all .3s ease;
+			display: block;
+		}
+
+		#topNav .active span {
+			transform: scale(1.1);
+			color: #FF2D2D;
+		}
+
+		.swiper-slide {
+			text-align: center;
+			font-size: 16px;
+			background: #fff;
+			/* Center slide text vertically */
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: -webkit-flex;
+			display: flex;
+			-webkit-box-pack: center;
+			-ms-flex-pack: center;
+			-webkit-justify-content: center;
+			justify-content: center;
+			-webkit-box-align: center;
+			-ms-flex-align: center;
+			-webkit-align-items: center;
+			align-items: center;
+		}
+	</style>
+</head>
+
+<body>
+	<!--<img src="images/img01.png">-->
+	<div id="topNav" class="swiper-container">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide active" i="0"><span>全部</span></div>
+			<div class="swiper-slide" i="1"><span>女装</span></div>
+			<div class="swiper-slide" i="2"><span>男装</span></div>
+			<div class="swiper-slide" i="3"><span>内衣</span></div>
+			<div class="swiper-slide" i="4"><span>美妆</span></div>
+			<div class="swiper-slide" i="5"><span>配饰</span></div>
+			<div class="swiper-slide" i="6"><span>鞋品</span></div>
+			<div class="swiper-slide" i="7"><span>箱包</span></div>
+			<div class="swiper-slide" i="8"><span>儿童</span></div>
+			<div class="swiper-slide" i="9"><span>母婴</span></div>
+			<div class="swiper-slide" i="10"><span>居家</span></div>
+			<div class="swiper-slide" i="11"><span>美食</span></div>
+			<div class="swiper-slide" i="12"><span>数码</span></div>
+			<div class="swiper-slide" i="13"><span>家电</span></div>
+			<div class="swiper-slide" i="14"><span>车品 </span></div>
+			<div class="swiper-slide" i="15"><span>文体</span></div>
+			<div class="swiper-slide" i="16"><span>其他</span></div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/swiper.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+		api.parseTapmode();
+		console.warn('打开视频页面');
+		openFrameGroup();
+	}
+
+	var mySwiper = new Swiper('#topNav', {
+		freeMode: true,
+		freeModeMomentumRatio: 0.5,
+		slidesPerView: 'auto',
+		resistanceRatio: 0,
+	});
+	swiperWidth = mySwiper.container[0].clientWidth
+	maxTranslate = mySwiper.maxTranslate();
+	maxWidth = -maxTranslate + swiperWidth / 2
+	$(".swiper-container").on('touchstart', function(e) {
+		e.preventDefault()
+	})
+	mySwiper.on('tap', function(swiper, e) {
+		mySwiper.slideTo(swiper.clickedIndex, 1000, false); //跳转
+		$("#topNav  .active").removeClass('active')
+		$("#topNav .swiper-slide").eq(swiper.clickedIndex).addClass('active')
+		slide = swiper.slides[swiper.clickedIndex]
+		slideLeft = slide.offsetLeft
+		slideWidth = slide.clientWidth
+		slideCenter = slideLeft + slideWidth / 2 // 被点击slide的中心点
+		mySwiper.setWrapperTransition(300)
+		if (slideCenter < swiperWidth / 2) {
+			mySwiper.setWrapperTranslate(0)
+		} else if (slideCenter > maxWidth) {
+			mySwiper.setWrapperTranslate(maxTranslate)
+		} else {
+			nowTlanslate = slideCenter - swiperWidth / 2
+			mySwiper.setWrapperTranslate(-nowTlanslate)
+		}
+		api.setFrameGroupIndex({
+			name: 'frame2_frm',
+			index: swiper.clickedIndex,
+			reload: false,
+			scroll: false
+		});
+	})
+
+	function openFrameGroup() {
+		var headerPos = api.pageParam.headerPos;
+		api.openFrameGroup({
+			name: 'frame2_frm',
+			opaque: 'false',
+			scrollEnabled: false,
+			historyGestureEnabled: true,
+			preload: 0,
+			bounces: false,
+			allowEdit: true,
+			rect: {
+				x: 0,
+				y: headerPos.h + 32,
+				w: 'auto',
+				h: 'auto',
+				marginBottom: (api.pageParam.footerPos).h
+			},
+			index: 0,
+			frames: [{
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '0',
+				},
+			}, {
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '1',
+				},
+			}, {
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '2',
+				},
+			}, {
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '3',
+				},
+			}, {
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '4',
+				},
+			}, {
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '5',
+				},
+			}, {
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '6',
+				},
+			}, {
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '7',
+				},
+			}, {
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '8',
+				},
+			}, {
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '9',
+				},
+			}, {
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '10',
+				},
+			}, {
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '11',
+				},
+			}, {
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '12',
+				},
+			}, {
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '13',
+				},
+			}, {
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '15',
+				},
+			}, {
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '16',
+				},
+			}, {
+				name: 'frame2_frm',
+				url: 'frame2_frm.html',
+				pageParam: {
+					cid: '14',
+				},
+			}]
+		});
+	}
+</script>
+
+</html>

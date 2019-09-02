@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/aui.css">
+    <style media="screen">
+        .aui-bar-nav {
+            color: #333;
+            background-color: #f5f5f5;
+            font-size: 21px;
+            padding-top: 20px;
+        }
+
+        .aui-bar-nav .aui-pull-left {
+            font-size: 21px!important;
+        }
+
+        .aui-bar-nav .aui-icon-left {
+            color: #333!important;
+        }
+
+        .site {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin: 0 0.5rem;
+            margin-top: 30px;
+            background-color: #fff;
+            padding: 34px 17px;
+            border-radius: 10px;
+            padding-right: 10px;
+            font-family: SimHei;
+        }
+
+        .site img {
+            width: 44px;
+            height: 44px;
+            margin-right: 19px;
+        }
+
+        .site .site_msg {
+            margin-right: 19px;
+        }
+
+        .site .site_msg p {
+            font-size: 15px;
+            color: #333333;
+        }
+
+        .site .site_msg .sitename {
+            font-size: 17px;
+        }
+
+        .site .site_msg .sitename span {
+            font-size: 15px;
+            font-weight: 400;
+            color: rgba(153, 153, 153, 1);
+        }
+
+        .commodity {
+            margin: 0 0.5rem;
+            margin-top: 30px;
+            background-color: #fff;
+            /*height: 300px;*/
+            border-radius: 10px;
+            padding: 16px;
+            padding-right: 12px;
+        }
+
+        .commodity .commoditybox {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .commodity .commoditybox img {
+            width: 105px;
+            height: 105px;
+            /*margin-right: 16px;*/
+            /*flex: 3;*/
+            /*border-radius: 5px;*/
+        }
+
+        .commodity .commoditybox .commoditymsg {
+            margin-left: 16px;
+            width: 180px;
+        }
+
+        .commodity .commoditybox .commoditymsg p {
+            color: #333333;
+            font-size: 15px;
+            font-family: SimHei;
+            margin-bottom: 12px;
+        }
+
+        .commodity .commoditybox .commoditymsg .col {
+            background-color: #F7F7F7;
+            color: #999999;
+            font-size: 14px;
+        }
+
+        .commodity .commoditybox .numbox {
+            text-align: right;
+        }
+
+        .commodity .commoditybox .numbox p {
+            color: #333;
+            font-size: 15px
+        }
+
+        .commodity .commoditybox .numbox span {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .commodity .buynum {
+            display: flex;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .commodity .buynum .buyjia {
+            display: flex;
+        }
+
+        .commodity .buynum p {
+            color: #333;
+            font-size: 15px;
+            width: 70%;
+            font-family: SimHei;
+            /*text-align: center;*/
+            padding-left: 35px;
+        }
+
+        .commodity .buynum .buyjia input {
+            width: 36px;
+            height: 30px;
+            text-align: center;
+            background-color: #F2F2F2;
+            margin: 0 2px;
+            color: #999999;
+        }
+
+        .commodity .buynum .buyjia p {
+            width: 36px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            background-color: #F2F2F2;
+            color: #CCCCCC;
+            padding: 0;
+        }
+
+        .distribution {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .distribution .distribution1 {
+            width: 70%;
+            padding-left: 35px;
+            color: #333333;
+        }
+
+        .distribution .distribution1 span {
+            color: #999999;
+            margin-left: 10px;
+        }
+
+        .distribution .inputbox {
+            display: flex;
+            align-items: center;
+            width: 130px;
+        }
+
+        .distribution .inputbox input {
+            height: 20px;
+        }
+
+        .distribution .inputbox input::-webkit-input-placeholder {
+            font-size: 15px;
+        }
+
+        .aui-bar-tab .bomtext span {
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .aui-bar-tab .aui-text-white {
+            background-color: #F1206B;
+            /*width: 115px;*/
+            height: 46px;
+            border-radius: 23px;
+        }
+
+        .aui-bar-tab {
+            padding: 8px 10px;
+        }
+
+        .buttss {
+            width: 105px!important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+
+        <!-- 订单确认标题 -->
+        <header class="aui-bar aui-bar-nav">
+            <div class="aui-pull-left aui-btn">
+                <span class="aui-iconfont aui-iconi-left" @click='bankhtml'></span>&nbsp;确认订单
+            </div>
+        </header>
+
+        <!-- 地址 -->
+        <div class="site" v-for='obj in goodsite' v-if="obj.address_id == goodsitesid">
+
+            <img src="../../image/soppeticon/dizhi.png" alt="">
+            <div class="site_msg" @click='gosite()'>
+                <!-- 1321321321 -->
+                <p v-if="obj == null">请添加收货地址</p>
+                <p class="sitename" v-if="obj !== null">{{obj.name }}<span>{{ obj.phone  }}</span></p>
+                <p v-if="obj !== null">{{obj.province}} {{obj.city}} {{obj.area}} {{obj.address}}</p>
+            </div>
+            <div><span class="aui-iconfont aui-icon-right"></span></div>
+        </div>
+
+        <!-- 商品详细 -->
+        <!-- <div style="margin-bottom:5rem"> -->
+
+        <div class="commodity" v-for='(item,index) in goodlists'>
+            <div class="commoditybox" v-if='showimg!=undefined '>
+                <img :src="item.goods_sku.img_show">
+                <div class="commoditymsg">
+                    <p>
+                        {{ item.goods_name }}
+                    </p>
+                    <p class="col">{{ item.goods_sku.goods_attr }}</p>
+                </div>
+                <div class="numbox">
+                    <p>￥{{ item.goods_price }}</p>
+                    <span>x{{ item.total_num }}</span>
+                </div>
+              </div>
+            <!-- </div> -->
+
+
+            <!-- <div class="buynum">
+                <p>购买数量</p>
+                <div class="buyjia">
+                    <p @click='subtract()'>-</p>
+                    <input type="text" v-model="goodnum">
+                    <p @click="add()">+</p>
+
+                </div>
+            </div> -->
+            <div class="distribution">
+                <p class="distribution1">配送方式<span>普通配送</span></p>
+                <p>快递免邮<span class="aui-iconfont aui-icon-right" style="font-size:12px;"></span></p>
+            </div>
+            <div class="distribution">
+                <p class="distribution1 inputbox">订单备注</p><input type="text" placeholder='选填，先与商家协商'>
+            </div>
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+
+        <footer class="aui-bar aui-bar-tab">
+            <div class="aui-bar-tab-item aui-border-r" tapmode style="width: 1rem;">
+            </div>
+            <div class="aui-bar-tab-item bomtext" tapmode style="width: 5rem;">
+                <span>共1件</span>&nbsp;<span style="color:#333">合计：
+                 <span   style="color:#F1206B;font-size:16px;">￥{{carprice}}</span>
+                <!-- <span   style="color:#F1206B;font-size:16px;">￥{{total}}</span> -->
+                </span>
+            </div>
+            <!-- <div class="aui-bar-tab-item  aui-text-white buttss" tapmode @click='gopay'>立即购买</div> -->
+            <div class="aui-bar-tab-item  aui-text-white buttss" tapmode @click='gopay()'>立即购买</div>
+
+        </footer>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/axios.min.js"></script>
+<script type="text/javascript" src="../../script/qs.js"></script>
+<!-- <script src="//cdn.bootcss.com/qs/6.5.2/qs.min.js"></script> -->
+<!-- import qs from '../../script/qs.min.js' -->
+<script type="text/javascript">
+    // apiready = function() {
+    // }
+    //
+    // function gopay (){
+    //   console.log(1111);
+    //   var aliPayPlus = api.require('aliPayPlus');
+    //       aliPayPlus.payOrder({
+    //           orderInfo: 'app_id=2019080766140412&method=alipay.trade.app.pay&format=JSON&charset=UTF-8&sign_type=RSA2&version=1.0&return_url=http%3A%2F%2Fshop.19gou.net%2Fapi%2Forder%2Freturnx%2Fpaytype%2Falipay%2Fout_trade_no%2F2019082148571009&notify_url=http%3A%2F%2Fshop.19gou.net%2Fapi%2Forder%2Fnotifyx%2Fpaytype%2Falipay&timestamp=2019-08-21+12%3A03%3A28&sign=d0ljziSYrFpvoU7eElL4JZiScLaL9LVJ3wyRTdAadVG3up4Zv%2FWW7UsT%2B41XHpYNyr6C59iWeIMpToMxwqQpYqQNLBsEckjYuKcH9BjWHlYxJFVXltIeEBhQj5TJqU9Zy0hOvjWXIlzUdaEIxeRQb52xvt49RI1THX4jKfQ3GRddK0bC0cpiglbpu1rhOLWPD0%2BhDo%2FEUJNClekXXaqpCTWB9mqJVQGjBzYNVoLSG2KfttQcPkM6kXloLCX1J%2FhCfHaLIBxDV%2F0LCRZF5W%2FPWFD6ctk5R%2BE5L1W9eTALrsxkjp698KP91%2BXmWOi1vV3kYrcPoa6tpoFl9jCqQ9hV8A%3D%3D&biz_content=%7B%22out_trade_no%22%3A%222019082148571009%22%2C%22total_amount%22%3A%225998.00%22%2C%22subject%22%3A%22%5Cu652f%5Cu4ed8%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%7D'
+    //       }, function(ret, err) {
+    //           api.alert({
+    //               title: '支付结果',
+    //               msg: ret.code,
+    //               buttons: ['确定']
+    //           });
+    //       });
+    //       console.log(2222);
+    // }
+
+    apiready = function() {
+        // var aliPay = api.require('aliPay')
+
+        var vuedata = {
+            'cartid': '',
+            'goods_num': 0,
+            'goods_sku_id': '',
+            'goodlists': [],
+            "count": '',
+            'goodnum': '1',
+            'showimg': '',
+            'goods': [],
+            'goodsite': '',
+            'total': '',
+            'resmsg': '1111',
+            'datas': {},
+            'carprice': '',
+            "mobiles": '',
+            'goodsitesid':''
+        }
+        var vm = new Vue({
+            el: '#box',
+            data: vuedata,
+            mounted: function() {
+            },
+            created: function() {
+              this.getgoodid()
+              this.getgoondmsg()
+              this.getsites()
+
+            },
+            methods: {
+                getgoodid() {
+                      // this.cartid = api.pageParam.cartid;
+                      this.cartid = $api.getStorage('cartid')
+                      this.mobiles = $api.getStorage('mobile')
+
+
+                },
+                getsites(){
+                console.log(123);
+                  axios.get(`http://shop.19gou.net/api/address/MemberAddress?token=${ this.mobiles }`, {})
+                      .then(res => {
+                        // console.log(res.data.data.list);
+                        this.goodsite = res.data.data.list
+                        // console.log($api.getStorage('addr_id'));
+                      })
+                      .catch(function(error) {
+                      });
+
+
+                },
+                bankhtml() {
+                  api.closeWin();
+                },
+                gosite(){
+                  api.openWin({ 
+                      name: 'goodclass',
+                           url: './mysite.html',
+                           pageParam: { 
+                        // mobiles:this.mobiles
+                       }   
+                  });
+                },
+                getgoondmsg() {
+                  // var mobiles = GetStorage('mobile')
+
+                    axios.get(`http://shop.19gou.net/api/Order/cart_buyNow?token=${ this.mobiles }&cart_id=${this.cartid}`)
+                        .then(res => {
+                            this.goodlists = res.data.data.goods_list
+                            // this.goodsite = res.data.data.exist_address
+                            this.goodsites = res.data.data.address
+                            this.carprice = res.data.data.order_total_price
+                            if(!$api.getStorage('addr_ids')){
+                              this.goodsitesid = res.data.data.address.address_id
+                            }else {
+                              this.goodsitesid = $api.getStorage('addr_ids')
+
+                            }
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+                },
+                subtract: function() {
+                    if (this.goodnum <= 0) {
+                        //  alert('受不了啦，宝贝不能再减少啦')
+                        this.goodnum = 0;
+                    } else {
+                        this.goodnum -= 1;
+                    }
+                    // this.jisuan()
+                },
+                add: function() {
+                    this.goodnum++;
+                    // this.jisuan()
+                },
+
+                gopay() {
+                    var aliPayPlus = api.require('aliPayPlus');
+                    var this_ = this
+                    axios.get(`http://shop.19gou.net/api/Order/cart_pay?token=${this.mobiles}&cart_id=${ this.cartid }&type=alipay`)
+
+                    .then(function(res) {
+                            // console.log(res.data.data.pay);
+
+                            if (res.data.code == 1) {
+                                aliPayPlus.payOrder({
+                                    orderInfo: res.data.data.pay
+                                }, function(ret, err) {
+                                  console.log(ret);
+                                    if (ret.code == 9000) {
+                                        api.openWin({     
+                                            name: 'paywin',
+                                                 url: './paywin.html',
+                                                 pageParam: {  
+                                                  parcenum:this_.carprice
+                                               }   
+                                        });
+                                    } else {
+                                        api.openWin({     
+                                            name: 'paywin',
+                                                 url: './paynothing.html',
+                                                 pageParam: {  }   
+                                        });
+                                    }
+
+                                });
+
+                            }
+
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+
+                }
+            }
+        });
+    }
+
+    function getOrderListByPage() {
+        这里面可以直接用vuedata里面的任何一个数据
+
+    }
+</script>
+
+</html>

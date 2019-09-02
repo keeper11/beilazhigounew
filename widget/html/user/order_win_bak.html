@@ -1,0 +1,173 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>返佣订单明细</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style type="text/css">
+        .item {
+            font-size: 17px;
+        }
+
+        #aui-header .disanf {
+            display: flex;
+            justify-content: space-around;
+            background-color: #fff;
+        }
+
+        #aui-header .disanf p {
+            color: #000;
+            font-size: 0.8rem;
+            width: 100%;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        #aui-header .disanf .p1 {
+            background-color: #d2d2d2;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="aui-content aui-bar-nav aui-bar-header" id='aui-header'>
+        <div class="aui-bar aui-bar-nav aui-bar-header">
+            <a class="aui-pull-left" tapmode onclick="GoToHisBack()"> <span class="aui-iconfont aui-icon-left"></span></a>
+            <div class="aui-title">返佣订单明细</div>
+            <a class="aui-pull-right" tapmode onclick="openpublic('../../html/user/ordersync.html','同步订单')">同步订单<span class="aui-iconfont aui-icon-search"></span></a>
+        </div>
+        <div class="disanf">
+            <p class="p1">第三方订单</p>
+            <p onclick="openpublic('../supportindex/myorder.html','自营订单')">自营订单</p>
+        </div>
+        <div class="aui-tab aui-border-b item" id="tab">
+            <div class="aui-tab-item item aui-active">自购订单</div>
+            <div class="aui-tab-item item">社群订单</div>
+            <div class="aui-tab-item item">分享订单</div>
+        </div>
+    </header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/aui-tab.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        funIniGroup();
+    }
+
+    function funIniGroup() {
+        var userinfo = GetStorage('userinfo');
+        var header = $api.byId('aui-header');
+        $api.fixIos7Bar(header);
+        var headerPos = $api.offset(header);
+        var name = api.pageParam.title;
+        var cid = api.pageParam.cid;
+        var url = 'order.html';
+        if (userinfo.memberlevel != 1) {
+            url = 'tborder.html';
+        }
+        //  $api.dom('.aui-title').innerHTML = name;
+        api.openFrameGroup({
+            name: 'group',
+            background: '#fff',
+            scrollEnabled: false,
+            historyGestureEnabled: true,
+            preload: 0,
+            bounces: false,
+            allowEdit: true,
+            rect: {
+                x: 0,
+                y: headerPos.h,
+                w: 'auto',
+                h: 'auto'
+            },
+            index: 0,
+            frames: [{
+                name: 'frame0',
+                url: url,
+            }, {
+                name: 'frame1',
+                url: 'team_tborder.html',
+            }, {
+                name: 'frame2',
+                url: 'tborder.html',
+            }]
+        }, function(ret, err) {
+            var index_ = ret.index;
+            switch (index_) {
+                case 0:
+                    historyBack(index_);
+                    break;
+                case 1:
+                    historyBack(index_);
+                    break;
+                case 2:
+                    historyBack(index_);
+                    break;
+                case 3:
+                    historyBack(index_);
+                    break;
+                case 4:
+                    historyBack(index_);
+                    break;
+            }
+        });
+
+        function historyBack(index_) {
+            api.addEventListener({
+                name: 'keyback'
+            }, function(ret, err) {
+                api.historyBack({
+                    frameName: 'frame' + index_
+                }, function(ret) {
+                    if (!ret.status) { //没有历史记录了则关闭当前窗口
+                        api.closeWin();
+                    }
+                });
+            });
+        }
+    }
+    //随意切换TAB栏
+    var tab = new auiTab({
+        element: document.getElementById("tab"),
+    }, function(ret) {
+        //      console.log(ret);
+        if (ret) {
+            var tag = (ret.index) - 1;
+            api.setFrameGroupIndex({
+                name: 'group',
+                index: tag,
+                reload: false,
+                scroll: false
+            });
+        }
+    })
+
+    function opensync() {
+        api.openWin({
+            name: 'ordersync',
+            url: 'widget://html/user/ordersync.html',
+            vScrollBarEnabled: false,
+            delay: 500,
+        });
+    }
+    //历史记录后退
+    function GoToHisBack() {
+        api.historyBack({
+            frameName: "group"
+        }, function(ret) {
+            if (!ret.status) { //没有历史记录了则关闭当前窗口
+                api.closeWin();
+            }
+        });
+    }
+</script>
+
+</html>

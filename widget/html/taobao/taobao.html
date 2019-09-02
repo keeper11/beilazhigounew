@@ -1,0 +1,231 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>商品列表</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/mescroll.css" />
+    <style>
+        .swipe {
+            width: 100%;
+            background-color: #FF0000;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .swipe-wrap {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .swipe-wrap .swipe-box {
+            float: left;
+            width: 100%;
+            position: relative;
+        }
+
+        .swipe-box img {
+            width: 100%;
+        }
+
+        .recommend {
+            width: auto;
+        }
+
+        .recommend li {
+            float: left;
+            width: 50%;
+            height: auto;
+            position: relative;
+        }
+
+        .recommend img {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!--滑动区域-->
+    <div class="mescroll" id="mescroll">
+        <div>
+            <!-- 四个推荐栏目 -->
+            <ul class="recommend">
+                <li>
+                    <a href="">
+                        <img src="http://files.fqapps.com/jhs20180705-113221.png" />
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <img src="http://files.fqapps.com/tqg20180705-113241.png" />
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <img src="http://files.fqapps.com/bkd20180705-113209.png" />
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <img src="http://files.fqapps.com/sbq20180705-113235.png" />
+                    </a>
+                </li>
+            </ul>
+
+            <!--商品列表  -->
+            <div class="main">
+                <div id="goods">
+                    <section class="goods" id="goods">
+                        <ul class="goods-list clear" id="goods_block">
+
+                        </ul>
+                        <div class="paging">
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/mescroll.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        //创建MeScroll对象,内部已默认开启下拉刷新,自动执行up.callback,重置列表数据;
+        mescroll = new MeScroll("mescroll", {
+            up: {
+                callback: uploadData, //上拉回调,此处可简写; 相当于 callback: function (page) { getListData(page); }
+                clearEmptyId: "goods_block", //1.下拉刷新时会自动先清空此列表,再加入数据; 2.无任何数据时会在此列表自动提示空
+                isBounce: false, //此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): https://www.mescroll.com/qa.html#q10
+                offset: 200, //列表滚动到距离底部小于100px,即可触发上拉加载的回调
+                noMoreSize: 1, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看
+                //isLock: true, //是否锁定上拉
+                page: {
+                    num: 0, //当前页码,默认0,回调之前加1,
+                    size: 102, //每页数据的数量;
+                    time: null //加载第一页数据服务器返回的时间 (可空);
+                },
+                lazyLoad: {
+                    use: true, // 是否开启懒加载,默认false
+                    attr: 'imgurl', // 网络图片地址的属性名 (图片加载成功会自动移除改属性): <img imgurl='网络图  src='占位图''/>
+                    showClass: 'mescroll-lazy-in', // 图片加载成功的显示动画: 渐变显示,参见mescroll.css
+                    delay: 100, // 列表滚动的过程中每500ms检查一次图片是否在可视区域,如果在可视区域则加载图片
+                    offset: 100 // 超出可视区域200px的图片仍可触发懒加载,目的是提前加载部分图片
+                },
+                toTop: { //配置回到顶部按钮
+                    src: "../../image/option/mescroll-totop.png", //默认滚动到1000px显示,可配置offset修改
+                    // html: "<p>^<br><br>顶部<p>", //标签内容,默认null; 如果同时设置了src,则优先取src
+                    offset: 500
+                },
+                htmlNodata: '<p class="upwarp-nodata">-- 已加载完毕 --</p>',
+                empty: {
+                    icon: "../../image/option/mescroll-empty.png", //图标,默认null
+                    tip: "暂无相关数据~", //提示
+                    //		btntext: "去逛逛 >", //按钮,默认""
+                    //	btnClick: function() { //点击按钮的回调,默认null
+                    //			alert("点击了按钮,具体逻辑自行实现");}
+                },
+            }
+        });
+
+        //上拉加载的回调 page = {num:1, size:10}; num:当前页 默认从1开始, size:每页数据条数,默认10
+        function uploadData(page) {
+          var pinvite = GetStorage('pinvite');
+          var mediadata = GetStorage('mediadata');
+            var pid = pinvite.tb_pid.split("_")[3];
+            var item_id = '578102185145';
+            var host = "https://eco.taobao.com/router/rest";
+            var method = "taobao.tbk.coupon.convert";
+            // 创建参数表
+            var param = {};
+            param["app_key"] = mediadata.app_key;
+            param["adzone_id"] = pid;
+            param["format"] = 'json';
+            param["method"] = method;
+            //  param["session"] = session;
+            param["sign_method"] = 'md5';
+            param["timestamp"] = datetime;
+            param["v"] = '2.0';
+            param["item_id"] = item_id;
+            //    param["page_size"] = "10";
+            var sign = tb_MD5(param);
+            var taobao = host + '?sign=' + sign + '&v=2.0&app_key=' + mediadata.app_key + '&method=' + method + '&timestamp=' + datetime + '&adzone_id=' + pid +
+                '&item_id=' + item_id + '&sign_method=md5&format=json';
+            api.ajax({
+                    url: taobao, //dataoke + appkey + '&type=top100', //疯抢榜商品API接口链接
+                    encode: true,
+                    method: 'get',
+                    timeout: 5,
+                    dataType: 'json',
+                },
+                function(ret, err) {
+                    if (ret) {
+                        Alert(ret);
+                    } else {
+                        mescroll.endErr(); //联网失败的回调,隐藏下拉刷新的状态
+                        Toast('请检查网络');
+                    }
+                });
+        }
+    }
+
+    function setListData(curPageData) {
+        var len = curPageData.length;
+        var listDom = document.getElementById("goods_block");
+        /*下面就是往容器里面插入数据的代码*/
+        var html = '<div class="swipe-wrap" id="ad">';
+        for (var i = 0; i < len; i++) {
+            var data = curPageData[i];
+            var tbm = "";
+            if (data.IsTmall == '1') {
+                tbm = '<img src="../../image/tmall.png"/>&nbsp;';
+            } else {
+                tbm = '<img src="../../image/taobao.png"/>&nbsp;';
+            };
+            var pic = "";
+            //图片链接判断
+            if ((data.Pic).indexOf("https") != -1) {
+                pic = data.Pic;
+            } else {
+                pic = 'https:' + data.Pic;
+            };
+            //销量万位转换判断
+            var sales = "";
+            if (data.Sales_num < 9999) {
+                sales = data.Sales_num;
+            } else {
+                sales = (data.Sales_num / 1e4).toFixed(1) + "万";
+            };
+            html += '<li  class="goods-a" tapmode data-url="' + tbkurl + '' + data.Quan_id + '&itemId=' + data.GoodsID + '&pid=' + '" data-itemid="' + data.GoodsID + '" onclick="openxiangqing(this);">';
+            html += '<a><img src="../../image/load.png" imgurl="' + pic + '"> ';
+            html += '<span class="icon new"> TOP ' + (i + 1).toString() + '</span>';
+            html += '<span class="xuan new">独家券' + parseFloat(data.Quan_price) + '元</span></a>';
+            html += '</a>';
+            html += '<a  class="goods-a" ><tbm>' + tbm + '</tbm>';
+            html += '<h3>' + data.Title + '</h3>';
+            html += '<div class="list-price buy "><span class="price-new"><i>券后￥</i>' + parseFloat(data.Price) + '</span>';
+            html += '<span class="good-btn">月销:<b style="color: #fC323C";>' + sales + '</b></span></div></a>';
+            html += '</li>';
+        }
+        html += '</div>';
+        $api.append(listDom, html);
+        //api.refreshHeaderLoadDone();
+        lock = false;
+    }
+</script>
+
+</html>

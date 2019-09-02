@@ -1,0 +1,320 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>订单同步</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style type="text/css">
+        .item {
+            font-size: 18px;
+        }
+
+        .center {
+            margin: 0 auto;
+            width: 90%;
+        }
+
+        .aui-searchbar {
+            background: transparent;
+        }
+
+        .aui-bar-nav .aui-searchbar-input {
+            background-color: #ffffff;
+        }
+
+        .upload {
+            height: 25px;
+            line-height: 25px;
+            font-size: 14px;
+            font-weight: bolder;
+            color: #FF0934;
+            background: #FFC619;
+            border-radius: 5px;
+            min-width: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="aui-tips aui-margin-b-15">
+        <i class="iconfont icon-chenggong"></i>
+        <div class="aui-title">同步订单（请看下方操作提示）↓</div>
+        <i class="iconfont icon-info"></i>
+    </div>
+    <header class="aui-bar aui-bar-nav">
+        <div class="aui-title" style="left:0.5rem; right: 3rem;">
+            <div class="aui-searchbar">
+                <div class="aui-searchbar-input ">
+                    <input type="tel" placeholder="请输入淘宝订单编号" maxlength="20" id="input">
+                    <div class="aui-searchbar-clear-btn">
+                        <i class="aui-iconfont aui-icon-close"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="aui-pull-right aui-btn" tapmode onclick="upload()">
+            <span class="upload">上传</span>
+        </div>
+    </header>
+    <ul class="aui-list aui-form-list">
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    选择日期
+                </div>
+                <div class="aui-list-item-input" tapmode onclick="getdate()">
+                    <input type="text" id="date" placeholder="3个月之内都可以同步">
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    选择时间
+                </div>
+                <div class="aui-list-item-input" tapmode onclick="gettime()">
+                    <input type="text" id="time" placeholder="不能大于创建时间">
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+                <div class="aui-btn aui-btn-info aui-margin-r-15" tapmode onclick="tborder()">同步淘宝</div>
+                <div class="aui-btn aui-btn-info aui-margin-r-15" tapmode onclick="jdorder()">同步京东</div>
+                <div class="aui-btn aui-btn-info aui-margin-r-15" tapmode onclick="pddorder()">同步拼多多</div>
+            </div>
+        </li>
+    </ul>
+    <div id="main" class='center'>
+        <ul class="aui-list aui-media-list">
+            <li class="aui-list-header">
+                温馨提示：
+            </li>
+            <li class="aui-list-item ">
+                <div class="aui-media-list-item-inner1">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text aui-ellipsis-2">
+                            淘宝订单编号点复制，APP自动输入。 如果已经下单付款了，2分钟内还没有看到自己的订单，可以自己手动点击同步，输入创建时间，不要多次点击，一次同步就要等待5分钟才能点第二次，请先返回订单明细，下拉刷新，还没有看到订单请联系客服，或去个人中心查看常见问题。
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <img src="../../image/user/sync.png">
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/aui-tab.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+            api.parseTapmode();
+            var header = $api.byId('aui-header');
+            $api.fixIos7Bar(header);
+            var timestamp = Date.parse(new Date()) / 1e3; //当前时间戳 精确到秒
+            setTimeout(function() {
+                var date = GetDatetime('Y-m-d', timestamp);
+                $api.byId('date').value = date;
+                var time = GetDatetime('H:i:s', timestamp);
+                $api.byId('time').value = time;
+            }, 2000);
+            autocopy();
+        }
+        //粘贴板监听邀请码自动插入
+    function autocopy() {
+        console.warn('粘贴板自动插入');
+        clipBoard = api.require('clipBoard');
+        clipBoard.setListener( //setListener
+            function(ret) {
+                if (isNaN(ret.value) != true) { //不是纯数字不输入
+                    $api.byId('input').value = ret.value; //赋值
+                }
+            });
+        clipBoard.get( //setListener
+            function(ret) {
+                if (isNaN(ret.value) != true) { //不是纯数字不输入
+                    $api.byId('input').value = ret.value; //赋值
+                }
+            });
+    }
+
+    function getdate() {
+        var timestamp = Date.parse(new Date()) / 1e3; //当前时间戳 精确到秒
+        var date = GetDatetime('Y-m-d', timestamp);
+        api.openPicker({
+            type: 'date',
+            date: date,
+            title: '选择日期'
+        }, function(ret, err) {
+            if (ret) {
+                $api.byId('date').value = ret.year + '-' + ret.month + '-' + ret.day;
+            }
+        });
+    }
+
+    function gettime() {
+        var timestamp = Date.parse(new Date()) / 1e3; //当前时间戳 精确到秒
+        var time = GetDatetime('H:i:s', timestamp);
+        api.openPicker({
+            type: 'time',
+            date: time,
+            title: '选择时间'
+        }, function(ret, err) {
+            if (ret) {
+                $api.byId('time').value = ret.hour + ':' + ret.minute + ':00';
+            }
+        });
+    }
+
+    function upload() {
+        var serverurl = GetStorage('serverurl');
+        var tborderid = $api.byId('input').value;
+        if (tborderid.length <= 0) {
+            Toast('请输入淘宝订单编号');
+        } else if (isNaN(tborderid)) {
+            Toast('必须16位以上纯数字');
+        } else if (tborderid.length <= 16) {
+            Toast('必须16位以上纯数字');
+        } else {
+            api.ajax({
+                url: serverurl + '/api/tborder/upload?mobile=' + GetStorage('mobile') + '&orderid=' + tborderid,
+                method: 'get',
+                timeout: 5,
+                cache: false,
+                dataType: 'json',
+            }, function(ret, err) {
+                if (ret.code == 0) {
+                    Toast(ret.msg);
+                } else if (ret.code == 1) {
+                    Toast(ret.msg);
+                } else {
+                    Toast('网络错误，请稍候重试');
+                }
+            });
+        }
+    }
+
+    function tborder() {
+        var commissiondata = GetStorage('commissiondata');
+        var serverurl = GetStorage('serverurl');
+        var timestamp = Date.parse(new Date()) / 1e3; //当前时间戳 精确到秒
+        var date = $api.byId('date').value;
+        var time = $api.byId('time').value;
+        if (!date) {
+            Toast('获取北京时间中...');
+            return false;
+        }
+        var datetime = Date.parse(date + " " + time) / 1e3;
+        if (!GetStorage('tb_time') || GetStorage('tb_time') < timestamp) {
+            api.ajax({
+                url: serverurl + '/api/tborder/tb_hand?sid=' + commissiondata.sid + '&time=' + datetime,
+                method: 'get',
+                timeout: 5,
+                cache: false,
+                dataType: 'json',
+            }, function(ret, err) {
+                if (ret.code == 0) {
+                    Toast(ret.msg);
+                } else if (ret.code == 1) {
+                    Toast(ret.msg);
+                } else {
+                    Toast('网络错误，请稍候重试');
+                }
+            });
+            SetStorage('tb_time', timestamp + 300);
+        } else {
+            var tb_time = (GetStorage('tb_time') - timestamp);
+            var time = GetDatetime('i分s', tb_time);
+            Toast('请等待' + time + '再同步');
+        }
+    }
+
+    function jdorder() {
+        var commissiondata = GetStorage('commissiondata');
+        var serverurl = GetStorage('serverurl');
+        var timestamp = Date.parse(new Date()) / 1e3; //当前时间戳 精确到秒
+        var date = $api.byId('date').value;
+        var time = $api.byId('time').value;
+        if (!date) {
+            Toast('获取北京时间中...');
+            return false;
+        }
+        var datetime = Date.parse(date + " " + time) / 1e3;
+        if (!GetStorage('jd_time') || GetStorage('jd_time') < timestamp) {
+            api.ajax({
+                url: serverurl + '/api/jdorder/jd_hand?time=' + datetime,
+                method: 'get',
+                timeout: 5,
+                cache: false,
+                dataType: 'json',
+            }, function(ret, err) {
+                if (ret.code == 0) {
+                    Toast(ret.msg);
+                } else if (ret.code == 1) {
+                    Toast(ret.msg);
+                } else {
+                    Toast('网络错误，请稍候重试');
+                }
+            });
+            SetStorage('jd_time', timestamp + 300);
+        } else {
+            var jd_time = (GetStorage('jd_time') - timestamp);
+            var time = GetDatetime('i分s', jd_time);
+            Toast('请等待' + time + '再同步');
+        }
+    }
+
+    function pddorder() {
+        var commissiondata = GetStorage('commissiondata');
+        var serverurl = GetStorage('serverurl');
+        var timestamp = Date.parse(new Date()) / 1e3; //当前时间戳 精确到秒
+        var date = $api.byId('date').value;
+        var time = $api.byId('time').value;
+        if (!date) {
+            Toast('获取北京时间中...');
+            return false;
+        }
+        var datetime = Date.parse(date + " " + time) / 1e3;
+        if (!GetStorage('pdd_time') || GetStorage('pdd_time') < timestamp) {
+            api.ajax({
+                url: serverurl + '/api/pddorder/pdd_hand?time=' + datetime,
+                method: 'get',
+                timeout: 5,
+                cache: false,
+                dataType: 'json',
+            }, function(ret, err) {
+                if (ret.code == 0) {
+                    Toast(ret.msg);
+                } else if (ret.code == 1) {
+                    Toast(ret.msg);
+                } else {
+                    Toast('网络错误，请稍候重试');
+                }
+            });
+            SetStorage('pdd_time', timestamp + 300);
+        } else {
+            var pdd_time = (GetStorage('pdd_time') - timestamp);
+            var time = GetDatetime('i分s', pdd_time);
+            Toast('请等待' + time + '再同步');
+        }
+    }
+
+    function GoToHisBack() {
+        api.historyBack({
+            frameName: "group"
+        }, function(ret) {
+            if (!ret.status) { //没有历史记录了则关闭当前窗口
+                api.closeWin();
+            }
+        });
+    }
+</script>
+
+</html>

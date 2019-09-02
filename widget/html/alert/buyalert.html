@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>弹窗</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style type="text/css">
+        html,
+        body {
+            background: none;
+        }
+
+        .discountTip {
+            height: 30px;
+            padding: 0 10px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+        }
+
+        .discountTip .headpic {
+            width: 25px;
+        }
+
+        .discountTip .headpic img {
+            width: 20px;
+            border-radius: 50%;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <section class="alertBox">
+        <div class="discountTip">
+            <div class="headpic"><img id="userPic" src=""></div>
+            <div class="num"><span id="discount"></span>分钟前<span id="userNum1"></span>**<span id="userNum2"></span>购买了此商品</div>
+            <!--   <div class="num">**** <span id="userNum"></span>成功领取了<span id="discount"></span>元券</div> -->
+            <!-- <div class="num"> <span id="phone"></span> <span id="userNum"></span>成功领取了<span id="discount"></span>元券</div> -->
+        </div>
+    </section>
+</body>
+<script type="text/javascript" src='../../script/api.js'></script>
+<script type="text/javascript" src='../../script/headpic.js'></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        randomFloat();
+    }
+
+    function randomFloat() {
+        var money = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        var userNum1 = [130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 150, 151, 152, 153, 154, 155, 160, 165, 170, 180];
+        var randomMoney = money[Math.floor(Math.random() * money.length)];
+        var random = Math.floor(Math.random() * headpicArr.length);
+        var headpic = headpicArr[random];
+        $api.byId('discount').innerHTML = randomMoney;
+        $api.byId('userNum1').innerHTML = userNum1[Math.floor(Math.random() * userNum1.length)];
+        $api.byId('userNum2').innerHTML = Math.floor(Math.random() * 900 + 100);
+        $api.byId('userPic').src = headpic;
+        //  $api.byId('phone').innerHTML = getMoble();
+        setTimeout(function() {
+            $api.css($api.dom('.alertBox'), 'display: none;');
+        }, 5000)
+        setTimeout(function() {
+            randomFloat();
+            $api.css($api.dom('.alertBox'), 'display: block;');
+        }, 10000)
+    }
+
+    function getMoble() {
+        // 根据字典生成随机序列
+        var randomCode = function(len, dict) {
+            for (var i = 0, rs = ''; i < len; i++)
+                rs += dict.charAt(Math.floor(Math.random() * 100000000) % dict.length);
+            return rs;
+        };
+        // 生成随机手机号码
+        var randomPhoneNumber = function() {
+            // 第1位是1 第2,3位是345678 第4-7位是* 最后四位随机
+            return [1, randomCode(2, '3456789'), '**', randomCode(4, '0123456789')].join('');
+        };
+        return randomPhoneNumber()
+    }
+</script>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+	<title>APP</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<style>
+		html,
+		body {
+			height: 100%;
+			background-color: #FFFCFC;
+		}
+
+		#wrap {
+			height: 100%;
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: flex;
+			-webkit-box-orient: vertical;
+			-webkit-flex-flow: column;
+			flex-flow: column;
+		}
+
+		#main {
+			background: url(../../image/guide/guide4.png) center center no-repeat;
+			background-size: 100% 100%;
+			-webkit-box-flex: 1;
+			-webkit-flex: 1;
+			flex: 1;
+			padding: 1em;
+		}
+
+		.wrap {
+			position: absolute;
+			width: 60px;
+			height: 30px;
+			background: #CECECE;
+			border-radius: 15px;
+			overflow: hidden;
+			z-index: 9999;
+			top: 40px;
+			right: 20px;
+		}
+
+		.box {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			line-height: 30px;
+			font-size: 16px;
+			color: #333;
+			text-align: center;
+			z-index: 4;
+			background: #CECECE;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="wrap">
+		<div id="main" onclick="guideToHome();" tapmode="tap-active"></div>
+	</div>
+	<div class="wrap">
+		<div class="box" id="tid" onclick="guideToHome();"></div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+			//插屏倒计时
+			time = '4';
+			rotating();
+		}
+		//插屏倒计时
+	function rotating() {
+		var tid = $api.byId('tid');
+		$api.html(tid, '跳过 ' + time);
+		if (time > 0) {
+			time = time - 1;
+			setTimeout(rotating, 1000);
+		} else {
+			setTimeout(guideToHome, 1000);
+		}
+	}
+
+	function guideToHome() {
+		api.execScript({
+			name: 'root',
+			script: 'indexfirst();'
+		});
+	};
+</script>
+
+</html>

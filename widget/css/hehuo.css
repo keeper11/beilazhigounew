@@ -1,0 +1,197 @@
+/*样式重置start*/
+
+html, body, div, ul, li, h1, h2, h3, h4, h5, p, em, i, img {
+    margin: 0px;
+    padding: 0px;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+em, i {
+    font-style: normal;
+}
+
+input {
+    outline: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-appearance: none;
+}
+
+
+/*全局样式 start*/
+
+html {
+    max-width: 750px;
+    min-width: 320px;
+    margin: 0 auto;
+}
+
+body {
+    max-width: 750px;
+    min-width: 320px;
+    margin: 0 auto;
+    font: normal normal 0px/18px;
+    font-family: Arial, 'Microsoft YaHei';
+    background-color: #fff;
+}
+
+.g-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    margin-left: -7.5rem;
+    height: 1.94rem;
+    width: 15rem;
+    border-top: 1px solid #f0f0f0;
+    background-color: #fff;
+}
+
+.g-nav a {
+    float: left;
+    width: 20%;
+    height: 1.78rem;
+    padding-top: 0.16rem;
+}
+
+.g-nav a span {
+    display: block;
+    width: 1.04rem;
+    height: 1.04rem;
+    margin: 0 auto;
+}
+
+.g-nav a:nth-child(1) span {
+    background: url(images/n1.jpg) center center no-repeat;
+    background-size: 100% 100%;
+}
+
+.g-nav a:nth-child(1).cur_a span {
+    background: url(images/n1_on.jpg) center center no-repeat;
+    background-size: 100% 100%;
+}
+
+.g-nav a:nth-child(2) span {
+    background: url(images/n5.jpg) center center no-repeat;
+    background-size: 100% 100%;
+}
+
+.g-nav a:nth-child(2).cur_a span {
+    background: url(images/n5_on.jpg) center center no-repeat;
+    background-size: 100% 100%;
+}
+
+.g-nav a:nth-child(3) span {
+    background: url(images/n2.jpg) center center no-repeat;
+    background-size: 100% 100%;
+}
+
+.g-nav a:nth-child(3).cur_a span {
+    background: url(images/n2_on.jpg) center center no-repeat;
+    background-size: 100% 100%;
+}
+
+.g-nav a:nth-child(4) span {
+    background: url(images/n3.jpg) center center no-repeat;
+    background-size: 100% 100%;
+}
+
+.g-nav a:nth-child(4).cur_a span {
+    background: url(images/n3_on.jpg) center center no-repeat;
+    background-size: 100% 100%;
+}
+
+.g-nav a:nth-child(5) span {
+    background: url(images/n4.jpg) center center no-repeat;
+    background-size: 100% 100%;
+}
+
+.g-nav a:nth-child(5).cur_a span {
+    background: url(images/n4_on.jpg) center center no-repeat;
+    background-size: 100% 100%;
+}
+
+.g-nav a i {
+    display: block;
+    height: 0.74rem;
+    line-height: 0.74rem;
+    font-size: 0.4rem;
+    color: #808080;
+}
+
+.g-nav a i {
+    display: block;
+    height: 0.74rem;
+    line-height: 0.74rem;
+    font-size: 0.4rem;
+    color: #808080;
+    text-align: center;
+}
+
+.g-nav a.cur_a i {
+    color: #dc2888;
+}
+
+.g-head {
+    position: relative;
+    height: 1.74rem;
+    line-height: 1.74rem;
+    font-size: 0.76rem;
+    color: #141414;
+    text-align: center;
+    font-weight: 100;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.g-head i {
+    font-family: arial, 'Microsoft YaHei';
+}
+
+.g-head .link {
+    position: absolute;
+    bottom: 0;
+    right: 0.6rem;
+    height: 1.74rem;
+    line-height: 1.74rem;
+    font-size: 0.6rem;
+    color: #dc2888;
+    font-weight: 100;
+}
+
+.g-head .help {
+    position: absolute;
+    bottom: 0rem;
+    right: 0.6rem;
+    height: 1.74rem;
+    line-height: 1.74rem;
+    font-size: 0.68rem;
+    color: #dc2888;
+    font-weight: 100;
+}
+
+.g-head .back {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.6rem;
+    height: 0.72rem;
+    width: 0.42rem;
+    color: #dc2888;
+    background: url(images/back.jpg) center center no-repeat;
+    background-size: 100% 100%;
+}
+
+.g-head .save {
+    position: absolute;
+    bottom: 0rem;
+    right: 0.6rem;
+    height: 1.74rem;
+    line-height: 1.74rem;
+    font-size: 0.68rem;
+    color: #dc2888;
+    font-weight: 100;
+}

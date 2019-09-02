@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+	<title>修改密码</title>
+	<link rel="stylesheet" type="text/css" href="../../css/reg_login.css">
+</head>
+
+<body>
+	<div id="login_content_wrapper" style="display: block; opacity: 1;">
+		<div id="login_tele_wrapper" style="display: block; opacity: 1;">
+			<h3 class="login_content_h3 none">修改密码</h3>
+
+			<div class="login_input_div">
+				<div id="login_tele_left" class="left">
+					+
+					<input type="tel" id="country" class="login_tele_code_input" maxlength="4" value="86" readonly="readonly">
+				</div>
+				<div id="CountriesRegions" class="right rel" onclick="Toast('当前仅支持中国大陆手机用户')">
+					中国
+				</div>
+			</div>
+
+			<div class="login_input_div">
+				<span class="input_title">手机号</span>
+				<input type="tel" id="phone" placeholder="填写手机号码" class="login_input" maxlength="11">
+			</div>
+			<div class="login_input_div">
+				<span class="input_title">验证码</span>
+				<input type="tel" id="PIN" placeholder="填写验证码" class="login_input" maxlength="6">
+				<!--获取验证码 计时器-->
+				<div id="getpin" class="getpin_clickable right c_txt rel getpin" onclick="getCode()">
+					获取验证码
+				</div>
+				<div id="pinjsq" class="pinjsq_clickable right c_txt rel pinjsq none">
+					计时器
+				</div>
+				<!--/-->
+			</div>
+			<div class="login_input_div">
+				<span class="input_title">密&emsp;码</span>
+				<input type="password" id="pwd" class="login_input" placeholder="请设置登录密码" maxlength="16">
+				<img class="eye" src="../../image/bkj.png" />
+			</div>
+			<!--		<div class="login_input_div">
+				<span class="input_title">类&emsp;型</span>
+				<select id="mtypeid" name="mtypeid">
+                        <option value="1">个人用户</option>
+                        <option value="2">机构用户</option>
+                        <option value="3">专家用户</option>
+                    </select>
+			</div>
+		-->
+			<a class="btnok" onclick="CheckSubmit()">提交修改</a>
+			<div onclick="GoLogin()">
+				<p class="login_content_foot_tip rel right">
+					<a class="login_no_request_code_link">我要登录</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+	var moduleSMSSDK = null;
+	apiready = function() {
+			api.parseTapmode();
+			$(".eye").click(function() {
+				var arr = this.src.split("/");
+				if (arr[arr.length - 1] == "bkj.png") {
+					this.src = "../../image/kj.png";
+					$(this).prev().attr("type", "text");
+				} else {
+					this.src = "../../image/bkj.png";
+					$(this).prev().attr("type", "password");
+				}
+			})
+			moduleSMSSDK = api.require('smssdk');
+			autocopy();
+		}
+		//粘贴板监听邀请码自动插入
+	function autocopy() {
+		console.warn('粘贴板自动插入');
+		clipBoard = api.require('clipBoard');
+		clipBoard.setListener( //setListener
+			function(ret) {
+				if (isNaN(ret.value) != true) { //不是纯数字不输入
+					$api.byId('PIN').value = ret.value; //赋值
+				} else if ((ret.value).indexOf("验证码") != -1) { //不是纯数字不输入
+					var pin = (ret.value).match(/\d{4,6}/g);
+					$api.byId('PIN').value = pin; //赋值
+				}
+			});
+		clipBoard.get( //setListener
+			function(ret) {
+				if (isNaN(ret.value) != true) { //不是纯数字不输入
+					$api.byId('PIN').value = ret.value; //赋值
+				} else if ((ret.value).indexOf("验证码") != -1) { //不是纯数字不输入
+					var pin = (ret.value).match(/\d{4,6}/g);
+					$api.byId('PIN').value = pin; //赋值
+				}
+			});
+	}
+	//.发送验证码事件
+	function getCode() {
+		//.获取事件类型
+		var connectionType = api.connectionType;
+		var country = $api.byId("country").value;
+		//	var tempCode = $api.byId("tempCode").value;
+		var phone = $api.byId('phone').value;
+		if (phone.length <= 0) {
+			Toast('请输入手机号');
+		} else if (isNaN(phone)) {
+			Toast('手机号必须纯数字');
+		} else if (phone < 13000000000) {
+			Toast('手机号格式错误');
+		} else if (phone > 19999999999) {
+			Toast('手机号格式错误');
+		} else if (connectionType == 'none') {
+			Toast('没有网络');
+		} else {
+			// param中的key命名不能改变
+			var param = {
+				zone: country,
+				phoneNumber: phone
+			};
+			moduleSMSSDK.getTextCode(param, function(ret, err) {
+				if (err !== null && err !== undefined && err !== '') {
+					Toast(err.msg); // 错误消息示例：{"msg":"Template not exist.","code":484}
+				} else {
+					showtime(120);
+					Toast('发送成功'); // 正常消息示例：{"smart":false}
+				}
+			});
+		}
+	}
+
+	//.计时器
+	function showtime(t) {
+		for (i = 1; i <= t; i++) {
+			window.setTimeout("update(" + i + "," + t + ")", i * 1000);
+		}
+	}
+
+	function update(num, t) {
+		if (num == t) {
+			$api.addCls($api.dom('.pinjsq'), 'none');
+			$api.removeCls($api.dom('.getpin'), 'none');
+			$api.text($api.byId("getpin"), '重新获取');
+		} else {
+			printnr = t - num;
+			$api.addCls($api.dom('.getpin'), 'none');
+			$api.removeCls($api.dom('.pinjsq'), 'none');
+			$api.text($api.byId("pinjsq"), printnr + "秒");
+		}
+	}
+
+	function CheckSubmit() {
+		var phone = $api.byId('phone').value;
+		var country = $api.byId("country").value;
+		var code = $api.byId('PIN').value;
+		var pwd = $api.byId('pwd').value;
+		if (phone.length <= 0) {
+			Toast('请输入手机号码');
+		} else if (isNaN(phone)) {
+			Toast('手机号必须纯数字');
+		} else if (phone < 13000000000) {
+			Toast('手机号格式错误');
+		} else if (phone > 19999999999) {
+			Toast('手机号格式错误');
+		} else if (code.length <= 0) {
+			Toast('请输入验证码');
+		} else if (code.length < 4) {
+			Toast('验证码格式有误');
+		} else if (pwd.length <= 0) {
+			Toast('请设置登录密码');
+		} else if (pwd.length < 6) {
+			Toast('登录密码太过简单');
+		} else {
+			var param = {
+				zone: country,
+				phoneNumber: phone,
+				code: code
+			};
+			moduleSMSSDK.commitCode(param, function(ret, err) {
+				if (err !== null && err !== undefined && err !== '') {
+					Toast(err.msg);
+				} else {
+					// 正常消息示例：{country=86, phone=13362206853}
+					Edit(phone, pwd);
+				}
+			});
+		}
+	}
+
+	//.注册代码
+	function Edit(phone, pwd) {
+		var serverurl = GetStorage('serverurl');
+		var deviceName = api.deviceName;
+		var deviceId = api.deviceId;
+		var device = deviceName + ':' + deviceId
+		api.ajax({
+			url: serverurl + '/api/user/resetpwd?mobile=' + phone + '&newpassword=' + pwd + '&deviceid=' + device,
+			method: 'get',
+			timeout: 5,
+			cache: false,
+			dataType: 'json',
+		}, function(ret, err) {
+			if (ret.code == 0) {
+				Toast(ret.msg);
+			} else if (ret.code == 1) {
+				Toast(ret.msg);
+				SetStorage('mobile', phone);
+				login(phone, pwd);
+			} else {
+				Toast('网络错误，请稍候重试');
+				RmStorage('serverurl');
+				getServer();
+			}
+		});
+	}
+
+	function login(phone, pwd) {
+		var serverurl = GetStorage('serverurl');
+		var deviceName = api.deviceName;
+		var deviceId = api.deviceId;
+		var device = deviceName + ':' + deviceId
+		api.ajax({
+			url: serverurl + '/api/user/login?account=' + phone + '&password=' + pwd + '&deviceid=' + device,
+			method: 'get',
+			timeout: 5,
+			cache: false,
+			dataType: 'json',
+		}, function(ret, err) {
+			if (ret.code == 0) {
+				Toast(ret.msg);
+			} else if (ret.code == 1) {
+				var data = ret.data;
+				setdata(data);
+				rootuserdata();
+			}
+		});
+	}
+</script>
+
+</html>

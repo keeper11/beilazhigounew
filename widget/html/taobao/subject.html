@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>精美专题</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/mescroll.css" />
+    <style>
+        .goods-a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .poster-img {
+            width: 100%;
+            display: block;
+        }
+
+        .poster-groom {
+            font-size: 15px;
+            text-align: center;
+            line-height: 20px;
+            padding: 10px 0;
+            font-weight: bolder;
+        }
+
+        .postericon {
+            background: url("https://img.fqapps.com/Fh3PO1hdVt7typgzuT836I4dzFdm-600") no-repeat;
+            background-size: 152px 66px;
+        }
+
+        .poster-title {
+            display: flex;
+            margin-left: calc((100% - 152px) / 2);
+            height: 20px;
+            width: 152px;
+            background-position: 0 -46px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .poster-goods-single {
+            display: flex;
+            padding: 5px 0 5px 10px;
+            border-bottom: 1px solid #EBEBEB;
+        }
+
+        .goods-single-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 5px;
+        }
+
+        .goods-single-message {
+            width: calc(100% - 140px);
+        }
+
+        .goods-single-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            font-size: 14px;
+            padding: 0px 8px;
+            height: 40px;
+            margin-left: 12%;
+        }
+        
+        .goods-single-title img {
+            position: relative;
+            top: 10px;
+        }
+
+        .goods-single-coupon {
+            margin: 6px 0 0 6px;
+        }
+
+        .single-coupon-num {
+            display: inline-flex;
+            border: 1px solid #F36859;
+            font-size: 12px;
+            color: white;
+            height: 18px;
+        }
+
+        .single-coupon-num span:first-child {
+            background: #F36859;
+            padding: 0 4px;
+        }
+
+        .single-coupon-num span:nth-of-type(2) {
+            color: #F36859;
+            background: white;
+            padding: 0 4px;
+            padding-left: 6px;
+        }
+
+        .goods-single-commision {
+            color: #71ACFD;
+            font-size: 12px;
+        }
+
+        .goods-single-price {
+            position: relative;
+            margin-left: 6px;
+            margin-top: 0px;
+        }
+
+        .poster-share {
+            height: 46px;
+            width: 46px;
+            background-position: 0 0;
+        }
+
+        .goods-single-price div:first-child {
+            background: #F36859;
+            background: linear-gradient(to right, #E93F40, #FE9273);
+            color: white;
+            font-size: 12px;
+            border-radius: 10px 0 0 0;
+            padding: 4px;
+        }
+
+        .goods-single-sale {
+            color: #888888;
+            background: #f6f6f6;
+            font-size: 12px;
+            padding: 4px;
+        }
+
+        .goods-single-cost {
+            font-size: 12px;
+            color: #F1D0CC;
+            float: right;
+        }
+
+        .goods-single-share {
+            font-size: 12px;
+            color: #F36859;
+            float: right;
+        }
+
+        .goods-single-price a {
+            display: flex;
+            position: absolute;
+            right: 2px;
+            top: 4px;
+        }
+
+        #src img {
+            height: 130px;
+            width: 100%;
+        }
+
+        .tbm {
+            font-size: 12px;
+            background: red;
+            color: #fff;
+            width: auto;
+            border-radius: 3px;
+            position: absolute;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <!--滑动区域-->
+    <div class="mescroll" id="mescroll">
+        <div>
+            <div id="src">
+                <img class="poster-img" src="../../image/load_440.png" />
+            </div>
+            <section class="aui-content  aui-border-b" style="background-color: #fff;">
+                <div class="poster-groom">
+                </div>
+            </section>
+            <section class="aui-content" style="background-color: #fff;">
+                <div class="aui-card-list-header  aui-border-b">
+                    <div></div>
+                    <div class="title">
+                        <h3>\/&nbsp;&nbsp;精美商品&nbsp;&nbsp;/&nbsp;&nbsp;<b style="color: #fC323C";>TOP9</b>&nbsp;&nbsp;\/</h3>
+                    </div>
+                    <div></div>
+                </div>
+            </section>
+
+            <section class="aui-content  aui-border-b" style="background-color: #fff;">
+                <ul class="goods-list goods-a" id="goods_block">
+                    <!--  <div class="poster-goods">
+                        <div class="poster-goods-single">
+                            <div><img class="goods-single-img" src="" /></div>
+                            <div class="goods-single-message">
+                                <div class="goods-single-title">百搭 小白鞋女</div>
+                                <div class="goods-single-coupon"><span class="single-coupon-num"><span>券</span><span>15元</span></span>
+                                </div>
+                                <div class="goods-single-price">
+                                    <div><span>券后￥64.00</span><span class="goods-single-cost"><del>￥79</del></span></div>
+                                    <div class="goods-single-sale">已售22849件<span class="goods-single-share">分享赚￥64</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  -->
+                </ul>
+                <div class="paging">
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/mescroll.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        var url = api.pageParam.url;
+        var obj = $api.byId('src');
+        var html = '<img class="poster-img" src="../../image/load_440.png" imgurl="' + url + '" />';
+        $api.html(obj, html);
+        var content = api.pageParam.content;
+        $api.dom('.poster-groom').innerHTML = content;
+        //创建MeScroll对象,内部已默认开启下拉刷新,自动执行up.callback,重置列表数据;
+        mescroll = new MeScroll("mescroll", {
+            down: {
+                auto: false //是否在初始化完毕之后自动执行下拉回调callback; 默认true; (注: down的callback默认调用 mescroll.resetUpScroll(); )
+            },
+            up: {
+                callback: uploadData, //上拉回调,此处可简写; 相当于 callback: function (page) { getListData(page); }
+                clearEmptyId: "goods_block", //1.下拉刷新时会自动先清空此列表,再加入数据; 2.无任何数据时会在此列表自动提示空
+                isBounce: false, //此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): https://www.mescroll.com/qa.html#q10
+                offset: 200, //列表滚动到距离底部小于100px,即可触发上拉加载的回调
+                noMoreSize: 1, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看
+                //isLock: true, //是否锁定上拉
+                page: {
+                    num: 0, //当前页码,默认0,回调之前加1,
+                    size: 15, //每页数据的数量;
+                    time: null //加载第一页数据服务器返回的时间 (可空);
+                },
+                lazyLoad: {
+                    use: true, // 是否开启懒加载,默认false
+                    attr: 'imgurl', // 网络图片地址的属性名 (图片加载成功会自动移除改属性): <img imgurl='网络图  src='占位图''/>
+                    showClass: 'mescroll-lazy-in', // 图片加载成功的显示动画: 渐变显示,参见mescroll.css
+                    delay: 400, // 列表滚动的过程中每500ms检查一次图片是否在可视区域,如果在可视区域则加载图片
+                    offset: 10 // 超出可视区域200px的图片仍可触发懒加载,目的是提前加载部分图片
+                },
+                toTop: { //配置回到顶部按钮
+                    src: "../../image/option/mescroll-totop.png", //默认滚动到1000px显示,可配置offset修改
+                    // html: "<p>^<br><br>顶部<p>", //标签内容,默认null; 如果同时设置了src,则优先取src
+                    offset: 500
+                },
+                htmlNodata: '<p class="upwarp-nodata">-- 已加载完毕 --</p>',
+                empty: {
+                    icon: "../../image/option/mescroll-empty.png", //图标,默认null
+                    tip: "暂无相关数据~", //提示
+                },
+            }
+        });
+
+        //上拉加载的回调 page = {num:1, size:10}; num:当前页 默认从1开始, size:每页数据条数,默认10
+        function uploadData(page) {
+            var commondata = GetStorage('commondata');
+            var id = api.pageParam.id;
+            var haodanku = "https://v2.api.haodanku.com/get_subject_item/apikey/"; //好单库链接
+            setTimeout(function() {
+                api.ajax({
+                        url: haodanku + commondata.apikey + "/id/" + id, //专题商品API接口链接
+                        encode: false,
+                        method: 'get',
+                        timeout: 5,
+                        cache: 'true',
+                        dataType: 'json',
+                    },
+                    function(ret, err) {
+                        if (ret.data) {
+                            var curPageData = ret.data;
+                            //  Alert(curPageData);
+                            mescroll.endSuccess(curPageData.length);
+                            setListData(curPageData); //自行实现
+                        } else {
+                            mescroll.endErr(); //联网失败的回调,隐藏下拉刷新的状态
+                            var listDom = document.getElementById("goods_block");
+                            var html = '<div style="text-align:center"><img src="../../image/option/mescroll-empty.png" style="width:200PX;"></div>';
+                            //  var html = '<div class="paging" style="text-align:center;padding-top:5px;">-- 没有网络或网络错误 --<br>请检查网络后下拉刷新!!</div>';
+                            $api.html(listDom, html);
+                        }
+                    });
+            }, 500);
+        }
+    }
+
+    function setListData(curPageData) {
+        var userinfo = GetStorage('userinfo');
+        var inviteinfo = GetStorage('inviteinfo');
+        var commondata = GetStorage('commondata');
+        var len = curPageData.length;
+        var listDom = document.getElementById("goods_block");
+        /*下面就是往容器里面插入数据的代码*/
+        var html = '';
+        for (var i = 0; i < len; i++) {
+            var data = curPageData[i];
+            //是否天猫
+            var tbm = "";
+            if (data.shoptype == 'B') {
+                tbm = '<p class="tbm">天猫</p>';
+            } else {
+                tbm = '<p class="tbm">淘宝</p>';
+            };
+            var price = parseFloat(data.itemendprice); //.toFixed(2));
+            var first = (inviteinfo.first_cut / 100) * (data.tkrates / 100);
+            var share = '';
+            if (userinfo.memberlevel != 1 || commondata.fenxiang == 1) {
+                share = '分享赚￥' + parseFloat((price * first).toFixed(2));
+            }
+            //图片链接判断
+            var pic = "";
+            if ((data.itempic).indexOf("http") != -1) {
+                pic = data.itempic;
+            } else {
+                pic = 'https:' + data.itempic;
+            };
+            var activityid = data.couponurl.split("&activityId=")[1]
+                //销量万位转换判断
+            var sales = "";
+            if (data.itemsale < 9999) {
+                sales = data.itemsale;
+            } else {
+                sales = (data.itemsale / 1e4).toFixed(1) + "万";
+            };
+            html += '<div class="poster-goods" tapmode data-couponid="' + activityid + '" data-itemid="' + data.itemid + '" onclick="openxiangqing(this)">';
+            html += '<div class="poster-goods-single"><div><img class="goods-single-img" src="../../image/load.png" imgurl="' + pic + '" /></div>';
+            html += '<div class="goods-single-message">' + tbm + '<div class="goods-single-title">' + data.itemtitle + '</div>';
+            html += '<div class="goods-single-coupon"><span class="single-coupon-num"><span>券</span><span>' + parseFloat(data.couponmoney) + '元</span></span></div>';
+            html += '<div class="goods-single-price"><div><span>券后￥' + parseFloat(data.itemendprice) + '</span><span class="goods-single-cost">原价<del>￥' + parseFloat(data.itemprice) + '</del></span></div>';
+            html += '<div class="goods-single-sale">已售' + sales + '件<span class="goods-single-share">' + share + '</span></div></div></div></div></div>';
+        }
+        $api.html(listDom, html);
+        //api.refreshHeaderLoadDone();
+        lock = false;
+    }
+</script>
+
+</html>

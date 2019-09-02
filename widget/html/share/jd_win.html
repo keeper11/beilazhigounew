@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>淘宝分享</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style>
+        .aui-iconfont:active {
+            background: #F2727A;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="aui-bar aui-bar-nav aui-bar-header headdisplay" id="aui-header">
+        <div class="aui-bar aui-bar-nav aui-bar-header">
+            <div class="aui-iconfont aui-icon-left aui-pull-left" tapmode onclick="GoToHisBack();"> </div>
+            <div class="aui-title"></div>
+            <div class="aui-iconfont aui-icon-close aui-pull-right" tapmode onclick="CloseWin();"> </div>
+        </div>
+    </header>
+    <div id="main" class='center'>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+        $api.fixIos7Bar(header);
+        var headerPos = $api.offset(header);
+        var body_h = $api.offset($api.dom('body')).h;
+        var main = $api.byId('main');
+        var mainPos = $api.offset(main);
+        var itemid = api.pageParam.itemid;
+        var couponid = api.pageParam.couponid;
+      //  $api.dom('.aui-title').innerHTML = title;
+        //$api.byId('title').innerText = title;
+        api.openFrame({
+            name: 'jdshangpin',
+            url: './jdshangpin.html',
+            bounces: false,
+            rect: {
+                x: 0,
+                y: headerPos.h,
+                w: 'auto', //api.winWidth,//
+                h: 'auto', //api.frameHeight//
+            },
+            progress: {
+                type: 'page'
+            },
+            pageParam: {
+              itemid: itemid,
+              couponid: couponid
+            },
+        });
+        //设置名为frame的Frame事件监听
+        api.setFrameClient({
+            frameName: 'jdshangpin'
+        }, function(ret) {
+            onFrameStateChange(ret);
+            //  api.alert({msg:ret})
+        });
+        //		removeLogic();
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err) {
+            api.historyBack({
+                frameName:'jdshangpin'
+            }, function(ret) {
+                if (!ret.status) { //没有历史记录了则关闭当前窗口
+                    GoToHisBack();
+                }
+            });
+        });
+    }
+
+    function onFrameStateChange(ret) {
+        if (3 == ret.state) { //frame标题发生变化
+            $api.dom('.aui-title').innerHTML = ret.title;
+        }
+    }
+
+    function onBrowserStateChange(ret) {
+        if (0 == ret.state) { //开始加载
+            if (!launchRemoved) {
+                launchRemoved = true;
+                removeLaunch();
+            }
+        }
+        if (2 == ret.state) {
+            if (!loadingRemoved) {
+                loadingRemoved = true;
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+    }
+
+    //历史记录后退
+    function GoToHisBack() {
+        api.historyBack({
+            frameName: 'jdshangpin'
+        }, function(ret) {
+            if (!ret.status) { //没有历史记录了则关闭当前窗口
+                api.closeWin();
+                // api.execScript({name: 'root',script: 'indexfirst();'});
+            }
+        });
+    }
+</script>
+
+</html>

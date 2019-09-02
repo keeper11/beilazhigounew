@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>优惠券搜索</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style>
+        .aui-iconfont:active {
+            background: #F2727A;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="aui-bar aui-bar-nav aui-bar-header headdisplay" id="aui-header">
+        <div class="aui-bar aui-bar-nav aui-bar-header">
+            <div class="aui-iconfont aui-icon-left aui-pull-left" tapmode onclick="GoToHisBack();"> </div>
+            <div class="aui-title">今日上新</div>
+            <div class="aui-iconfont aui-icon-close aui-pull-right" tapmode onclick="CloseWin();"> </div>
+        </div>
+    </header>
+    <div id="main" class='center'>
+    </div>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/mescroll.js"></script>
+<script type="text/javascript">
+    //  var launchRemoved = false;
+    //  var loadingRemoved = false;
+    apiready = function() {
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+        $api.fixIos7Bar(header);
+        var headerPos = $api.offset(header);
+        var name = api.pageParam.title;
+        var type = api.pageParam.type;
+        //  $api.dom('.aui-title').innerHTML = name;
+        //$api.byId('title').innerText = title;
+        api.openFrame({
+            name: 'common_win',
+            url: 'common_win.html',
+            bounces: false,
+            vScrollBarEnabled: false,
+            rect: {
+                x: 0,
+                y: headerPos.h,
+                w: 'auto', //api.winWidth,//
+                h: 'auto', //api.frameHeight//
+            },
+            pageParam: {
+                //  type: type,
+                headerPos: headerPos,
+            },
+        });
+    }
+
+    /*  function onFrameStateChange(ret) {
+        if (0 == ret.state) { //frame开始加载
+            //var url = ret.url;
+            //console.log('frame loading start: ' + url);
+        } else if (1 == ret.state) { //frame加载进度发生变化
+            //var p = ret.progress;
+            //console.log('frame loading: ' + p);
+        } else if (2 == ret.state) { //frame结束加载
+            //var url = ret.url;
+            //console.log('frame loading finish: ' + url);
+        } else if (3 == ret.state) { //frame标题发生变化
+            $api.dom('.aui-title').innerHTML = ret.title;
+        }
+    }
+*/
+    function onBrowserStateChange(ret) {
+        if (0 == ret.state) { //开始加载
+            if (!launchRemoved) {
+                launchRemoved = true;
+                removeLaunch();
+            }
+        }
+        if (2 == ret.state) {
+            if (!loadingRemoved) {
+                loadingRemoved = true;
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+    }
+
+    //历史记录后退
+    function GoToHisBack() {
+        api.historyBack({
+            frameName: "common_win"
+        }, function(ret) {
+            if (!ret.status) { //没有历史记录了则关闭当前窗口
+                api.closeWin();
+            }
+        });
+    }
+</script>
+
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>结算中心</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/my.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/public.css" />
+	<style type="text/css">
+		html,
+		body {
+			background: #fff;
+			height: auto;
+		}
+
+		#number {
+			font-size: 22px;
+			color: #fd3d38;
+			border: 0;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="widthdraw_bg">
+		<img src="../../image/withdraw_bg.png" />
+		<div class="withdrawTitles">
+			<label>我的余额</label>
+			<span>￥<em class="balance">0.00</em></span>
+		</div>
+		<div class="withdraw_help">
+			<div class="withdraw_record">
+				<span tapmode onclick="openpublic('../../html/user/withdraw.html','提现记录')">提现记录</span>
+				<img src="../../image/problem.png" />
+			</div>
+			<div class="widthdrwa_rule">提现规则</div>
+		</div>
+		<div class="w_paycode" onclick="Toast('开发中')" 111onclick="goToshoukuanma()">设置我的收款码</div>
+	</div>
+	<div class="widthdraw_content">
+		<!-- <div class="widthdraw_title">选择提现金额(最小提现<span class="mincash">100</span>元起 ，税费
+			<span class="rate">0</span>%)
+		</div> -->
+		<div class="widthdraw_title">选择提现金额(最小提现<span class="mincash">100</span>元起)
+		</div>
+		<div class="widthdraw_input">
+			<span>￥</span>
+			<input type="number"  id="number" class="widthdraw_inp" placeholder="输入你的提现金额">
+		</div>
+		<div onclick="doWithdraw()" class="withdrawal_btn" >确认提现</div>
+	</div>
+
+	<!--提现弹框-->
+	<div class="withdrawal_box" style="display:none">
+		<div class="widthdraw_item">
+			<div class="withdrawal_contents">
+				<div class="withdraw_icon">
+					<img src="../../image/w_icon.png" />
+				</div>
+				<div class="withdraw_success">提现成功</div>
+				<div class="widthdraw_jd">提现金额将在1个工作日内到账,点击提现记录查看进度。</div>
+				<!--		<div class="widthdraw_btn_jd" onclick="goTosettlement()">查看进度</div>-->
+			</div>
+			<div class="widthdraw_close"><img src="../../image/guanbi.png" /></div>
+		</div>
+	</div>
+	<!--提现规则-->
+	<div class="pay_style_box" style="display: none">
+		<div class="pay_style_content">
+			<div class="pay_style_c">
+				<div class="pay_style_titles">提现规则</div>
+				<div class="poster_rule_content">
+					1.淘宝每月25日后可提现上月已结算订单。
+					<br>2.福购平台每月正常工作日（周一至周五上班期间可正常提现）。
+					<br>3.所有平台结算请点击收入明细。</div>
+				<div class="widthdraw_btn_jd" tapmode onclick="openpublic('../../html/user/statement.html','收入明细')">收入明细</div>
+			</div>
+			<div class="widthdraw_close"><img src="../../image/guanbi.png"></div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+	// var pageData= {};
+	var appset = {};
+	var userinfo = {};
+	var pageParam = {
+		alipayno: "",
+		cashtype: 1,
+		iscash: true
+	};
+	apiready = function() {
+		api.parseTapmode();
+		getmemberinfo();
+		initclick();
+		loaddata();
+	};
+
+	function getmemberinfo() {
+		var userinfo = GetStorage('userinfo');
+		var inviteinfo = GetStorage('inviteinfo');
+		//Alert(JSON.stringify(inviteinfo));
+		$('.balance').html(userinfo.money);
+		$('.widthdraw_inp').val(userinfo.money);
+		$('.mincash').html(inviteinfo.mincash);
+		//		$('.rate').html(appset.rate);
+	}
+	//立即提现
+	function doWithdraw() {
+		var serverurl = GetStorage('serverurl');
+		var userinfo = GetStorage('userinfo');
+		var mobile = GetStorage('mobile');
+		api.ajax({
+			url: serverurl + '/api/user/cash?mobile=' + mobile,
+			method: 'get',
+			timeout: 5,
+			cache: false,
+			dataType: 'json',
+		}, function(ret, err) {
+			if (ret.code == 0) {
+				Toast(ret.msg);
+			} else if (ret.code == 1) {
+				$('.balance').html(0.00);
+				$('.widthdraw_inp').val(0.00);
+				$(".withdrawal_box").show();
+				$(".widthdraw_close").click(function() {
+					$(".withdrawal_box").hide();
+					onelogin();
+					rootuserdata();
+				});
+			} else {
+				Toast('网络错误，请稍候重试');
+			}
+		});
+	}
+
+	function loaddata() {
+		var userinfo = GetStorage('userinfo');
+		if (userinfo.alipay == 0 || userinfo.name == 0) {
+			api.confirm({
+				title: '提醒',
+				msg: '还没有设置支付宝帐户和实名，是否前往设置？',
+				buttons: ['去设置', '取消']
+			}, function(ret, err) {
+				if (1 == ret.buttonIndex) {
+					setalipay();
+				}
+			});
+		}
+	}
+
+	function initclick() {
+		$(".widthdrwa_rule").click(function() {
+			$(".pay_style_box").show();
+		});
+		$(".widthdraw_close").click(function() {
+			$(".pay_style_box").hide();
+		});
+	}
+
+	function goToshoukuanma() {
+		openpublic('../../html/user/shoukuanma.html', '设置收款码');
+	}
+
+	function setalipay() {
+		openpublic('../../html/user/alipay.html', '修改支付宝')
+	}
+
+	function goTosettlement() {
+		var url = "https://www.91fyt.com/app/html/my/settlement.html?v=1&from=app";
+		api.openWin({
+			name: 'webbrowser',
+			url: '../webbrowser.html',
+			pageParam: {
+				weburl: url
+			},
+			bounces: false
+		});
+	}
+</script>
+
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <style media="screen">
+        .aui-bar-nav {
+            background-color: #FF5675;
+            padding: 0 0.5rem;
+            padding-top: 20px;
+        }
+
+        .aui-bar-nav .aui-btn {
+            padding: 0;
+        }
+
+        .aui-bar-nav .titsz {
+            font-size: 20px;
+            font-weight: 500px;
+        }
+
+        .aui-bar-nav .aui-pull-right {
+            font-size: 16px;
+        }
+
+        .aggregate {
+            background-color: #ff5675;
+            box-sizing: border-box;
+        }
+
+        .aggregate p {
+            color: #fff;
+            margin: 0 0.5rem;
+            font-size: 16px;
+            height: 80px;
+        }
+
+        .goodlist {
+            /*width: 100%;*/
+            height: 144px;
+            margin: 0 0.5rem;
+            background-color: #fff;
+            position: -10px;
+            position: relative;
+            ;
+            top: -30px;
+            z-index: 99;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            /*justify-content: space-between;*/
+            padding: 27px 16px;
+            margin-bottom: 15px;
+        }
+
+        .goodlist input {
+            border-radius: 20px;
+        }
+
+        .aui-radio:checked,
+        .aui-radio.aui-checked,
+        .aui-checkbox:checked,
+        .aui-checkbox.aui-checked {
+            background-color: #FF5675;
+            border: solid 1px #FF5675;
+            width: 20px;
+            height: 20px;
+        }
+
+        .goodlist .goodimg {
+            width: 90px;
+            height: 90px;
+            background-color: #F2F2F2;
+            margin: 0 15px;
+            border-radius: 5px;
+        }
+
+        .goodlist .goodmag p {
+            /*line-height: 40px;*/
+        }
+
+        .goodlist .goodmag {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            width: 60%;
+        }
+
+        .goodlist .goodmag .goodname {
+            color: #333333;
+            font-size: 15px;
+            width: 165px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 80%;
+        }
+
+        .goodlist .goodmag .parameter {
+            width: 166px;
+            height: 26px;
+            line-height: 26px;
+            background-color: #F2F2F2;
+            border-radius: 5px;
+            padding: 0 6px;
+            /*overflow: hidden;*/
+            font-size: 12px;
+            overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: nowrap;
+        }
+
+        .goodlist .goodmag div .cprice {
+            font-size: 16px;
+            color: #EF0C5D;
+        }
+
+        .quantitybox {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quantitybox .quantity {
+            display: flex;
+            /*display: inline-block;*/
+            justify-content: center;
+            align-items: center;
+            width: 85px;
+            border: 1px solid #F2F2F2;
+            box-sizing: border-box;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .quantitybox .quantity input {
+            height: 25px;
+            width: 36px;
+            text-align: center;
+            border-right: 1px solid #F2F2F2;
+            border-left: 1px solid #F2F2F2;
+        }
+
+        .quantitybox .quantity div {
+            margin: 0 auto;
+        }
+
+        .overallbox {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0.5rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #fff;
+            border-bottom: 1px solid #ccc;
+            z-index: 99;
+        }
+
+        .overallbox .tijiao {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .overallbox .aui-checkbox {
+            border-radius: 20px;
+            width: 20px;
+            height: 20px;
+        }
+
+        .overallbox .rbox {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .overallbox .tijiao {}
+
+        .overallbox .tijiao .aui-btn {
+            width: 84px;
+            height: 36px;
+            background: rgba(255, 86, 117, 1);
+            font-weight: 400;
+            color: rgba(255, 254, 254, 1);
+            line-height: 36px;
+            font-size: 16px;
+            font-family: SimHei;
+            border-radius: 18px;
+        }
+
+        .overallbox .tijiao div span {
+            color: #EF0C5D;
+            font-family: SimHei;
+            font-size: 16px;
+        }
+
+        .goodlist .aui-checkbox {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="boxs">
+        <!-- 导航栏 -->
+        <header class="aui-bar aui-bar-nav">
+            <div class="aui-pull-left aui-btn">
+                <!-- <span class="aui-iconfont aui-icon-left"></span> -->
+                <div class="titsz">宜玖自营购物车</div>
+            </div>
+            <span class="aui-pull-right" @click='showme(1)' v-if='indexs == 2'>管理</span>
+            <span class="aui-pull-right" @click='showme(2)' v-if='indexs == 1'>完成</span>
+        </header>
+        <!-- 总计 -->
+        <div class="aggregate">
+            <p>共{{ cartlist.length }}件宝贝</p>
+        </div>
+        <!-- 购物车商品 -->
+        <div class="goodlist" v-for='(item,index) in cartlist' :key='index'>
+            <input class="aui-checkbox" type="checkbox" name="demo1" @click='jincarlist(item.cart_id,item.goods_price,item.total_num)' :checked="carinput.indexOf(item.cart_id) !== -1">
+            <div class="goodimg">
+                <img :src="item.goods_img" alt="">
+            </div>
+
+            <div class="goodmag">
+                <p class="goodname">{{ item.goods_name }}</p>
+                <p class="parameter">{{ item.goods_sku.goods_attr }}</p>
+                <div class="quantitybox"><span class="cprice">￥{{item.goods_price}}</span>
+
+                    <div class="quantity">
+                        <div class="" @click='subtract(index,item.goods_id,item.goods_sku_id)'>-</div>
+                        <input type="text" name="" value="1" v-model="item.total_num">
+                        <div class="" @click="add(index,item.goods_id,item.goods_sku_id)">+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="overallbox">
+            <div class="rbox">
+                <input class="aui-checkbox" @click='allinput()' type="checkbox" name="demo1" :checked="cartlist.length == carinput.length"> &nbsp;&nbsp;&nbsp;&nbsp;
+                <span>全选</span>
+            </div>
+            <div class="tijiao" v-if='indexs == 2'>
+                <div v-if='cartlist.length == carinput.length'>合计：<span>￥{{ totalprice }}</span></div>
+                <div v-if='cartlist.length !== carinput.length'>合计：<span>￥ 0 </span></div>
+                &nbsp;&nbsp;&nbsp;
+                <div class="aui-btn" @click='gocarpay()'>结算</div>
+            </div>
+            <div class="tijiao" v-if='indexs == 1'>
+                <div><span></span></div>&nbsp;&nbsp;&nbsp;
+                <div class="aui-btn" @click='delcar()'>删除</div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/axios.min.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+
+<script type="text/javascript">
+    // apiready = function() {
+    var vuedata = {
+        'cartlist': [],
+        'cartname': "",
+        'goodnum': '',
+        'indexs': '2',
+        'carinput': [],
+        'carnum': '',
+        'totalprice': '',
+        'caygood':[]
+    }
+    var vm = new Vue({
+        el: '#boxs',
+        data: vuedata,
+        mounted: function() {
+            this.getcarts()
+        },
+        created: function() {
+
+        },
+        methods: {
+            getcarts() {
+                axios.get(`http://shop.19gou.net/api/cart/getlists?token=${GetStorage('mobile')}`)
+                    .then(res => {
+                        console.log(res.data.data.goods_list);
+                        this.cartlist = res.data.data.goods_list
+                        this.totalprice = res.data.data.order_total_price
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+            subtract: function(i, d, s) {
+                if (this.cartlist[i].total_num <= 1) {
+                    //  alert('受不了啦，宝贝不能再减少啦')
+                    this.cartlist[i].total_num = 1;
+                    // this.totalprice = Number(this.cartlist[i].goods_price) - Number(this.totalprice)
+                } else {
+                    this.cartlist[i].total_num -= 1;
+                    this.totalprice = Number(this.totalprice) - Number(this.cartlist[i].goods_price)
+                }
+                // this.jisuan()
+                // this.totalprice.sub(2)
+                console.log(d, s);
+                axios.get(`http://shop.19gou.net/api/cart/sub?token=${GetStorage('mobile')}&goods_id=${d}&goods_sku_id=${s}`)
+                    .then(res => {
+                        console.log(res);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+            add: function(i, d, s) {
+                this.cartlist[i].total_num++;
+
+                this.totalprice = Number(this.cartlist[i].goods_price) + Number(this.totalprice)
+
+                console.log(d, s);
+                // this.jisuan()
+                axios.get(`http://shop.19gou.net/api/cart/add?token=${GetStorage('mobile')}&goods_id=${d}&goods_sku_id=${s}`)
+                    .then(res => {
+                        console.log(res);
+
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+            showme(i) {
+                this.indexs = i
+            },
+            jincarlist(i,p,n) {
+
+                if (this.carinput.indexOf(i) == -1) {
+                    this.carinput.push(i)
+                } else if (this.carinput.indexOf(i) !== -1) {
+                    this.carinput.splice(this.carinput.indexOf(i), 1);
+                }
+                console.log(this.carinput);
+            var glis = {id:i,pic:p,num:n}
+              this.caygood.push(glis)
+
+              console.log(this.caygood[0]);
+
+
+            },
+            allinput() {
+                if (this.carinput.length !== this.cartlist.length) {
+                    this.carinput = []
+                    for (var i = 0; i < this.cartlist.length; i++) {
+                        this.carinput.push(this.cartlist[i].cart_id)
+                    }
+                } else if (this.carinput.length == this.cartlist.length) {
+                    this.carinput = []
+                }
+            },
+            delcar() {
+                axios.get(`http://shop.19gou.net/api/cart/delete?token=${GetStorage('mobile')}&cart_id=${this.carinput}`)
+                    .then(res => {
+                        console.log(res);
+                        if (res.data.code == 1) {
+                            this.getcarts()
+                        }
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                    this.getcarts()
+            },
+            gocarpay() {
+              $api.setStorage('cartid', this.carinput);
+
+                if (this.carinput.length > 0) {
+                    api.openWin({     
+                        name: 'caraffirm',
+                             url: './caraffirm.html',
+                             pageParam: {
+                              // cartid: this.carinput,
+                              mobiles:`${GetStorage('mobile')}`     
+                        }   
+                    })
+                } else {
+                    Toast('暂无商品')
+                }
+            }
+        },
+    });
+
+    function getOrderListByPage() {
+        这里面可以直接用vuedata里面的任何一个数据
+    }
+</script>
+
+</html>

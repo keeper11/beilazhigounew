@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>精美专题</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style>
+        #header {
+            text-align: center;
+        }
+
+        #header h5 {
+            display: inline-block;
+            color: #FFF;
+            line-height: 48px;
+            width: 100%;
+            position: absolute;
+            left: 0;
+        }
+
+        #main {
+            padding: 0;
+        }
+
+        center {
+            color: #512766;
+            margin-top: 3px;
+            font-size: 0.7em;
+        }
+
+        #back>div {
+            width: 48px;
+            height: 48px;
+            background: url(ic_back.png) no-repeat center;
+            background-size: 30px 30px;
+        }
+
+        .header-drop-menu {
+            position: relative;
+            display: block;
+            float: right;
+            color: white;
+            padding-left: 5px;
+            padding-right: 10px;
+            z-index: 1000;
+        }
+
+        .vertical-middle {
+            display: -webkit-box;
+            -webkit-box-orient: horizontal;
+            -webkit-box-align: center;
+            display: box;
+            box-orient: horizontal;
+            box-align: center;
+        }
+
+        .header-span2 {
+            position: relative;
+            display: block;
+            float: right;
+            color: white;
+            padding-left: 5px;
+            padding-right: 20px;
+            z-index: 1000;
+        }
+
+        .header-span2-i {
+            font-size: 1.5rem;
+        }
+
+        .center {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-box-pack: center;
+            -webkit-box-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="aui-bar aui-bar-nav aui-bar-header headdisplay" id="aui-header">
+        <a class="aui-pull-left" tapmode onclick="GoToHisBack()"> <span class="aui-iconfont aui-icon-left"></span></a>
+        <div class="aui-title">精美专题</div>
+        <a class="aui-pull-right" tapmode onclick="CloseWin()"> <span class="aui-iconfont aui-icon-close"></span></a>
+        <span class="header-span2 vertical-middle"> <i class="aui-iconfont aui-icon-share header-span2-i vertical-middle"onclick="Share()"></i> </span>
+    </header>
+
+    <div id="main" class='center'>
+    </div>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        api.setStatusBarStyle({
+            style: 'dark'
+        });
+        var header = $api.byId('aui-header');
+        $api.fixIos7Bar(header);
+        var headerPos = $api.offset(header);
+        var name = api.pageParam.title;
+        $api.dom('.aui-title').innerHTML = name;
+        var url = api.pageParam.url;
+        var id = api.pageParam.id;
+        var content = api.pageParam.content;
+
+        //$api.byId('title').innerText = title;
+
+        api.openFrame({
+            name: 'main',
+            url: 'subject.html',
+            vScrollBarEnabled: false,
+            bounces: false,
+            rect: {
+                x: 0,
+                y: headerPos.h,
+                w: 'auto', //api.winWidth,//
+                h: 'auto', //api.frameHeight//
+            },
+            pageParam: {
+                id: id,
+                url: url,
+                content: content
+            },
+            progress: {
+                type: 'page'
+            }
+        });
+
+        //		removeLogic();
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err) {
+            api.historyBack({
+                frameName: "main"
+            }, function(ret) {
+                if (!ret.status) { //没有历史记录了则关闭当前窗口
+                    api.closeWin();
+                }
+            });
+        });
+    }
+
+    function onFrameStateChange(ret) {
+        if (0 == ret.state) { //frame开始加载
+            //var url = ret.url;
+            //console.log('frame loading start: ' + url);
+        } else if (1 == ret.state) { //frame加载进度发生变化
+            //var p = ret.progress;
+            //console.log('frame loading: ' + p);
+        } else if (2 == ret.state) { //frame结束加载
+            //var url = ret.url;
+            //console.log('frame loading finish: ' + url);
+        } else if (3 == ret.state) { //frame标题发生变化
+            $api.dom('.aui-title').innerHTML = ret.title;
+        }
+    }
+
+    function onBrowserStateChange(ret) {
+        if (0 == ret.state) { //开始加载
+            if (!launchRemoved) {
+                launchRemoved = true;
+                removeLaunch();
+            }
+        }
+        if (2 == ret.state) {
+            if (!loadingRemoved) {
+                loadingRemoved = true;
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+    }
+
+    //历史记录后退
+    function GoToHisBack() {
+        api.historyBack({
+            frameName: "main"
+        }, function(ret) {
+            if (!ret.status) { //没有历史记录了则关闭当前窗口
+                api.closeWin();
+            }
+        });
+    }
+    //分享链接
+    function Share() {
+        var appdata = GetStorage('appdata');
+        var commondata = GetStorage('commondata');
+        var inviteinfo = GetStorage('inviteinfo');
+        var content = api.pageParam.content;
+        var _content = content.replace(/<br>/g, "\n"); //全局替换\n为<br>
+        var sharedModule = api.require('shareAction');
+        if (!GetStorage('mobile')) {
+            Toast('您还没有登录');
+            GoLogin();
+            return false;
+        }
+        sharedModule.share({
+            text: _content + "\n安装【" + api.appName + "】APP，" + commondata.apptext + '  \n邀请码：' + inviteinfo.invite + ",复制这段文字，注册时自动填写邀请码。\n =>>> 安卓版下载地址：\n" + GetStorage('appurl'),
+            type: 'text',
+            //  path: _pic1
+        });
+    }
+</script>
+
+</html>

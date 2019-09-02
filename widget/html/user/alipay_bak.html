@@ -1,0 +1,267 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>修改支付宝</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style type="text/css">
+        .tixian .form {
+            overflow: hidden;
+        }
+
+        .tixian .line {
+            position: relative;
+            padding-left: 0.6rem;
+            height: 1.96rem;
+            overflow: hidden;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .tixian .line .text {
+            float: left;
+            height: 1.96rem;
+            line-height: 1.96rem;
+            padding-right: 0.5rem;
+            font-size: 1rem;
+            color: #141414;
+        }
+
+        .tixian .line input[type=text] {
+            float: left;
+            height: 1.96rem;
+            line-height: 1.96rem;
+            border: 0 none;
+            background: none;
+            width: 8.5rem;
+            font-size: 0.6rem;
+            color: #141414;
+        }
+
+        .tixian .line .sendYanz,
+        .tixian .line .djs {
+            position: absolute;
+            top: 50%;
+            margin-top: -0.6rem;
+            right: 0.5rem;
+            width: 3.8rem;
+            height: 1.2rem;
+            line-height: 1.2rem;
+            border: 1px solid #f9513b;
+            border-radius: 0.6rem;
+            font-size: 0.5rem;
+            color: #141414;
+            color: #f9513b;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .tixian .line .djs {
+            color: #333;
+            border: 1px solid #333;
+        }
+
+        .tixian .line input[name=alipayName] {
+            width: 5.5rem;
+        }
+
+        .tixian .fixed-submit {
+            position: fixed;
+            width: 100%;
+            height: 1.76rem;
+            bottom: 0;
+            left: 0;
+            overflow: hidden;
+        }
+
+        .tixian .fixed-submit .cz {
+            float: left;
+            width: 50%;
+            height: 1.76rem;
+            text-align: center;
+            line-height: 1.76rem;
+            font-size: 0.6rem;
+            color: #333333;
+            background-color: #e6e1e1;
+        }
+
+        .tixian .fixed-submit .submit {
+            float: left;
+            width: 50%;
+            height: 1.76rem;
+            text-align: center;
+            line-height: 1.76rem;
+            font-size: 0.6rem;
+            color: #fff;
+            background-color: #d14591;
+        }
+
+        .tixian .form .error {
+            padding-left: 0.6rem;
+            height: 1rem;
+            line-height: 1rem;
+            font-size: 1rem;
+            color: #d14591;
+            overflow: hidden;
+        }
+
+        .Mask_Layer {
+            filter: progid: DXImageTransform.Microsoft.gradient(enabled='true', startColorstr='#7F000000', endColorstr='#7F000000');
+            background: rgba(0, 0, 0, 0.5);
+            height: 100%;
+            left: 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 99;
+        }
+
+        .Mask_Layer>.mado {
+            border: 0;
+            width: 10.8rem;
+            margin: 6rem auto 0;
+            border-radius: 5px;
+            padding-top: 0.42rem;
+            background-color: #fff;
+            font-family: 'Microsoft YaHei';
+        }
+
+        .Mask_Layer>.mado1 {
+            width: 14rem;
+            margin: 0.5rem auto 0;
+        }
+
+        .Mask_Layer>.mado1 p.block {
+            width: 13rem;
+            text-align: left;
+            line-height: 0.8rem;
+            margin: 0 auto 0.4rem;
+        }
+
+        .Mask_Layer>.mado1 p.or {
+            width: 13rem;
+            text-align: left;
+            line-height: 0.8rem;
+            margin: 0 auto 0.4rem;
+            color: #f60;
+        }
+
+        .Mask_Layer>.mado>.title {
+            line-height: 1.44rem;
+            font-size: 0.72rem;
+            margin-bottom: 0.26rem;
+            color: #000;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .Mask_Layer>.mado>.text {
+            line-height: 1rem;
+            font-size: 0.58rem;
+            text-align: center;
+            color: #333;
+            font-family: 'Microsoft YaHei';
+        }
+
+        .Mask_Layer>.mado>.btn {
+            display: block;
+            margin-top: 0.88rem;
+            border-top: 1px solid #c4cbcf;
+            color: #087eff;
+            text-align: center;
+            height: 1.76rem;
+            line-height: 1.76rem;
+            cursor: pointer;
+            font-size: 0.68rem;
+            color: #007aff;
+        }
+
+        .save-fixed {
+            position: fixed;
+            width: 100%;
+            height: 1.8rem;
+            bottom: 0;
+            left: 0;
+            background-color: #d14591;
+            color: #fff;
+            font-size: 0.6rem;
+            text-align: center;
+            line-height: 1.8rem;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="tixian">
+        <div class="form">
+            <div class="line">
+                <span class="text">
+                  支付宝账户：
+              </span>
+                <input type="text" name="alipay" value="">
+            </div>
+            <div class="line">
+                <span class="text">
+                  支付宝认证名字：
+              </span>
+                <input type="text" name="alipayName" value="">
+            </div>
+            <div class="line">
+                <span class="text">
+                  微信账号：
+              </span>
+                <input type="text" name="WeiXin" value="">
+            </div>
+                        <div class="error" style="display:none;">
+            </div>
+        </div>
+        <div class="save save-fixed">保存</div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        loaddata();
+    }
+
+    function loaddata() {
+        var serverurl = GetStorage('serverurl');
+        var name = api.pageParam.name;
+        var id = api.pageParam.id;
+        //  Alert(name + '<<<' + serverurl + '>>>' + id);
+        api.ajax({
+            url: serverurl + '/api/user/sort?name=' + name + '&title_id=' + id,
+            method: 'get',
+            timeout: 5,
+            cache: false,
+            dataType: 'json',
+        }, function(ret, err) {
+            if (ret.code == 0) {
+                var html = '<div class="main">';
+                html += '<img src="../../image/option/mescroll-empty.png"></div>';
+                html += '<div class="paging" style="text-align:center;padding-top:5px;">--没有数据--</div>';
+                $api.dom(".layout").innerHTML = html;
+                Toast(ret.msg);
+            } else if (ret.code == 1) {
+                //Alert(ret.data.content)
+                $api.dom(".layout").innerHTML = ret.data.content;
+            } else {
+                var html = '<div class="main">';
+                html += '<img src="../../image/option/mescroll-empty.png"></div>';
+                html += '<div class="paging" style="text-align:center;padding-top:5px;">--没有数据--</div>';
+                $api.dom(".layout").innerHTML = html;
+                Toast('网络错误，请稍候重试'); //
+            }
+        });
+    }
+</script>
+
+</html>

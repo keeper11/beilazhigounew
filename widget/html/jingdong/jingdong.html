@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>京品超市</title>
+	<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/swiper.css" />
+	<style type="text/css">
+		html,
+		body {
+			height: 100%;
+			width: 100%;
+		}
+
+		#main {
+			-webkit-box-flex: 1;
+			-webkit-flex: 1;
+			flex: 1;
+		}
+
+		.aui-searchbar {
+			background: transparent;
+		}
+
+		.aui-bar-nav .aui-searchbar-input {
+			background-color: #ffffff;
+		}
+
+		.headdisplay {
+			display: none;
+		}
+
+		.active {
+			display: block;
+		}
+
+		.dot {
+			font-size: 1.0rem;
+		}
+
+		.header-drop-menu {
+			position: relative;
+			display: block;
+			float: right;
+			color: white;
+			padding-left: 5px;
+			padding-right: 5px;
+			z-index: 1000;
+		}
+
+		.vertical-middle {
+			display: -webkit-box;
+			-webkit-box-orient: horizontal;
+			-webkit-box-align: center;
+			display: box;
+			box-orient: horizontal;
+			box-align: center;
+		}
+
+		.header-span2 {
+			position: relative;
+			display: block;
+			float: right;
+			color: white;
+			padding-left: 5px;
+			padding-right: 5px;
+			z-index: 1000;
+		}
+
+		.header-span2-i {
+			font-size: 1.5rem;
+		}
+
+		.flexbox-horizontal {
+			display: box;
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: flex;
+			-webkit-box-orient: horizontal;
+			-webkit-flex-flow: row;
+			flex-flow: row;
+			width: 100%;
+			-webkit-flex-direction: row;
+			flex-direction: row;
+			box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+		}
+
+		.swiper-container {
+			margin-left: 0px;
+			margin-right: 5px;
+			position: relative;
+			overflow: hidden;
+			color: #333;
+			font-size: 15px;
+			width: 70px;
+			/* Fix of Webkit flickering */
+		}
+	</style>
+</head>
+
+<body>
+	<!--头部-->
+	<div id="wrap" class="aui-bar-nav aui-bar-header">
+		<header class="aui-bar aui-bar-header headdisplay active" id="aui-header">
+			<a class="aui-pull-left aui-btn">
+				<img src="../../image/synav1.png" style="width:1.5rem;">
+			</a>
+			<div class="aui-title" style="left:2rem; right: 1.5rem;">
+				<div class="aui-searchbar" id="search">
+					<div class="aui-searchbar-input aui-border-radius">
+						<i class="aui-iconfont aui-icon-search"></i>
+						<div type="search" id="search-input" tapmode onclick="loadWin('搜索','search_win','../../html/jingdong/search_win.html')">复制商品标题搜索,热搜:</div>
+						<div class="swiper-container" id="swiper">
+							<div class="swiper-wrapper" id="words_li">
+								<div class="swiper-slide" tapmode data-words="女装" onclick="searchJD(this);">女装</div>
+								<div class="swiper-slide" tapmode data-words="男装" onclick="searchJD(this);">男装</div>
+								<div class="swiper-slide" tapmode data-words="女鞋" onclick="searchJD(this);">女鞋</div>
+								<div class="swiper-slide" tapmode data-words="男鞋" onclick="searchJD(this);">男鞋</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<a class="aui-pull-right" tapmode data-title="首页" onclick="closeToWin()"> <span class="iconfont icon-home"></span></a>
+		</header>
+	</div>
+	<!--中部-->
+	<div id="main"></div>
+	<!--底部-->
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/aui-tab.js"></script>
+<script type="text/javascript" src="../../script/swiper.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+			api.parseTapmode();
+			appVersion = api.appVersion;
+			header = $api.byId('wrap');
+			$api.fixIos7Bar(header); //适配IOS 7+，Android 4.4+状态栏
+			headerPos = $api.offset(header);
+			indexGuide();
+			setTimeout(keyword, 3000); //今日热搜关键词
+		}
+		//启动画面
+	function indexGuide() {
+		api.openFrame({
+			name: 'jd_win',
+			url: '../../html/jingdong/jd_win.html',
+			bounces: false,
+			rect: {
+				x: 0,
+				y: headerPos.h,
+				w: 'auto',
+				h: 'auto', //api.winHeight - footerPos.h - headerPos.h
+			},
+			pageParam: {
+				headerPos: headerPos
+			},
+		});
+	};
+	//底部随意切换
+	var swiper = new Swiper(document.getElementById("swiper"), {  
+		speed: 1000,
+		autoplay: 4000,
+		loop: true,
+		direction: 'vertical',
+		observer: true,
+		observerParents: true,
+		autoplayDisableOnInteraction: false
+	});
+	//关键词轮播
+	function keyword() {
+		var commissiondata = GetStorage('commissiondata');
+		var haodanku = "http://v2.api.haodanku.com/hot_key/apikey/" // + Apikey; //好单库
+		api.ajax({
+				url: haodanku + commissiondata.apikey, //商品API接口链接
+				encode: false,
+				method: 'get',
+				timeout: 10,
+				cache: 'true',
+				dataType: 'json',
+						},
+			function(ret, err) {
+				if (ret.data) {
+					var slide = document.getElementById('words_li');
+					var len = ret.data.length;
+					var curPageData = ret.data;
+					/*下面就是往容器里面插入数据的代码*/
+					var html = '';
+					for (var i = 0; i < len; i++) {
+						html += '<li class="swiper-slide" tapmode data-words="' + curPageData[i].keyword + '"onclick="searchJD(this);">' + curPageData[i].keyword + '</li>';
+						$api.html(slide, html);
+						//	$api.dom(".wrap").innerHTML = html;
+						//		console.log(html);
+					}
+				}
+			});
+	}
+	//历史记录后退
+	function GoToHisBack() {
+		api.historyBack({
+			frameName: "main"
+		}, function(ret) {
+			if (!ret.status) { //没有历史记录了则关闭当前窗口
+				api.closeWin();
+			}
+		});
+	}
+</script>
+
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style>
+        body {}
+    </style>
+</head>
+
+<body>
+  <header class="aui-bar aui-bar-nav aui-bar-header headdisplay" id="aui-header">
+      <div class="aui-bar aui-bar-nav aui-bar-header">
+          <div class="aui-iconfont aui-icon-left aui-pull-left" tapmode onclick="GoToHisBack();"> </div>
+          <div class="aui-title">邀请好友</div>
+          <div class="aui-iconfont aui-icon-close aui-pull-right" tapmode onclick="CloseWin();"> </div>
+      </div>
+  </header>
+  <div id="main" class='center'>
+  </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    var click = true;
+    apiready = function() {
+      api.parseTapmode();
+      var header = $api.byId('aui-header');
+      $api.fixIos7Bar(header);
+      var headerPos = $api.offset(header);
+      var body_h = $api.offset($api.dom('body')).h;
+      var main = $api.byId('main');
+      var mainPos = $api.offset(main);
+        api.openFrame({
+            name: 'share_frm',
+            url: './invite_share.html',
+            bounces: false,
+            rect: {
+                x: 0,
+                y: headerPos.h,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam: {
+                data: api.pageParam.goodsInfo
+            }
+        })
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err) {
+            if (!click) {
+                api.sendEvent({
+                    name: 'hidePhoto',
+                    extra: {
+                        key: true,
+                    }
+                });
+                click = true;
+            } else {
+              GoToHisBack();
+            }
+        });
+        api.addEventListener({
+            name: 'albumShow'
+        }, function(ret, err) {
+            if (ret) {
+                click = false;
+            } else {
+                //  alert( JSON.stringify( err ) );
+            }
+        });
+    };
+    //历史记录后退
+    function GoToHisBack() {
+        api.historyBack({
+            frameName: api.frameName
+                    }, function(ret) {
+            if (!ret.status) { //没有历史记录了则关闭当前窗口
+                api.closeWin();
+                // api.execScript({name: 'root',script: 'indexfirst();'});
+            }
+        });
+    }
+</script>
+
+</html>

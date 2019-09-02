@@ -1,0 +1,708 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>个人中心</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.css" />
+    <style type="text/css">
+        .text-white {
+            color: #ffffff !important;
+        }
+
+        .text-light {
+            color: #999 !important;
+        }
+
+        .bg-white {
+            background-color: #ffffff;
+        }
+
+        .aui-grid [class*=aui-col-] {
+            padding: 0;
+        }
+
+        .user-info {
+            width: 150%;
+            position: relative;
+            left: -25%;
+            padding-left: 25%;
+            border-bottom-left-radius: 50%;
+            border-bottom-right-radius: 50%;
+            padding-bottom: 1.5rem;
+        }
+
+        .aui-grid .aui-dot {
+            top: 0rem;
+        }
+
+        .label-cont {
+            display: block;
+            height: 1.3rem;
+            line-height: 1.3rem;
+        }
+
+        .label-icon {
+            display: block;
+            width: 2.2rem;
+            height: 2.2rem;
+            border-radius: 50%;
+            margin: 0 auto;
+            line-height: 2.2rem;
+            text-align: center;
+        }
+
+        .label-icon .aui-iconfont {
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+
+        .iconfont {
+            color: #ffffff;
+            font-size: 1.3rem;
+        }
+
+        .font-size-26 {
+            font-size: 1.3rem !important;
+        }
+
+        .aui-grid-label {
+            color: #666 !important;
+            margin-top: 0px !important;
+        }
+
+        .exit {
+            width: 6rem;
+            position: relative;
+            padding: 5px;
+            padding-left: 20px;
+            float: right;
+            font-size: 12px;
+            color: #fff;
+            /*display: flex;*/
+            text-align: center;
+            line-height: 1rem;
+        }
+
+        .exit .iconfont {
+            /*width: 14px;
+            height: 14px;*/
+            font-size: 22px;
+        }
+
+        .memberlevel {
+            font-size: 12px;
+            color: #FFF;
+            /*background: #ff1272;*/
+            border-radius: 20px;
+            width: 65px;
+            text-align: center;
+        }
+
+        .aui-br {
+            border-radius: 10px;
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        .copy {
+            font-size: 11px;
+            color: #fff;
+            height: auto;
+            /*background: #e8b807;*/
+            border-radius: 4px;
+            min-width: 32px;
+            border: 1px #ff1272 solid;
+            text-align: center;
+            float: left;
+        }
+
+        .audit {
+            font-size: 12px;
+            color: #FFF;
+            height: auto;
+            background: #009688;
+            border-radius: 5px;
+            min-width: 45px;
+            border: 1px #FEC513 solid;
+            text-align: center;
+            float: right;
+        }
+
+        .login {
+            color: #FFF;
+            height: auto;
+            border-radius: 10px;
+            min-width: 40px;
+            border: 1px #ff1272 solid;
+            text-align: center;
+            float: left;
+        }
+
+        .money {
+            font-size: 18px;
+            color: #fff;
+            height: auto;
+            min-width: 32px;
+            text-align: center;
+            float: left;
+            font-weight: 700;
+        }
+
+        .aui-login {
+            background: #f5f5f5;
+            /*  background-image: url(../../image/user/bg.png);*/
+        }
+
+        .text {
+            font-size: 12px;
+            color: #111
+        }
+
+        #wrapper {
+            width: 100%;
+            height: 60px;
+        }
+
+        #wrapper img {
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        .aui-list-item-text {
+            display: flex!important;
+            justify-content: flex-start!important;
+            /*width: 70%; */
+        }
+
+        .aui-img-round {
+            width: 72px!important;
+            margin: 0;
+        }
+
+        .memberlevel {
+            background-color: #333333;
+            border-radius: 8px;
+            color: #FEE2AA;
+        }
+
+        .aui-list .aui-list-item-media {
+            padding-right: 0px;
+        }
+
+        #userinfo {
+            background-color: #000!important;
+        }
+
+        .aui-media-list-item-inner {
+            background-color: #ff0000!important;
+            padding-bottom: 3rem;
+            /*border-radius: 0  0 100% 100%;*/
+        }
+
+        .sixbox {
+            position: relative;
+            top: -3.6rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部 -->
+    <section class="aui-content aui-margin-b-15 " id="userinfo">
+        <div class="aui-list aui-media-list aui-list-noborder aui-login">
+            <div class="aui-list-item-middle" tapmode data-title="用户登录" onclick="GoLogin()">
+                <div class="aui-media-list-item-inner ">
+                    <div class="aui-list-item-media" style="left:12px;">
+                        <img src="../../image/defaultuser.jpg" class="aui-img-round">
+                    </div>
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text text-white aui-font-size-16 login">&nbsp;登录/注册&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="aui-content bg-white aui-margin-b-10 aui-br sixbox">
+        <div class="aui-grid aui-padded-b-15 aui-padded-t-15">
+            <div class="aui-row">
+                <div class="aui-col-xs-mytop">
+                    <big class="label-cont aui-font-size-14 aui-text-danger" id="money">￥0</big>
+                    <div class="aui-grid-label aui-font-size-14">可用余额</div>
+                </div>
+                <div class="aui-col-xs-mytop">
+                    <big class="label-cont aui-font-size-14 aui-text-danger" id="today_sum">￥0</big>
+                    <div class="aui-grid-label aui-font-size-14">今日预估</div>
+                </div>
+                <div class="aui-col-xs-mytop">
+                    <big class="label-cont aui-font-size-14 aui-text-danger" id="yesterday_sum">￥0</big>
+                    <div class="aui-grid-label aui-font-size-14">昨日预估</div>
+                </div>
+
+            </div>
+            <div class="aui-row">
+                <div class="aui-col-xs-mytop">
+                    <big class="label-cont aui-font-size-14 aui-text-danger" id="month_statement">￥0</big>
+                    <div class="aui-grid-label aui-font-size-14">上月结算</div>
+                </div>
+                <div class="aui-col-xs-mytop">
+                    <big class="label-cont aui-font-size-14 aui-text-danger" id="count">0人</big>
+                    <div class="aui-grid-label aui-font-size-14">我的粉丝</div>
+                </div>
+                <div class="aui-col-xs-mytop">
+                    <big class="label-cont aui-font-size-14 aui-text-danger" id="secondtotal">0人</big>
+                    <div class="aui-grid-label aui-font-size-14">我的社群</div>
+                </div>
+                <!-- <div class="aui-col-xs-mytop">
+                    <big class="label-cont aui-font-size-14 aui-text-danger" id="totalamount">￥0</big>
+                    <div class="aui-grid-label aui-font-size-14">累计提现</div>
+                </div> -->
+
+            </div>
+
+        </div>
+        <div class="text ">
+
+        </div>
+    </section>
+    <section class="aui-content bg-white aui-margin-b-10 aui-br swiper2 sixbox">
+        <!--   <div class="swiper-container" id="swiper2">
+              <div class="swiper-wrapper" id="wrapper">
+                <div class="swiper-slide" tapmode data-url="https://mo.m.taobao.com/union/9k9baoyou_huodong?pid=" data-title="9块9领优惠券" onclick="openTBurl(this);">
+                    <img src="../../image/a1.png" /> </div>
+                <div class="swiper-slide" tapmode data-url="https://mo.m.taobao.com/union/9k9baoyou_huodong?pid=" data-title="9块9领优惠券" onclick="openTBurl(this);">
+                    <img src="../../image/a2.png" /> </div>
+            </div>
+        </div>-->
+    </section>
+
+    <section class="aui-content bg-white aui-margin-b-10 aui-br sixbox">
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-header aui-font-size-14">用户中心</li>
+        </ul>
+        <div class="aui-grid ">
+            <div class="demo-list">
+                <ul id="demo-list">
+                    <li tapmode onclick="loginopenwin('../../html/user/order_win.html','我的订单')">
+                        <div class="content-area">
+                            <p class="demo0">
+                                <img src="../../image/user/me-3.png">
+                            </p>
+                            <span>返佣订单</span>
+                        </div>
+                    </li>
+
+                    <li tapmode onclick="loginopen('../../html/user/shouyi.html','收益报表')">
+                        <div class="content-area">
+                            <p class="demo2">
+                                <img src="../../image/user/me-7.png">
+                            </p>
+                            <span>收益报表</span>
+                        </div>
+                    </li>
+                    <li tapmode onclick="loginopen('../../html/user/cash.html','结算中心')">
+                        <div class="content-area">
+                            <p class="demo1">
+                                <img src="../../image/user/me-4.png">
+                            </p>
+                            <span>结算中心</span>
+                        </div>
+                    </li>
+                    <li tapmode onclick="loginopen('../../html/user/user_set.html','个人设置')">
+                        <div class="content-area">
+                            <p class="demo3">
+                                <img src="../../image/user/me-13.png">
+                            </p>
+                            <span>个人设置</span>
+                        </div>
+                    </li>
+                    <li tapmode onclick="loginopen('../../html/user/advise.html','提交建议意见')">
+                        <div class="content-area">
+                            <p class="demo1">
+                                <img src="../../image/user/me-9.png">
+                            </p>
+                            <span>建议意见</span>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="demo-list">
+                <ul id="demo-list">
+                    <li tapmode onclick="share()">
+                        <div class="content-area">
+                            <p class="demo4">
+                                <img src="../../image/user/me-10.png">
+                            </p>
+                            <span>邀请好友</span>
+                        </div>
+                    </li>
+                    <li tapmode onclick="loginopen('../../html/user/tuandui.html','我的粉丝')">
+                        <div class="content-area">
+                            <p class="demo0">
+                                <img src="../../image/user/me-15.png">
+                            </p>
+                            <span>我的粉丝</span>
+                        </div>
+                    </li>
+
+                    <li tapmode onclick="loginopen('../../html/user/member.html','会员升级')">
+                        <div class="content-area">
+                            <p class="demo2">
+                                <img src="../../image/user/me-16.png">
+                            </p>
+                            <span>升级VIP</span>
+                        </div>
+                    </li>
+                    <!-- <li tapmode onclick="Toast('开发中')">
+                        <div class="content-area">
+                            <p class="demo3">
+                                <img src="../../image/user/me-21.png">
+                            </p>
+                            <span>多多分享</span>
+                        </div>
+                    </li> -->
+                    <!-- <li tapmode onclick="Toast('开发中')">
+                        <div class="content-area">
+                            <p class="demo4">
+                                <img src="../../image/user/me-8.png">
+                            </p>
+                            <span>排行榜</span>
+                        </div>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="aui-content bg-white aui-margin-b-10 aui-br sixbox">
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-header aui-font-size-14">常用工具</li>
+        </ul>
+        <div class=" aui-grid aui-padded-b-15 aui-padded-t-15">
+            <div class="aui-row">
+                <div class="aui-col-xs-3" tapmode onclick="getdefault('faq','1','常见问题FAQ')">
+                    <div class="label-icon aui-bg-primary"><i class="iconfont icon-help"></i></div>
+                    <div class="aui-grid-label aui-font-size-12">常见问题</div>
+                </div>
+                <div class="aui-col-xs-3" tapmode onclick="openpublic('../../html/user/help.html','帮助中心')">
+                    <div class="label-icon aui-bg-success"><i class="iconfont icon-zingyuan"></i></div>
+                    <div class="aui-grid-label aui-font-size-12">帮助中心</div>
+                </div>
+                <div class="aui-col-xs-3" tapmode onclick="openpublic('../../html/user/touch.html','服务中心')">
+                    <div class="label-icon aui-bg-purple"><i class="iconfont icon-lianxi"></i></div>
+                    <div class="aui-grid-label aui-font-size-12">联系客服</div>
+                </div>
+                <div class="aui-col-xs-3" tapmode onclick="openpublic('../../html/user/chaquan.html','领券教程')">
+                    <div class="label-icon aui-bg-danger"><i class="iconfont icon-qiaquan"></i></div>
+                    <div class="aui-grid-label aui-font-size-12">领券教程</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/swiper.js"></script>
+<script type="text/javascript" src="../../script/echo.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        getTaobao();
+        var appdata = GetStorage('appdata');
+        var inviteinfo = GetStorage('inviteinfo');
+        clipBoard = api.require('clipBoard');
+        reload();
+        setTimeout(Echo, 100);
+        api.setRefreshHeaderInfo({
+            //  loadingImg: 'widget://image/refresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '松开刷新...'
+        }, function(ret, err) {
+            reload();
+            getTaobao();
+            setTimeout(function() {
+                api.refreshHeaderLoadDone();
+            }, 1000);
+        });
+    }
+
+    function Echo() {
+        setInterval(function() {
+            var connectionType = api.connectionType;
+            if (connectionType != 'none') {
+                echo.init({
+                    offset: 0,
+                    throttle: 100,
+                    unload: false,
+                    callback: function(element, op) {}
+                });
+                echo.render();
+            } else {
+                echo.detach(); //移除加载图片
+            }
+        }, 500);
+    }
+
+    function reload() {
+        console.log('刷新个人页面');
+        getdata();
+        var userinfo = GetStorage('userinfo');
+        var inviteinfo = GetStorage('inviteinfo');
+        user = document.getElementById("userinfo");
+        usercenter = document.getElementById("usercenter");
+        if (GetStorage('mobile') == 12345678910) {
+            RmStorage('mobile');
+        }
+        var audit = '';
+        if (GetStorage('mobile')) {
+            if (userinfo.memberlevel != 1) {
+                if (inviteinfo.commission == 'review') {
+                    audit = '<div class="audit">审核中</div>';
+                    Toast('您已经是VIP会员了，还未加入渠道招募备案请及时加入渠道备案，否则自购和分享无法赚取佣金', 5000);
+                }
+            }
+        }
+        if (GetStorage('mobile')) {
+            var str = userinfo.mobile;
+            var mobile = str.substr(0, 3) + "****" + str.substr(7);
+            if (userinfo.memberlevel == 1) {
+                memberlevel = '普通会员';
+            } else if (userinfo.memberlevel == 2) {
+                memberlevel = 'VIP会员';
+            } else if (userinfo.memberlevel == 3) {
+                memberlevel = '运营商';
+            } else if (userinfo.memberlevel == 4) {
+                memberlevel = '超级运营商';
+            } else {
+                memberlevel = '董事';
+            }
+            var html = '<div class="aui-list aui-media-list aui-list-noborder aui-login">';
+            html += '<div class="aui-list-item-middle">';
+            html += '<div class="aui-media-list-item-inner">';
+            html += '<div class="aui-list-item-media" style="left:12px;">';
+            html += '<img src="../../image/defaultuser.jpg" class="aui-img-round" ></div>';
+            html += '<div class="aui-list-item-inner">';
+            html += '<div class="aui-list-item-text text-white aui-font-size-14">' + mobile + '&nbsp;<div class="memberlevel">' + memberlevel + '</div></div>';
+            html += '<div class="aui-list-item-text text-white aui-font-size-14" tapmode onclick="copy()">UID：' + inviteinfo.invite + '&nbsp;<div class="copy" >复制</div></div>';
+            html += '<div class="money" >累计收益' + '<text id="leijishouji">0元</text>' + audit + '</div></div>';
+            html += '<div class="exit" tapmode onclick="clearuser()"><div class="iconfont icon-exit"></div>退出登录</div>';
+            html += '</div></div></div>';
+            $api.html(user, html);
+            $('#money').text('￥' + userinfo.money);
+        } else {
+            var html = '<div class="aui-list aui-media-list aui-list-noborder aui-login">';
+            html += '<div class="aui-list-item-middle" tapmode data-title="用户登录" onclick="GoLogin()">';
+            html += '<div class="aui-media-list-item-inner">';
+            html += '<div class="aui-list-item-media" style="width:5rem;left:12px;">';
+            html += '<img src="../../image/defaultuser.jpg" class="aui-img-round"></div>';
+            html += '<div class="aui-list-item-inner">';
+            html += '<div class="aui-list-item-text text-white aui-font-size-16 login">&nbsp;登录/注册&nbsp;</div>';
+            html += '<div class="aui-list-item-text text-white aui-font-size-14"></div>';
+            html += '</div></div></div>';
+            $api.html(user, html);
+        }
+    }
+
+    function getdata() {
+        var serverurl = GetStorage('serverurl');
+        if (GetStorage('mobile')) {
+            api.ajax({
+                url: serverurl + '/api/user/gettuandui?mobile=' + GetStorage('mobile'),
+                method: 'get',
+                timeout: 5,
+                cache: false,
+                dataType: 'json',
+            }, function(ret, err) {
+                if (ret.code == 1) {
+                    var tuanduidata = ret.data.tuanduidata;
+                    var advisedata = ret.data.advisedata;
+                    if (advisedata.count != 0) {
+                        Toast(advisedata.msg, 5000);
+                    }
+                    $('#count').text(tuanduidata.count + '人');
+                    SetStorage('invite_num', tuanduidata.invite_num); //需要邀请人数
+                    SetStorage('invite_count', tuanduidata.count); //已经邀请人数
+                    SetStorage('order_num', tuanduidata.order_num); //需要自购订单数
+                    SetStorage('order_count', tuanduidata.order_count); //自购订单数
+                    geteveryday(serverurl);
+                }
+            });
+
+        } else {
+            $api.byId('count').innerText = '0人';
+            $api.byId('today_sum').innerText = '￥0';
+            $api.byId('yesterday_sum').innerText = '￥0';
+            $api.byId('month_statement').innerText = '￥0';
+            $api.byId('money').innerText = '￥0'; //可用余额
+            $api.byId('secondtotal').innerText = '0人'; //我的社群统计
+        }
+    }
+
+    function geteveryday(serverurl) {
+        api.ajax({
+            url: serverurl + '/api/user/everyday?mobile=' + GetStorage('mobile'),
+            method: 'get',
+            timeout: 5,
+            cache: false,
+            dataType: 'json',
+        }, function(ret, err) {
+            if (ret.code == 1) {
+                var data = ret.data;
+                // var leijishouji = parseFloat(data.totalamount) + parseFloat(data.month_statement);
+                $('#today_sum').text('￥' + data.today_sum); //今日预估
+                $('#yesterday_sum').text('￥' + data.yesterday_sum); //昨日预估
+                $('#month_statement').text('￥' + data.month_statement); //上月结算
+                var ljsouyi = parseFloat(data.totalamount) + parseFloat(data.month_statement) + parseFloat(GetStorage('userinfo').money)
+                var ljsouyi1 = ljsouyi.toFixed(2)
+                $('#leijishouji').text(ljsouyi1 + '元'); //累计收益获取不到cash表中的money
+
+                  $api.setStorage('ljsouyi', ljsouyi1);
+                $('#secondtotal').text(parseFloat(GetStorage('invite_count')) + parseFloat(data.secondtotal) + '人'); //我的社群
+            }
+        });
+    }
+    //一键复制
+    function copy() {
+        var appdata = GetStorage('appdata');
+        var commondata = GetStorage('commondata');
+        var inviteinfo = GetStorage('inviteinfo');
+        var title = "【" + api.appName + "】APP" + commondata.apptext + '  邀请码：' + inviteinfo.invite + '\n   =>>>> 下载地址：' + GetStorage('appurl');
+        clipBoard.set({
+                value: title
+            },
+            function(ret, err) {
+                Toast('邀请码：' + inviteinfo.invite + '，复制成功')
+            });
+    }
+
+    function clearuser() {
+        api.confirm({
+            title: '提醒',
+            msg: '真的要退出吗？',
+            buttons: ['确定', '取消']
+        }, function(ret, err) {
+            if (ret.buttonIndex == 1) {
+                RmStorage('mobile');
+                Toast('退出成功');
+                setTimeout(reload, 1000);
+            }
+        });
+    }
+    //滚屏广告
+    function getTaobao() {
+        var serverurl = GetStorage('serverurl');
+        var name = api.pageParam.name;
+        var id = api.pageParam.id;
+        //  Alert(name + '<<<' + serverurl + '>>>' + id);
+        api.ajax({
+            url: serverurl + '/api/user/sorts?name=taobao',
+            method: 'get',
+            timeout: 5,
+            cache: false,
+            dataType: 'json',
+        }, function(ret, err) {
+            if (ret.code == 1) {
+                //  Alert(ret.data)
+                var len = ret.data.length;
+                var curPageData = ret.data;
+                //    var slide = document.getElementById('swiper2');
+                /*下面就是往容器里面插入数据的代码*/
+                var html = '<div class="swiper-container" id="swiper2"><div class="swiper-wrapper" id="wrapper">';
+                for (var i = 0; i < len; i++) {
+                    var data = curPageData[i];
+                    html += '<div class="swiper-slide stop-swiping" tapmode data-id="' + data.title_id + '" data-name="' + data.name + '" data-url="' + data.onclick_url + '" data-title="' + data.nickname + '  "onclick="' + data.onclick +
+                        '">';
+                    html += '<img src="../../image/load_440.png" data-echo="' + data.image + '"/></div>';
+                }
+                html += '</div><div class="hr"></div></div>';
+                //    $api.html(slide, html);
+                $('.swiper2').html(html);
+                setTimeout(swiper2, 800); //延时轮播
+            }
+        });
+    }
+
+    function share() {
+        var userinfo = GetStorage('userinfo');
+        if (!GetStorage('mobile')) {
+            Toast('您还没有登录');
+            GoLogin();
+            return false;
+        }
+        if (userinfo.memberlevel == 1) {
+            if (!GetStorage('haibao') || GetStorage('haibao') < timestamp) {
+                Alert('普通会员分享不能获取佣金奖励，请分享邀请海报邀请好友和完成自购订单数量升级VIP会员，并加入渠道招募才能获取佣金奖励。');
+                SetStorage('haibao', timestamp + 86400);
+            }
+        }
+        openpublic('../../html/share/haibao.html', '邀请海报');
+    }
+    //淘宝渠道ID授权
+    function taobaogave(obj) {
+        var url = $api.attr(obj, 'data-url'); //推广连接
+        var title = $api.attr(obj, 'data-title'); //顶部标题
+        var userinfo = GetStorage('userinfo');
+        var inviteinfo = GetStorage('inviteinfo');
+        var commondata = GetStorage('commondata');
+        if (!GetStorage('mobile')) {
+            Toast('您还没有登录');
+            GoLogin();
+            return false;
+        }
+
+        if (inviteinfo.relationid != 0) {
+            Alert('1、您已经是合作方了，可以自购省钱和返现、同时分享赚钱了；2、如果您切换了宜玖购的登录账户，请务必切换到该账户绑定的淘宝账户登录后再进行购物，否则无返佣【1个宜玖购的账号只能对应惟一1个淘宝账号进行购物】；');
+            return false;
+        }
+        //      if (userinfo.memberlevel == 1) {
+        //  if (GetStorage('invite_count') == 0) {
+        //      Alert('邀请0人不能加入合作方，必须邀请1人以上。');
+        //      return false;
+        //  }
+        if (GetStorage('order_count') == 0) {
+            Alert('首购0单不能进行渠道备案，已经完成首购的普通会员，首先请在淘宝账号内复制【订单编号】，然后在【我的】页面中的【返佣订单】中【同步订单】的文本框内粘贴并上传之前复制的淘宝订单编号即可正常加入渠道备案，如果上传不成功请自行查看帮助中心相关文档说明。');
+            return false;
+        }
+        //  }
+
+        var tburl = url + GetStorage('commissiondata').invitercode;
+        //Alert(tburl);
+        api.confirm({
+                title: '温馨提醒',
+                msg: commondata.rid_prompt,
+                buttons: ['加入', '取消']
+            },
+            function(ret, err) {
+                if (ret.buttonIndex == 1) {
+                    openTBAPP(tburl, title);
+                }
+            });
+    }
+
+    function swiper2() {
+        var swiper2 = new Swiper(document.getElementById("swiper2"), {  
+            direction: 'vertical',
+            speed: 500,
+            autoplay: 5000,
+            observer: true,
+            observerParents: true,
+            autoplayDisableOnInteraction: false,
+            noSwiping: true,
+            noSwipingClass: 'stop-swiping',
+        });
+    }
+</script>
+
+</html>

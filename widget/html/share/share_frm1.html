@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>创建分享</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui_flex.css" />
+    <style>
+        body {}
+
+        .flex-box {
+            flex-wrap: nowrap;
+            -webkit-flex-wrap: nowrap;
+            flex-direction: row;
+            -webkit-flex-direction: row;
+            width: 100%;
+            justify-content: space-between;
+            -webkit-justify-content: space-between;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        section {
+            background-color: #f5f5f5;
+        }
+
+        .flex-list {
+            width: 100px;
+            height: 100px;
+            flex-shrink: 0;
+            -webkit-flex-shrink: 0;
+            margin-right: 0.5rem;
+            position: relative;
+        }
+
+        .flex-list-h {
+            width: 1.5rem;
+            height: 1.5rem;
+            background-image: url('../../image/dui_2.png');
+            background-size: 100% 100%;
+            position: absolute;
+        }
+
+        .down-img {
+            vertical-align: middle;
+            display: inline;
+            width: 1rem;
+        }
+
+        .text-box {
+            background-color: #dcdbdb;
+            border-radius: 0.25rem;
+            height: 6rem;
+            overflow-y: scroll;
+            font-size: 0.6rem;
+            padding: 0.5rem;
+        }
+
+        .active {
+            background-image: url('../../image/dui_1.png');
+        }
+
+        #canvas-box {
+            position: fixed;
+            top: -200%;
+            width: 100%;
+        }
+
+        .s-list {
+            width: 3rem;
+            font-size: 0.6rem;
+            text-align: center;
+        }
+
+        .s-btn {
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+
+        .goods-title {
+            height: 3rem;
+            line-height: 1.5rem;
+            overflow: hidden;
+        }
+
+        .row-list {
+            height: 7rem;
+        }
+
+        .qr-div {
+            position: absolute;
+            bottom: 0;
+            height: 1rem;
+            line-height: 1rem;
+            width: 100%;
+            text-align: center;
+            opacity: 0.8;
+            color: #666;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .ios-share {
+            width: 8rem;
+            background-image: -webkit-linear-gradient(left, rgb(249, 128, 44), rgb(251, 58, 36));
+            text-align: center;
+            line-height: 1.5rem;
+            font-size: 1rem;
+            color: #ffffff;
+            border-radius: 0.25rem;
+        }
+
+        .text-content {
+            position: relative;
+            z-index: 99
+        }
+    </style>
+</head>
+
+<body>
+    <section class="" id="canvas-box">
+        <img class="canvas-img" src="" / style="width:100%">
+        <div class="aui-row aui-padded-10">
+            <div class="aui-col-xs-7 row-list">
+                <div class="goods-title aui-font-size-16">
+
+                </div>
+                <div style="position:absolute;bottom:0.5rem;">
+                    <span class="aui-text-danger">￥<span class="aui-font-size-20 price">88</span></span>
+                </div>
+            </div>
+            <div class="aui-col-xs-5 row-list">
+                <div class="my_code">
+                    <img class="qrcode-img" src="" style="margin:auto;" />
+                </div>
+                <div class="aui-font-size-12 aui-text-center">长按识别二维码</div>
+            </div>
+        </div>
+    </section>
+    <section class="aui-content aui-padded-10">
+        <div class="aui-font-size-16 aui-padded-t-10 aui-padded-b-10">选择图片</div>
+        <div class="flex-box aui-flex-col img-box">
+            <div class="flex-list">
+                <div class="flex-list-h active" tapmode onclick="selected(this)"></div>
+                <img class="qr-img" tapmode onclick="drwImg()" src="../../image/album_d.png">
+                <div class="aui-font-size-12 qr-div">二维码图片</div>
+            </div>
+        </div>
+
+        <div class="aui-font-size-12 aui-margin-t-15">
+            <div class="aui-pull-left">已选<span class="c-num aui-text-danger">1</span>张</div>
+            <div class="aui-pull-right aui-text-danger" tapmode onclick="saveImg()">
+                <img class="down-img" src="../../image/down.png" />保存到本地相册</div>
+
+        </div>
+    </section>
+    <section class="aui-content aui-padded-10 text-content">
+        <div class="aui-margin-b-10">编辑分享文案</div>
+        <textarea class="text-box" cols="10" rows="50">
+
+        </textarea>
+        <div class="aui-font-size-12 aui-margin-t-15">
+            <div class="aui-pull-right aui-text-danger" tapmode onclick="copyText()">
+                <span class="aui-iconfont aui-icon-pencil"></span>复制分享文案</div>
+        </div>
+    </section>
+
+    <section class="aui-padded-10 s-btn aui-content">
+        <div class="aui-flex-col aui-flex-between">
+            <div class="s-list" tapmode onclick="goshare(1)">
+                <img src="../../image/share/wx.png" />
+                <div>微信好友</div>
+            </div>
+            <div class="s-list" tapmode onclick="goshare(2)">
+                <img src="../../image/share/wx_circle.png" />
+                <div>朋友圈</div>
+            </div>
+            <div class="ios-share aui-hide" tapmode onclick="goshare(2)">立即分享</div>
+        </div>
+    </section>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/qrcode.js"></script>
+<script type="text/javascript" src="../../script/swiper.js"></script>
+<script type="text/javascript" src="../../script/html2canvas.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+    var clipBoard, userInfo;
+    var iosImages = [];
+    var goodsInfo = {
+        goodsName: '和小伙伴一起分享，一起进步，一起快乐的搬运代码',
+        price: '98.00'
+    }
+    apiready = function() {
+        api.parseTapmode();
+        clipBoard = api.require('clipBoard');
+        // console.log($api.jsonToStr(goodsInfo))
+        ////
+
+        var html = "";
+
+        //    $api.append($api.dom('.img-box'), html);
+        $api.dom('.price').innerHTML = goodsInfo.price;
+        $api.dom('.goods-title').innerHTML = goodsInfo.goodsName;
+        $api.dom('.text-box').innerHTML = goodsInfo.goodsName + '  ￥:' + goodsInfo.price;
+        loadImage();
+    };
+
+    function loadImage(itemid, couponid) {
+        var commondata = GetStorage('commondata');
+        var itemid = api.pageParam.itemid;
+        var couponid = api.pageParam.couponid;
+        var mediadata = GetStorage('mediadata');
+        var timestamp = Date.parse(new Date()) / 1e3; //当前时间戳 精确到秒
+        var datetime = GetDatetime('Y-m-d H:i:s', timestamp);
+        var host = "https://eco.taobao.com/router/rest";
+        var method = "taobao.tbk.item.info.get";
+        // 创建参数表
+        var param = {};
+        param["app_key"] = mediadata.app_key;
+        param["format"] = 'json';
+        param["method"] = method;
+        param["sign_method"] = 'md5';
+        param["timestamp"] = datetime;
+        param["v"] = '2.0';
+        param["num_iids"] = itemid;
+        //  var sign = tb_MD5(param);
+        console.log('当前时间：' + datetime);
+        var taobao = host + '?sign=' + tb_MD5(param) + '&app_key=' + mediadata.app_key + '&method=' + method + '&timestamp=' + datetime + '&num_iids=' + itemid + '&sign_method=md5&format=json&v=2.0';
+        api.ajax({
+            url: taobao, //商品API接口链接
+            encode: true,
+            method: 'get',
+            timeout: 5,
+            dataType: 'json'
+        }, function(ret, err) {
+            if (ret.tbk_item_info_get_response) {
+                var itemdata = ret.tbk_item_info_get_response.results.n_tbk_item[0];
+                var array = itemdata.small_images
+                    //  Alert(array);
+                var count = array.length;
+                var ccc = 0;
+                var imgs = [];
+                for (var i in array.string) {
+                    api.download({
+                        url: array.string[i],
+                        savePath: 'fs://ItemImg/' + i + '.png',
+                        report: false,
+                        cache: false,
+                        allowResume: false
+                    }, function(ret, err) {
+                        if (ret.state == 1) {
+                          //  Alert(ret.savePath)
+                            imgs.push(ret.savePath);
+                            ccc++;
+                            if (ccc >= count) {
+                                var html = '';
+                                for (var j in imgs) {
+                                    html += '<div class="flex-list"><div class="flex-list-h" tapmode onclick="selected(this)">';
+                                    html += '</div><img src=" ' + imgs[j] + '" /></div>';
+                                }
+                                $api.dom('.canvas-img').src = imgs[0];
+                                $('.img-box').append(html);
+                                $('.my_code').qrcode({
+                                    render: "canvas",
+                                    background: "#FFF",
+                                    text: appdata.appurl
+                                });
+                                //  mySwiper();
+                            }
+                        }
+                    });
+                };
+
+            }
+        });
+    }
+
+    function loadimag1() {
+        var itemid = api.pageParam.itemid;
+        var couponid = api.pageParam.couponid;
+        var appdata = GetStorage('appdata');
+        var inviteinfo = GetStorage('inviteinfo');
+        var serverurl = GetStorage('serverurl');
+        api.ajax({
+            url: serverurl + '/api/user/sorts?name=haibao',
+            method: 'get',
+        }, function(ret, err) {
+            if (ret.code == 1) {
+                var count = ret.data.length;
+                var ccc = 0;
+                var imgs = [];
+                for (var i in ret.data) {
+                    api.download({
+                        url: ret.data[i].image,
+                        savePath: 'fs://ShareImg/' + i + '.png',
+                        report: false,
+                        cache: false,
+                        allowResume: false
+                    }, function(ret, err) {
+                        if (ret.state == 1) {
+                            //  Alert(ret.savePath)
+                            imgs.push(ret.savePath);
+                            ccc++;
+                            if (ccc >= count) {
+                                var html = '';
+                                for (var j in imgs) {
+                                    html += '<div class="swiper-slide text-center" tapmode onclick="SaveImg(' + j + ')">';
+                                    html += '<div class="box" id="Img' + j + '">';
+                                    html += '<img  src="' + imgs[j] + '"/>';
+                                    html += '<div class="my_code"></div>';
+                                    html += '<div class="my_invite">邀请码</br><div class="invite">' + inviteinfo.invite + '</div></div></div></div>';
+                                }
+                                $('.swiper-wrapper').html(html);
+                                $('.my_code').qrcode({
+                                    render: "canvas",
+                                    background: "#FFF",
+                                    text: appdata.appurl
+                                });
+                                mySwiper();
+                            }
+                        }
+                    });
+                };
+            };
+        });
+    }
+    //选中图片
+    function selected(node) {
+        $api.toggleCls(node, 'active');
+        var nodes = $api.domAll('.active');
+        $api.dom('.c-num').innerHTML = nodes.length;
+    }
+    //保存图片到本地//安卓和IOS 使用imageCache 有区别，前者缓存的图片文件午无后缀
+    function saveImg() {
+        var nodes = $api.domAll('.flex-list');
+        for (var i = 0; nodes[i]; i++) {
+            if ($api.dom(nodes[i], '.active')) {
+                if (i == 0) {
+                    api.saveMediaToAlbum({
+                        path: $api.dom(nodes[i], 'img').src
+                    }, function(ret, err) {
+                        if (ret && ret.status) {
+                            api.toast({
+                                msg: '保存成功1',
+                            });
+                        } else {
+                            alert('保存失败1');
+                        }
+                    });
+                } else {
+                    //获取图片后缀须要自己完善，这里只适合我当前图片的路径。
+                    var savePath = 'fs://juxiang/' + Math.floor((Math.random() * 100) + 1) + '.' + imgUrl[i].split('.')[3];
+                    downImg(imgUrl[i], savePath);
+                }
+            } else {
+                api.toast({
+                    msg: '没有选中图片 ',
+                });
+            }
+        }
+    }
+
+    function downImg(url, savePath) {
+        console.log(url)
+        api.download({
+            url: url,
+            savePath: savePath,
+            report: true,
+            cache: false,
+            allowResume: true
+        }, function(ret, err) {
+            if (ret.state == 1) {
+                console.log(ret.savePath)
+                api.saveMediaToAlbum({
+                    path: ret.savePath
+                }, function(ret, err) {
+                    if (ret && ret.status) {
+                        api.toast({
+                            msg: '保存成功2',
+                        });
+
+                    } else {
+                        alert('保存失败2');
+                    }
+                });
+            }
+        });
+    }
+
+    function drwImg() {
+        html2canvas(document.querySelector("#canvas-box")).then(function(canvas) {
+            // document.body.appendChild(canvas)
+            var image = new Image();
+            image.src = canvas.toDataURL("image/webp", 1);
+            var base64Str = image.src.split('base64,')[1];
+            var imgPath = "fs://qrcode/";
+            var imgName = Math.floor((Math.random() * 100) + 1) + "share.jpg";
+            var trans = api.require('trans');
+            trans.saveImage({
+                base64Str: base64Str, //base64字符串不能包含data:image/png;base64,前缀
+                album: false,
+                imgPath: imgPath,
+                imgName: imgName
+            }, function(ret, err) {
+                if (ret.status) {
+                    iosImages[0] = imgPath + imgName;
+                    $api.dom($api.domAll('.flex-list')[1], 'img').src = api.fsDir + "/qrcode/" + imgName;
+                }
+            });
+        });
+    }
+    //复制分享文案
+    function copyText() {
+        var value = $api.dom('.text-box').value;
+        clipBoard.set({
+            value: value
+        }, function(ret, err) {
+            if (ret) {
+                api.toast({
+                    msg: '文案已复制至粘贴板',
+                    duration: 1000,
+                    location: 'middle'
+                });
+                // alert(JSON.stringify(ret));
+            } else {
+                api.toast({
+                    msg: '开小差了！--',
+                    duration: 1000,
+                    location: 'middle'
+                });
+
+                // alert(JSON.stringify(err));
+            }
+        });
+    }
+    //分享
+    function goshare(num) {
+        var sharedModule = api.require('shareAction');
+        var wx = api.require('wx');
+        var nodes = $api.domAll('.flex-list');
+        var images = [];
+        for (var i = 0; nodes[i]; i++) {
+            if ($api.dom(nodes[i], '.active')) {
+                images.push($api.dom(nodes[i], 'img').src);
+            }
+        }
+        // console.log(images.join(','))
+        if (api.systemType == 'ios') {
+            api.showProgress({
+                style: 'default',
+                animationType: 'fade',
+                title: '努力加载中...',
+                text: '先喝杯茶...',
+                modal: true
+            });
+            setTimeout(function() {
+                api.hideProgress();
+            }, 3000)
+
+            sharedModule.share({
+                text: $api.dom('.text-box').innerHTML,
+                type: 'image',
+                images: images
+            });
+        } else {
+            if (num == 1) {
+                var wx = api.require('wx');
+                wx.shareImage({
+                    scene: 'session',
+                    contentUrl: images[0]
+                }, function(ret, err) {
+                    if (ret.status) {
+                        api.toast({
+                            msg: '分享成功',
+                            duration: 1000,
+                            location: 'middle'
+                        });
+                    } else {
+                        // alert(err.code);
+                    }
+                });
+            } else {
+                api.showProgress({
+                    style: 'page',
+                    animationType: 'fade',
+                    title: '加载中...',
+                    text: '先喝杯茶...',
+                    modal: true
+                });
+                setTimeout(function() {
+                    api.hideProgress();
+                }, 3000)
+                var wx = api.require('wx');
+                wx.shareMutableImg({
+                    description: $api.dom('.text-box').innerHTML,
+                    imgs: images
+                });
+            }
+        }
+    }
+
+    function qrcode() {
+        var FNScanner = api.require('FNScanner');
+        var content = 'https://community.apicloud.com/bbs/?fromuid=522236';
+        FNScanner.encodeImg({
+            content: content,
+            saveToAlbum: false,
+            saveImg: {
+                path: 'fs://qrcode' + Math.floor((Math.random() * 100) + 1) + 'goodShare.png',
+                w: 130,
+                h: 130
+            }
+        }, function(ret, err) {
+            // alert($api.jsonToStr(ret))
+            if (ret.status) {
+                $api.dom('.qrcode-img').src = ret.imgPath;
+                // alert(JSON.stringify(ret));
+            }
+        });
+    }
+
+
+    function readPhoto1(index) {
+        var photoBrowser = api.require('photoBrowser');
+        api.sendEvent({
+            name: 'albumShow',
+            extra: {
+                key1: true,
+            }
+        });
+        var nodes = $api.domAll('.flex-list img');
+        var images = [];
+
+        //ios系统直接用imagecache 获取的地址无法放在photoBrowser下使用 安卓可以；
+        //处理方式 ios用的远程地址，再次请求要再消耗网络资源  安卓则可直接使用缓存地址
+        if (api.systemType == 'ios') {
+            images = iosImages;
+        } else {
+            for (var i = 0; nodes[i]; i++) {
+                images.push(nodes[i].src);
+            }
+        }
+        // console.log(images)
+        photoBrowser.open({
+            images: images,
+            activeIndex: index,
+            placeholderImg: 'widget://image/album_d.png',
+            bgColor: '#000'
+        }, function(ret, err) {
+            api.openFrame({
+                name: 'album_header',
+                url: './album_header_frm.html',
+                rect: {
+                    x: 0,
+                    y: 25,
+                    w: api.winWidth,
+                    h: 40
+                },
+                pageParam: {
+                    name: 'test'
+                },
+                bounces: true,
+                bgColor: 'rgba(0,0,0,0)',
+                vScrollBarEnabled: true,
+                hScrollBarEnabled: true
+            });
+
+            if (ret) {
+                // alert(JSON.stringify(ret));
+                // console.log(JSON.stringify(ret))
+                currentIndex = ret.index;
+            } else {
+                // alert(JSON.stringify(err));
+            }
+        });
+    }
+</script>
+
+</html>

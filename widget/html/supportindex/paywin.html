@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/aui.css">
+    <style media="screen">
+    .aui-bar-nav{
+      background-color: #fff;
+      color: #000;
+      padding-top: 20px;
+    }
+    .aui-title{
+      color: #333333;
+      font-size: 20px;
+      font-family:SimHei;
+
+    }
+      .paywin{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 40px;
+      }
+      .paywin .paywinimg{
+        width:76px;
+        margin-right: 10px;
+      }
+      .paywin .paymsg .p1{
+          color: #F1246D;
+          font-size: 18px;
+          font-weight:bold;
+          font-family:SimHei;
+      }
+      .paywin .paymsg .p2{
+        margin-top: 5px;
+        color: #1A1A1A;
+      }
+      .paywin .paymsg .p2 span{
+        color: #919191;
+      }
+      .paywin .paymsg .p3 span{
+        color: #919191;
+      }
+      .paywin .paymsg .p3{
+        color: #F1246D;
+      }
+      .paywin .paymsg .p2,.p3 {
+        font-size: 14px;
+
+      }
+      .aui-btn{
+        width: 80%;
+        margin: 0 auto;
+        color: #fff;
+        font-size: 17px;
+        font-family:SimHei;
+      background:linear-gradient(90deg,rgba(255,131,175,1),rgba(240,28,104,1));
+      /*border-image:linear-gradient(-90deg, rgba(240,28,104,1), rgba(255,131,175,1)) 1 1;*/
+      margin-top: 20vh;
+      }
+    </style>
+</head>
+
+<body>
+  <div id="boxs">
+
+    <header class="aui-bar aui-bar-nav">
+        <div class="aui-pull-left aui-btn" @click='bankhtml'>
+            <span class="aui-iconfont aui-icon-left" style="color:#000"></span>
+        </div>
+        <div class="aui-title" >支付成功</div>
+    </header>
+    <!-- 详细信息 -->
+    <div class="paywin">
+        <div class="paywinimg">
+          <img src="../../image\soppeticon/pay.png" alt="">
+        </div>
+        <div class="paymsg">
+            <p class="p1">订单支付成功！</p>
+            <p class="p2"><span>订单号：</span> {{order_no}}
+            </p>
+            <p class="p3"><span>已付款：</span> ￥{{ parcenum }}</p>
+        </div>
+    </div>
+    <div class="aui-btn aui-btn-block" @click='goorder'>查看订单</div>
+  </div>
+</body>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/axios.min.js"></script>
+
+
+<script type="text/javascript">
+    apiready = function() {
+        var vuedata = {
+            'cartlist': [],
+            'cartname': "",
+            'goodnum':'',
+            'indexs':'2',
+            'parcenum':'',
+            'order_no':''
+        }
+        var vm = new Vue({
+            el: '#boxs',
+            data: vuedata,
+            mounted: function() {
+              this.getprice()
+
+            },
+            created: function() {
+
+            },
+            methods: {
+              getprice(){
+                this.parcenum = api.pageParam.pricenum
+                this.order_no = api.pageParam.order_no
+
+              },
+              goorder(){
+                api.openWin({     
+                    name: 'orderdetails',
+                         url: './myorder.html',
+                         pageParam: {
+
+                    }   
+                })
+              },
+              bankhtml() {
+                  api.historyBack({}, function(ret, err) {
+                      if (!ret.status) {
+                          api.closeWin();
+                      }
+                  });
+              },
+
+
+            },
+        });
+    }
+
+    function getOrderListByPage() {
+        这里面可以直接用vuedata里面的任何一个数据
+
+    }
+</script>
+</html>

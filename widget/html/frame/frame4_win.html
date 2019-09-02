@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>商品列表</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body>
+    <header class="aui-bar aui-bar-nav aui-bar-light" id='aui-header'>
+        <div class="aui-bar aui-bar-btn aui-bar-btn-round" id="header">
+            <div class="aui-bar-btn-item aui-active">近 两 小 时</div>
+            <div class="aui-bar-btn-item">全 天 疯 抢</div>
+        </div>
+    </header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/aui-tab.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.parseTapmode();
+        console.warn('打开热榜页面');
+        funIniGroup();
+    }
+
+    function funIniGroup() {
+        var header = $api.byId('aui-header');
+        var headerPos = $api.offset(header);
+        var y = api.pageParam.headerPos;
+        var cid = api.pageParam.cid;
+        var sort = api.pageParam.sort;
+        //  $api.dom('.aui-title').innerHTML = name;
+        api.openFrameGroup({
+            name: 'frame4_frm',
+            background: '#fff',
+            scrollEnabled: false,
+            historyGestureEnabled: true,
+            preload: 0,
+            bounces: false,
+            allowEdit: true,
+            rect: {
+                x: 0,
+                y: y.h + headerPos.h,
+                w: 'auto',
+                h: 'auto',
+                marginBottom: (api.pageParam.footerPos).h
+            },
+            index: 0,
+            frames: [{
+                name: 'frame0',
+                url: 'frame4_frm.html',
+                pageParam: {
+                    sort: '11',
+                },
+            }, {
+                name: 'frame1',
+                url: 'frame4_frm.html',
+
+                pageParam: {
+                    sort: '9',
+                },
+            }]
+        }, function(ret, err) {
+            var index_ = ret.index;
+            switch (index_) {
+                case 0:
+                    historyBack(index_);
+                    break;
+                case 1:
+                    historyBack(index_);
+                    break;
+                case 2:
+                    historyBack(index_);
+                    break;
+                case 3:
+                    historyBack(index_);
+                    break;
+            }
+        });
+
+        function historyBack(index_) {
+            api.addEventListener({
+                name: 'keyback'
+            }, function(ret, err) {
+                api.historyBack({
+                    frameName: 'frame' + index_
+                }, function(ret) {
+                    if (!ret.status) { //没有历史记录了则关闭当前窗口
+                        api.closeWin();
+                    }
+                });
+            });
+        }
+    }
+
+    //随意切换TAB栏
+    var tab = new auiTab({
+            element: document.getElementById("header"),
+        }, function(ret) {
+            if (ret) {
+                var tag = (ret.index) - 1;
+                api.setFrameGroupIndex({
+                    name: 'frame4_frm',
+                    index: tag,
+                    reload: false,
+                    scroll: false
+                });
+            }
+        })
+        //历史记录后退
+    function GoToHisBack() {
+        api.historyBack({
+            frameName: "frame4_frm"
+        }, function(ret) {
+            if (!ret.status) { //没有历史记录了则关闭当前窗口
+                api.closeWin();
+            }
+        });
+    }
+</script>
+
+</html>

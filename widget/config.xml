@@ -1,0 +1,48 @@
+<widget id="A6002363288897" version="0.0.1">
+    <name>宜玖购</name>
+    <description>
+        Example For APICloud.
+    </description>
+    <author email="developer@apicloud.com" href="http://www.apicloud.com">
+        Developer
+    </author>
+    <content src="index.html"/>
+    <access origin="*"/>
+    <preference name="pageBounce" value="false"/>
+    <preference name="appBackground" value="rgba(0,0,0,0.0)"/>
+    <preference name="windowBackground" value="rgba(0,0,0,0.0)"/>
+    <preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>
+    <preference name="hScrollBarEnabled" value="true"/>
+    <preference name="vScrollBarEnabled" value="true"/>
+    <preference name="autoLaunch" value="ture"/>
+    <preference name="fullScreen" value="false"/>
+    <preference name="autoUpdate" value="true"/>
+    <preference name="smartUpdate" value="true"/>
+    <preference name="debug" value="true"/>
+    <preference name="statusBarAppearance" value="true"/>
+    <preference name="softInputMode" value="auto"/>
+    <permission name="readPhoneState"/>
+    <permission name="camera"/>
+    <permission name="record"/>
+    <permission name="location"/>
+    <permission name="fileSystem"/>
+    <permission name="internet"/>
+    <permission name="bootCompleted"/>
+    <permission name="hardware"/>
+    <feature name="ajpush">
+        <param name="app_key" value="2677a5821dc2da1f623a5b8a"/>
+        <param name="channel" value="developer-apicloud"/>
+    </feature>
+    <feature name="jdKepler">
+        <param name="appKey_iOS" value="a1a079063f304ad18a290102e07a850d"/>
+        <param name="appSecret_iOS" value="7faaab98b3d94f7baef0bbe8041fe28a"/>
+        <param name="appKey_android" value="27666884bfb726a9b86d5a6bbb004e66"/>
+        <param name="appSecret_android" value="61a1348f750a4b5096bab9f5a89fe064"/>
+        <param name="urlScheme" value="sdkback27666884bfb726a9b86d5a6bbb004e66"/>
+    </feature>
+    <feature name="aliPayPlus">
+      <param name="urlScheme" value="AliPayPlusA6002363288897"/>
+  </feature>
+    <meta-data name="Mob-AppKey" value="2b87385eb6440"/>
+    <meta-data name="Mob-AppSecret" value="b4dd0c01bde2849be9c5880103dd80fa"/>
+</widget>

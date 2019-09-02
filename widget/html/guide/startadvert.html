@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/mescroll.css" />
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            background-size: 100% 100%;
+            background-position: bottom center;
+            position: absolute;
+            background-repeat: no-repeat;
+        }
+
+        #imageAd {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background-size: 100%;
+        }
+
+        .wrap {
+            position: absolute;
+            width: 60px;
+            height: 30px;
+            text-align: center;
+            background: #CECECE;
+            border-radius: 15px;
+            overflow: hidden;
+            z-index: 9999;
+            top: 40px;
+            right: 20px;
+        }
+
+        .box {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            line-height: 30px;
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+            z-index: 4;
+            background: #CECECE;
+        }
+
+        .qp {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            /*background: #CECECE;*/
+            overflow: hidden;
+            z-index: 9999;
+            bottom: 25%;
+            left: 20px;
+            border-radius: 20px 0px 20px 0px;
+        }
+        /*文字的设置*/
+
+        #qp {
+            position: absolute;
+            width: 100%;
+            height: 100px;
+            text-align: center;
+            font-size: 20px;
+            color: white;
+            line-height: 25px;
+            background-color: red;
+            border-radius: 20px 0px 20px 0px;
+            background: linear-gradient(#FFA844, red);
+        }
+    </style>
+</head>
+
+<body id="body">
+    <div class="wrap">
+        <div class="box" id="tid" onclick="guideToHome()"></div>
+    </div>
+    <!--    <div> <img id="imageAd" src="../../image/guide/guide3.png" />
+</div> -->
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/mescroll.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.setStatusBarStyle();
+        $api.fixIos7Bar();
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err) {
+            api.historyBack({
+                frameName: 'startadvert'
+            }, function(ret, err) {
+                if (!ret.status) {
+                    guideToHome();
+                }
+            });
+        });
+        //插屏倒计时
+        var appdata = GetStorage('appdata');
+        time = 5;
+        rotating();
+        var picurl = api.pageParam.picurl;
+        console.log('图片地址：' + picurl);
+        //    api.alert(sad)
+        var listDom = document.getElementById("body");
+        var html = '<div tapmode data-title="粉丝福利购" onclick="">';
+        html += '<img id="imageAd"  src="' + picurl + '" />';
+        html += '</div>';
+        $api.append(listDom, html);
+    }
+
+    //插屏倒计时
+    function rotating() {
+        var tid = $api.byId('tid');
+        $api.html(tid, '跳过 ' + time);
+        if (time > 0) {
+            time = time - 1;
+            setTimeout(rotating, 1000);
+        } else {
+            setTimeout(guideToHome, 500);
+        }
+    }
+    //退出插屏广告
+    function guideToHome() {
+        api.execScript({
+            name: 'root',
+            script: 'indexfirst()'
+        });
+    }
+</script>
+
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../css/aui.css">
+  <style>
+  .aui-bar-nav {
+      background-color: #FF5675;
+      color: #fff;
+      padding-top: 20px;
+      /*margin-bottom: 30px*/
+  }
+
+  .aui-title {
+      color: #fff;
+      font-size: 20px;
+      font-family: SimHei;
+  }
+  .goodtab{
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    /*font-size: 16px;*/
+    font-family: SimHei;
+    font-weight:500;
+    color: #666666;
+
+  }
+   .goodlist {
+      margin: 0 0.5rem;
+      /*height: 200px;*/
+      margin-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+  }
+
+
+  .goodlist .goodbox{
+  width: 48%;
+  /*height: 200px;*/
+  background-color: #fff;
+  padding: 0 5px;
+/*margin: 0 10px;*/
+  margin-bottom: 14px;
+
+  }
+.goodlist .goodbox .imgbox{
+  width: 100%;
+  height: 105px;
+  background-color: #DFF2FF;
+}
+.goodlist .goodbox .imgbox img{
+width: 100%;
+height: 100%;
+}
+.goodlist .goodbox .goodtit p{
+  /*display: flex;*/
+  /*align-items: center;*/
+  font-size: 15px;
+  color: #666;
+  line-height:22px;
+  height: 40px;
+overflow: hidden;
+text-overflow:ellipsis;
+ display:-webkit-box;
+ -webkit-line-clamp: 2;
+-webkit-box-orient: vertical;
+}
+.goodlist .goodbox .goodtit p img{
+  width: 26px;
+  height: 16px;
+  display: inline-block;
+  /*line-height: 40px;*/
+  vertical-align:middle
+}
+.goodlist .goodbox .pprice{
+ font-size: 17px;
+ color: #F51A68;
+}
+.goodlist .goodbox .psales{
+font-size: 11px;
+color: #999999;
+}
+.goodtab .actionc{
+  color: #F4617C;
+}
+  </style>
+
+</head>
+<body>
+  <div id='box'>
+
+  <!-- 头部 -->
+<header class="aui-bar aui-bar-nav">
+            <div class="aui-pull-left aui-btn" @click='bankhtml'>
+                <span class="aui-iconfont aui-icon-left"></span>
+            </div>
+            <div class="aui-title">{{this.titname}}</div>
+        </header>
+        <!-- tab -->
+        <div class="goodtab">
+          <div :class="{actionc:index ==0}" @click='actioo(0)'>人气</div>
+          <div :class="{actionc:index ==1}" @click='actioo(1)'>最新↓</div>
+          <div :class="{actionc:index ==2}" @click='actioo(2)'>销量↓</div>
+          <div :class="{actionc:index ==3}" @click='actioo(3)'>价格↑</div>
+          <div :class="{actionc:index ==4}" @click='actioo(4)'>价格↓</div>
+        </div>
+
+        <!-- 商品列表 -->
+
+        <div class="goodlist"  >
+
+            <div class="goodbox"  v-for='(item,index) in goodlist' :key='index'  @click="opnew(item.goods_id)">
+                <div class="imgbox">
+                  <img :src="item.goods_img" alt="">
+                </div>
+                <div class="goodtit">
+                  <p><img src="../../image/soppeticon/self.png">{{ item.goods_name }}</p>
+                </div>
+              <p class="pprice">￥{{ item.goods_price }}</p>
+              <span class="psales">销量{{ item.sales_actual }}件</span>
+            </div>
+
+        </div>
+</div>
+</body>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/axios.min.js"></script>
+
+<script type="text/javascript">
+apiready = function() {
+
+    var vuedata = {
+      'index':'0',
+      'titname':'123',
+      'goodid':'',
+      "goodlist":[]
+    }
+    var vm = new Vue({
+        el: '#box',
+        data: vuedata,
+        mounted: function() {
+
+        },
+        created: function() {
+          this.getgonndid()
+          this.getgoodlists()
+        },
+        methods: {
+          getgonndid(){
+            this.goodid = api.pageParam.id
+            this.titname = api.pageParam.titname
+            console.log(this.goodid);
+            console.log(this.titname);
+          },
+            bankhtml() {
+              api.closeWin();
+            },
+            actioo(i){
+              this.index = i
+              if(this.index == 0){
+                axios.get(`http://shop.19gou.net/api/index/goodsList?cat_id=${this.goodid}&page=1&types=renqi`, {})
+                    .then(res => {
+                        this.goodlist =  res.data.data.goodsdata
+                    })
+                    .catch(function(error) {
+                    });
+              }else if(this.index == 1){
+                  axios.get(`http://shop.19gou.net/api/index/goodsList?cat_id=${this.goodid}&page=1&types=zuixin`, {})
+                      .then(res => {
+                          this.goodlist =  res.data.data.goodsdata
+                      })
+                      .catch(function(error) {
+                      });
+                }else if(this.index == 2){
+                  axios.get(`http://shop.19gou.net/api/index/goodsList?cat_id=${this.goodid}&page=1&types=xiaoliang`, {})
+                      .then(res => {
+                          this.goodlist =  res.data.data.goodsdata
+                      })
+                      .catch(function(error) {
+                      });
+                }else if (this.index == 3) {
+                  axios.get(`http://shop.19gou.net/api/index/goodsList?cat_id=${this.goodid}&page=1&types=jiage_min`, {})
+                      .then(res => {
+                          this.goodlist =  res.data.data.goodsdata
+                      })
+                      .catch(function(error) {
+                      });
+                }else if (this.index == 4) {
+                  // console.log(5);
+                  axios.get(`http://shop.19gou.net/api/index/goodsList?cat_id=${this.goodid}&page=1&types=jiage_max`, {})
+                      .then(res => {
+                          this.goodlist =  res.data.data.goodsdata
+                      })
+                      .catch(function(error) {
+                      });
+                }
+            },
+            getgoodlists(){
+              axios.get(`http://shop.19gou.net/api/index/goodsList?cat_id=${this.goodid}&page=1&types=renqi`, {
+              })
+              .then(res=>{
+                this.goodlist =  res.data.data.goodsdata
+              })
+              .catch(function (error) {
+              //  console.log(error);
+             });
+           },
+           opnew(i) {
+            //  console.log(i);
+
+
+            $api.setStorage('id', i);
+             api.openWin({
+                      name: 'goodclass',
+                      url: './goodclass.html',
+                      pageParam: {
+
+                      }
+                  });
+           },
+
+        }
+    });
+}
+
+function getOrderListByPage() {
+    这里面可以直接用vuedata里面的任何一个数据
+
+}
+ </script>
+
+
+</html>

@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>底部</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <style media="screen">
+      #aui-header{
+        /*overflow: hidden;*/
+        /*display: block;*/
+        /*visibility: ;*/
+        position: fixed;;
+        top: -999px;
+      }
+    </style>
+</head>
+<body>
+<div id="box">
+
+<header class="aui-bar aui-bar-nav" id="aui-header"></header>
+
+
+   <footer class="aui-bar aui-bar-tab" id="footer">
+        <div id="tabbar1" class="aui-bar-tab-item aui-active" tapmode @click="randomSwitchBtn(this,'首页',0)">
+            <i class="aui-iconfont aui-icon-home"></i>
+            <div class="aui-bar-tab-label">首页</div>
+        </div>
+        <div id="tabbar2" class="aui-bar-tab-item" tapmode @click=randomSwitchBtn(this,'未接',1)>
+            <i class="aui-iconfont aui-icon-cart"></i>
+            <div class="aui-bar-tab-label">购物车</div>
+        </div>
+        <div id="tabbar3" class="aui-bar-tab-item" tapmode @click="randomSwitchBtn(this,'已结',2)">
+            <i class="aui-iconfont aui-icon-star"></i>
+            <div class="aui-bar-tab-label">分类</div>
+        </div>
+        <div id="tabbar4" class="aui-bar-tab-item" tapmode @click="randomSwitchBtn(this,'呼出',3)">
+
+          <i class="aui-iconfont aui-icon-my"></i>
+            <div class="aui-bar-tab-label">我的</div>
+        </div>
+    </footer>
+
+  </div>
+
+
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript">
+  apiready = function(){
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+        var footer =　$api.byId('footer')
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+        var body_h = api.winHeight;
+        var footer_h = $api.offset(footer).h;
+
+        api.openFrameGroup ({
+            name: 'footer_tab_demo',
+            scrollEnabled:true,
+            rect:{
+            x:0,
+            y:0,
+            w:'auto',
+            h:body_h  - footer_h
+            },
+            index:0,
+            preload:3,
+            frames:
+            [{
+                name: 'main',
+                url: './supportmian.html',
+                bounces:true
+            },{
+                name: 'footer_tab_2',
+                url: './supportcart.html',
+                bounces:true
+            },{
+                name: 'footer_tab_3',
+                url: './supportclassify.html',
+                bounces:true
+            },{
+                name: 'frame5',
+                url: '../frame/frame5.html',
+                bounces:true,
+                vScrollBarEnabled: false,
+
+            }
+          ]
+        }, function(ret, err){
+            var footer = $api.byId('footer');
+            var footerAct = $api.dom(footer, '.aui-bar-tab-item.aui-active');
+    $api.removeCls(footerAct, 'aui-active');
+            var name = ret.name;
+            var index = ret.index;
+            if(index==0){
+                $api.text($api.byId('aui-header'),'首页');
+                $api.addCls($api.byId('tabbar1'), 'aui-active');
+            }else if(index==1){
+                $api.text($api.byId('aui-header'),'未接');
+                $api.addCls($api.byId('tabbar2'), 'aui-active');
+            }else if(index==2){
+                $api.text($api.byId('aui-header'),'已结');
+                $api.addCls($api.byId('tabbar3'), 'aui-active');
+            }else if(index==3){
+                $api.text($api.byId('aui-header'),'个人中心');
+                $api.addCls($api.byId('tabbar4'), 'aui-active');
+
+            }else if(index==4){
+                $api.text($api.byId('aui-header'),'挂断');
+                $api.addCls($api.byId('tabbar5'), 'aui-active');
+            }
+        })
+        var vuedata = {
+
+        }
+        var vm = new Vue({
+            el: '#box',
+            data: vuedata,
+            mounted: function() {
+
+            },
+            created: function() {
+
+            },
+            methods: {
+              randomSwitchBtn(obj, name, index) {
+                console.log(index);
+                $api.addCls($api.byId('tabbar1'), 'aui-active');
+                  $api.text($api.byId('aui-header'),name);
+                	var footer = $api.byId('footer');
+                	var footerAct = $api.dom(footer, '.aui-bar-tab-item.aui-active');
+                  $api.removeCls(footerAct, 'aui-active');
+                  $api.addCls(obj, 'aui-active');
+                  api.setFrameGroupIndex({
+                      name: 'footer_tab_demo',
+                      index: index,
+                      scroll:true
+                  });
+              }
+
+            },
+        });
+    },
+    function closeWin(){
+        api.closeWin();
+    }
+
+</script>
+</html>

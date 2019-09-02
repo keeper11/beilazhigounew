@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>系统设置</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/profile.css" />
+    <style type="text/css">
+        .list-item .right .state {
+            display: inline-block;
+            vertical-align: middle;
+            border-radius: 20px;
+            width: 38px;
+            height: 21px;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+            color: #fff;
+        }
+
+        .list-item .right .open {
+            background-color: #00acff;
+        }
+
+        .list-item .right .open::after {
+            content: " ";
+            float: right;
+            margin-top: 1px;
+            margin-right: 1px;
+            width: 19px;
+            height: 19px;
+            border-radius: 50%;
+            background-color: #fff;
+            box-shadow: 0px 0px 1px 1px #d4d4d4;
+            -webkit-transition: all 0.2s linear;
+            transition: all 0.2s linear;
+        }
+
+        .list-item .right .close {
+            background-color: #ededed;
+        }
+
+        .list-item .right .close::after {
+            content: " ";
+            float: left;
+            margin-top: 1px;
+            margin-left: 1px;
+            width: 19px;
+            height: 19px;
+            border-radius: 50%;
+            background-color: #fff;
+            box-shadow: 0px 0px 1px 1px #d4d4d4;
+            -webkit-transition: all 0.2s linear;
+            transition: all 0.2s linear;
+        }
+    </style>
+</head>
+
+<body>
+  <!--  <div class="list-item">
+        <div class="right" tapmode onclick="fnPushMessage();">
+            <div id="message" class="state close"></div>
+        </div>
+    </div>-->
+    <section class="aui-content">
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item" tapmode onclick="">
+                <div class="aui-list-item-label-icon">
+                    <i class="iconfont icon-dingwei aui-text-danger"></i>
+                </div>
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">消息推送</div>
+                    <div class="aui-list-item-right">
+                        <input type="checkbox" id="checkAddress" class="aui-switch aui-pull-right" checked="true" tapmode onclick="showAddress()">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item" tapmode onclick="handupdate()">
+                <div class="aui-list-item-label-icon">
+                    <i class="iconfont icon-banben aui-text-info"></i>
+                </div>
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">版本更新</div>
+                    <div class="aui-list-item-right">
+                        <h3><span id="ver">1.0.0</span></h3></div>
+                </div>
+            </li>
+            <li class="aui-list-item" id="clear-cache" tapmode onclick="clearCache()">
+                <div class="aui-list-item-label-icon">
+                    <i class="iconfont icon-qingchu aui-text-danger"></i>
+                </div>
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">清除缓存</div>
+                    <div class="aui-list-item-right">
+                        <h3><span id="badge">已使用0B</span></h3></div>
+                </div>
+            </li>
+        </ul>
+    </section>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+            api.parseTapmode();
+            var ver = api.appVersion; //显示版本号
+            $api.byId("ver").innerText = '当前版本：' + ver;
+            getCacheSize();
+            setTimeout(setupdate, 2000);
+        }
+        // 获取缓存大小
+    function getCacheSize() {
+        api.getCacheSize(function(ret) {
+            if (ret) {
+                var size = "";
+                if (ret.size < 1024) { //如果小于0.1KB转化成B
+                    size = ret.size + "B";
+                } else if (ret.size < 1024 * 1024) { //如果小于0.1MB转化成KB
+                    size = (ret.size / 1024).toFixed(2) + "KB";
+                } else if (ret.size < 1024 * 1024 * 1024) { //如果小于0.1GB转化成MB
+                    size = (ret.size / (1024 * 1024)).toFixed(2) + "MB";
+                }
+                $api.byId('badge').innerText = '已使用' + size;
+            }
+        });
+    }
+
+    // 清除缓存
+    function clearCache() {
+        $api.toast('清除缓存中', '请稍候', 1000);
+        api.clearCache(function(ret) {
+            getCacheSize();
+            setTimeout(function() {
+                Toast('清除缓存成功');
+            }, 2000);
+        });
+    }
+    //消息推送开关
+    function fnPushMessage() {
+        var eMessage = $api.byId('message');
+        if ($api.hasCls(eMessage, 'open')) {
+            $api.addCls(eMessage, 'close');
+            $api.removeCls(eMessage, 'open');
+        } else {
+            $api.addCls(eMessage, 'open');
+            $api.removeCls(eMessage, 'close');
+        }
+    }
+    //开启定位
+    function showAddress() {
+        var checkAddress = document.getElementById('checkAddress');
+        if (checkAddress.checked) {
+            var bMap = api.require('bMap');
+            bMap.getLocation({
+                accuracy: '10m',
+                autoStop: true,
+                filter: 1
+            }, function(ret, err) {
+                if (ret.status) {
+                    var lon = ret.lon;
+                    var lat = ret.lat;
+                    bMap.getNameFromCoords({
+                        lon: lon,
+                        lat: lat
+                    }, function(ret, err) {
+                        if (ret.status) {
+                            Toast('城市:' + ret.province + ret.city + ret.district + '\n地址:' + ret.address);
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    //历史记录后退
+    function GoToHisBack() {
+        api.historyBack({
+            frameName: "set"
+        }, function(ret) {
+            if (!ret.status) { //没有历史记录了则关闭当前窗口
+                api.closeWin();
+            }
+        });
+    }
+</script>
+
+</html>

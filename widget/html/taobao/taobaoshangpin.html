@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>领券页</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/mescroll.css" />
+	<style>
+		html,
+		body {
+			height: 100%;
+			background: transparent;
+			-webkit-touch-callout: none;
+			font-family: Tahoma, Geneva, sans-serif;
+			font-style: normal;
+		}
+
+		.activityModel {
+			position: absolute;
+			top: 0px;
+			bottom: 0px;
+			left: 0px;
+			right: 0px;
+			background: rgba(0, 0, 0, 0.6);
+			z-index: 99;
+		}
+
+		#dialog {
+			background-color: #eee;
+			position: absolute;
+			margin: auto;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			width: 280px;
+			height: 200px;
+			border-radius: 10px;
+			-webkit-transition: all .1s;
+			transition: all .1s;
+			-webkit-transform: scale(1);
+			transform: scale(1);
+			opacity: 1;
+		}
+
+		#erweima {
+			height: 40%;
+			width: 40%;
+			border-radius: 8px;
+			margin: auto;
+			margin-top: 40px;
+		}
+
+		#title {
+			right: 10px;
+			left: 10px;
+			top: 20%;
+			bottom: 100%;
+			min-height: 25px;
+			min-width: 50px;
+			position: absolute;
+			margin: auto;
+			text-align: center;
+			white-space: nowrap;
+			width: auto;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			z-index: 2;
+			color: red;
+			font-size: 18px;
+			border-radius: 20px;
+		}
+
+		#close {
+			right: 60%;
+			left: 15%;
+			top: 100%;
+			bottom: 20%;
+			min-height: 30px;
+			min-width: 30px;
+			position: absolute;
+			margin: auto;
+			text-align: center;
+			white-space: nowrap;
+			width: auto;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			z-index: 2;
+			color: #fff;
+			font-size: 18px;
+			background-color: #0b0;
+			border-radius: 20px;
+		}
+
+		#open {
+			right: 15%;
+			left: 60%;
+			top: 100%;
+			bottom: 20%;
+			min-height: 30px;
+			min-width: 30px;
+			position: absolute;
+			margin: auto;
+			text-align: center;
+			white-space: nowrap;
+			width: auto;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			z-index: 2;
+			color: #fff;
+			font-size: 18px;
+			background-color: red;
+			border-radius: 20px;
+		}
+
+		.percent {
+			left: 10px;
+			bottom: 15px;
+			min-height: 2.25rem;
+			position: relative;
+			margin: 0;
+			text-align: center;
+			white-space: nowrap;
+			width: auto;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			z-index: 2;
+			color: #E81010;
+		}
+
+		#price {
+			right: 10px;
+			bottom: 15px;
+			min-height: 2.25rem;
+			position: absolute;
+			margin: 0;
+			text-align: center;
+			white-space: nowrap;
+			width: auto;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			z-index: 2;
+			color: #E81099;
+		}
+
+		.new-list ul li {
+			background: #fff;
+			position: absolute;
+			padding: 10px 0px 10px 0px;
+			background-color: #ddd;
+			border-bottom: 0px solid #eee;
+			top: 40px;
+			bottom: 40px;
+		}
+
+		.new-list ul li a {
+			display: inline-block
+		}
+
+		.new-list ul li img {
+			position: absolute;
+			border-radius: 5px;
+			left: 5px;
+			top: 50%;
+			bottom: 50%;
+			width: 100px;
+			height: 100px;
+			margin: auto;
+		}
+
+		.new-list .right {
+			float: right;
+			width: 58%;
+			color: #666;
+			border-bottom: 0px #f5f5f5 solid;
+			height: 160px;
+			margin-right: 2%
+		}
+
+		.qiang {
+			width: 100%;
+			background: #ff5272;
+			height: 35px;
+			border: 0;
+			border-radius: 5px;
+			font-size: 1.4rem;
+			color: #fff;
+			margin-top: 5px
+		}
+
+		.new-type {
+			font-size: 10px;
+			color: #FFF;
+			background: #ff1272;
+			border-radius: 5px;
+			min-width: 28px;
+			text-align: center;
+		}
+
+		.new-name {
+			font-size: 14px;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 2;
+			overflow: hidden;
+			margin-top: 5px;
+			text-overflow: ellipsis;
+		}
+
+		.new-quan {
+			height: 20px;
+			padding-right: 5px;
+			line-height: 20px;
+			color: rgba(253, 56, 93, 1);
+			font-size: 12px;
+			margin: 7px 0
+		}
+
+		.new-quan div {
+			float: left;
+			border: 1px rgba(253, 56, 93, 1) solid;
+			line-height: 18px;
+			text-align: center;
+			padding: 0 3px;
+			border-top-right-radius: 3px;
+			border-bottom-right-radius: 3px
+		}
+
+		.new-quan span {
+			background: rgba(253, 56, 93, 1);
+			width: 20px;
+			height: 20px;
+			display: block;
+			text-align: center;
+			color: #fff;
+			line-height: 20px;
+			float: left;
+			border-top-left-radius: 3px;
+			border-bottom-left-radius: 3px
+		}
+
+		.new-share {
+			color: #E81099;
+			font-size: 12px;
+			width: 50%;
+			float: right;
+			text-align: right
+		}
+
+		.new-price {
+			color: rgba(253, 56, 93, 1);
+			font-size: 14px;
+			width: 50%;
+			float: left
+		}
+
+		.new-price a {
+			font-size: 11px;
+			color: #999;
+		}
+
+		.new-sale {
+			color: #555;
+			font-size: 12px;
+			width: 50%;
+			float: right;
+			text-align: right
+		}
+	</style>
+</head>
+
+<body>
+	<div id="dialog">
+		<a id="title">为您搜到商品优惠券</a>
+		<div class="new-list" tapmode onclick="opentaobao()">
+			<ul class="thelist" id="thelist">
+				<li><img src="../../image/findquan.png">
+					<div class="new-list right">
+						<p class="new-name"><a class="new-type">天猫</a>植物工坊大柚子卸妆水女正品脸为您搜到商品优惠券</p>
+						<div class="new-quan"><span>券</span>
+							<div>￥30</div>
+							<p class="new-share"><!--购买返--></p>
+						</div>
+						<p class="new-price">￥14.9<a>券后价</a></p>
+						<p class="new-sale">销量2075件</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<a id="close" tapmode onclick="CloseFrame()">关闭</a>
+		<a id="open" tapmode onclick="opentaobao()">去购买</a>
+	</div>
+
+</body>
+<script type="text/javascript" src="../../script/jquery.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/mescroll.js"></script>
+<script type="text/javascript" src="../../script/echo.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+		api.parseTapmode();
+		time = 10;
+		rotating();
+		getData();
+		echo.init({
+			offset: 0,
+			throttle: 0,
+			unload: false,
+			callback: function(element, op) {}
+		});
+		setInterval(function() {
+			//	setTimeout(function () {
+			echo.render();
+		}, 50);
+	}
+
+	function getData() {
+		var userinfo = GetStorage('userinfo');
+		var inviteinfo = GetStorage('inviteinfo');
+		var commondata = GetStorage('commondata');
+		var itemdata = GetStorage('itemdata');
+		var coupon = GetStorage('coupon');
+		var listDom = document.getElementById("thelist");
+		var final_price = itemdata[0].zk_final_price;
+		var coupon_money = parseFloat(coupon.couponmoney);
+		var price = parseFloat((final_price - coupon_money).toFixed(2));
+		var first = (inviteinfo.first_cut / 100) * (coupon.max_commission_rate / 100);
+		var share = '';
+		if (userinfo.memberlevel != 1 || commondata.fenxiang == 1) {
+			share = '购买返' + parseFloat((price * first).toFixed(2)) + '元';
+		}
+		//Alert(itemdata[0].pict_url);
+		var title = $api.byId('title');
+		var couponmoney = '';
+		var new_price = '';
+		if (coupon_money != 0) {
+			couponmoney = '￥' + coupon_money;
+			new_price = price + '<a>券后价</a>';
+			$api.html(title, '为您搜到商品优惠券');
+		} else {
+			couponmoney = '已发完'
+			new_price = price + '<a>折扣价</a>';
+			$api.html(title, '商品优惠券已发完');
+		}
+
+		var tbm = "";
+		if (itemdata[0].user_type == '1') {
+			tbm = '天猫';
+		} else {
+			tbm = '淘宝';
+		};
+		//销量万位转换判断
+		var sales = "";
+		if (itemdata[0].volume < 9999) {
+			sales = itemdata[0].volume;
+		} else {
+			sales = (itemdata[0].volume / 1e4).toFixed(1) + "万";
+		};
+		var html = "";
+		html += '<li><img src="../../image/findquan.png" data-echo="' + itemdata[0].pict_url + '" tapmode onclick="opentaobao()"><div class="new-list right">';
+		html += '<p class="new-name"><a class="new-type">' + tbm + '</a>' + itemdata[0].title + '</p><div class="new-quan"><span>券</span>';
+		html += '<div>' + couponmoney + '</div><p class="new-share">' + share + '</p></div>';
+		html += '<p class="new-price">￥' + new_price + '</p><p class="new-sale">销量' + sales + '件</p></div></li>';
+		///	$api.html(listDom, html)
+		$('.thelist').html(html);
+	}
+
+	//插屏倒计时
+	function rotating() {
+		var tid = $api.byId('close');
+		$api.html(tid, '关闭 ' + time);
+		if (time > 0) {
+			time = time - 1;
+			setTimeout(rotating, 1000);
+		} else {
+			setTimeout(CloseFrame, 1000);
+		}
+	}
+
+	function opentaobao() {
+		var coupon = GetStorage('coupon');
+		var url = coupon.coupon_click_url;
+		var title = "粉丝福利购";
+		openTBAPP(url, title);
+		setTimeout(CloseFrame, 2000);
+	};
+</script>
+
+</html>

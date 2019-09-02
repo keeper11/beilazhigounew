@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>自动更新进度页</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<style>
+		html,
+		body {
+			height: 100%;
+			background: transparent;
+			-webkit-touch-callout: none;
+			font-family: Tahoma, Geneva, sans-serif;
+			font-style: normal;
+		}
+
+		#dialog {
+			background-color: #eee;
+			position: absolute;
+			margin: auto;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			width: 200px;
+			height: 150px;
+			border-radius: 10px;
+			-webkit-transition: all .1s;
+			transition: all .1s;
+			-webkit-transform: scale(1);
+			transform: scale(1);
+			opacity: 1;
+		}
+
+		#erweima {
+			height: 100%;
+			width: 100%;
+			border-radius: 10px;
+			margin: auto;
+		}
+
+		#title {
+			right: .1rem;
+			left: .1rem;
+			top: 15px;
+			min-height: 2.25rem;
+			position: absolute;
+			margin: 0;
+			text-align: center;
+			white-space: nowrap;
+			width: auto;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			z-index: 2;
+		}
+
+		#close {
+			right: 80px;
+			left: 80px;
+			top: 110%;
+			bottom: -10%;
+			min-height: 2.25rem;
+			position: absolute;
+			margin: 0;
+			text-align: center;
+			white-space: nowrap;
+			width: auto;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			z-index: 2;
+			font-size: 25px;
+			color: #fff;
+			min-width: 40px;
+			min-height: 40px;
+			border: 1px solid #fff;
+			border-radius: 50%;
+		}
+
+		#percent {
+			right: .1rem;
+			left: .1rem;
+			bottom: 25px;
+			min-height: 2.25rem;
+			position: absolute;
+			margin: 0;
+			text-align: center;
+			white-space: nowrap;
+			width: auto;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			z-index: 2;
+			color: #E81010;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="dialog">
+		<a id="close" tapmode onclick="api.closeFrame()">╳</a>
+		<img id="erweima" src="../../image/erweima.png" />
+		<a id="title">下载中,请稍候...</a>
+		<a id="percent">0%</a>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+	var arcProgress;
+	apiready = function() {
+		arcProgress = api.require('arcProgress');
+		arcProgress_open();
+	};
+
+	// annular:环形, sector扇形: crescent:月牙形
+	function arcProgress_open(value) {
+		arcProgress.open({
+			type: 'annular',
+			centerX: api.frameWidth / 2,
+			centerY: api.frameHeight / 2 + 20,
+			radius: api.frameWidth / 8,
+			//  bgColor: '#213456',
+			pgColor: '#E81010',
+			loopWidth: '5',
+			fixedOn: api.frameName,
+			fixed: true
+		}, function(ret, err) {
+			var id = ret.id
+			update(id);
+		});
+	}
+
+	function update(id) {
+		console.log('下载来源：' + appdata.download);
+		if (appdata.download == '1') {
+			baidu(id); //百度下载地址
+		} else {
+			pgyer(id); //蒲公英下载地址
+		}
+	}
+	//自定义下载地址
+	function baidu(id) {
+		var random = parseInt(Math.random() * 9);
+		console.log('自定义下载地址：' + appdata.downloadURL);
+		api.download({
+			url: appdata.downloadURL,
+			savePath: 'fs://' + (api.appName) + random + '.apk',
+			report: true,
+			cache: true,
+			allowResume: true,
+		}, function(ret, err) {
+			if (ret.state == 0) { /* 下载状态*/
+				var value = parseInt(ret.percent);
+				setValue({
+					id: id,
+					value: value
+				});
+				$api.byId('percent').innerText = value + '%';
+				//	api.toast({msg: "正在下载应用" + value + "%",//  duration: 5000});
+			} else {
+				if (ret.state == 1) { /* 下载完成 */
+					$api.byId('title').innerText = '下载完成';
+					setTimeout(function() {
+						$api.byId('title').innerText = '准备安装';
+						var savePath = ret.savePath;
+						api.installApp({
+							appUri: savePath
+						});
+						arcProgress.close({
+							id: id
+						});
+						setTimeout('api.closeFrame()', 500);
+					}, 1000);
+				}
+			}
+		});
+	}
+
+	//蒲公英下载地址
+	function pgyer(id) {
+		var random = parseInt(Math.random() * 9);
+		console.log('蒲公英下载地址');
+		var appdata = GetStorage('appdata');
+		api.download({
+			url: appdata.pgyer_url+'/install?_api_key=' + appdata.api_key + '&appKey=' + appdata.appKey,
+			savePath: 'fs://' + (api.appName) + random + '.apk',
+			report: true,
+			//cache: true,
+			//allowResume: true,
+		}, function(ret, err) {
+			if (ret.state == 0) { /* 下载状态*/
+				var value = parseInt(ret.percent);
+				setValue({
+					id: id,
+					value: value
+				});
+				$api.byId('percent').innerText = value + '%';
+				//	api.toast({msg: "正在下载应用" + value + "%",//  duration: 5000});
+			} else {
+				if (ret.state == 1) { /* 下载完成 */
+					$api.byId('title').innerText = '下载完成';
+					setTimeout(function() {
+						$api.byId('title').innerText = '准备安装';
+						var savePath = ret.savePath;
+						api.installApp({
+							appUri: savePath
+						});
+						arcProgress.close({
+							id: id
+						});
+						setTimeout('api.closeFrame()', 500);
+					}, 1000);
+				}
+			}
+		});
+	}
+	//设置显示进度
+	function setValue(obj) {
+		arcProgress.setValue({
+			id: obj.id,
+			value: obj.value
+		});
+	}
+</script>
+
+</html>

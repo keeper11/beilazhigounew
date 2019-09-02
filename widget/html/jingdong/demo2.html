@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>拼购</title>
+	<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/main.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/mescroll.css">
+	<link rel="stylesheet" type="text/css" href="../../css/swiper.css">
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-webkit-tap-highlight-color: transparent;
+		}
+
+		ul {
+			list-style-type: none
+		}
+
+		a {
+			text-decoration: none;
+			color: #18B4FE;
+		}
+		/*模拟的标题*/
+
+		.header {
+			z-index: 9990;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			line-height: 0px;
+			padding-top: 0px;
+			text-align: center;
+			background-color: white;
+			border-bottom: 1px solid #ddd;
+		}
+
+		.header .tip {
+			margin-top: 0px;
+			font-size: 8px;
+			color: gray;
+		}
+		/*菜单*/
+
+		.scrollx {
+			height: 30px;
+			overflow: hidden;
+		}
+
+		.scrollx-content {
+			width: 100%;
+			overflow-x: auto;
+			white-space: nowrap;
+		}
+
+		.nav {
+			padding: 0 16px 0 10px;
+		}
+
+		.nav li {
+			display: inline-block;
+			padding: 16px 8px 6px 8px;
+			margin-bottom: 28px;
+			/*把水平滚动条撑到外面,达到隐藏的目的*/
+			vertical-align: middle;
+		}
+
+		.nav .active {
+			border-bottom: 0px solid #FF7500;
+			color: #FF7500;
+		}
+		/*列表*/
+
+		.swiper-container {
+			position: fixed;
+			top: 31px;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+		/*展示上拉加载的数据列表*/
+
+		.data-list li {
+			position: relative;
+			padding: 10px 8px 10px 120px;
+			border-bottom: 1px solid #eee;
+		}
+
+		.data-list .pd-img {
+			position: absolute;
+			left: 18px;
+			top: 18px;
+			width: 80px;
+			height: 80px;
+		}
+
+		.data-list .pd-name {
+			font-size: 16px;
+			line-height: 20px;
+			height: 40px;
+			overflow: hidden;
+		}
+
+		.data-list .pd-price {
+			margin-top: 8px;
+			color: red;
+		}
+
+		.data-list .pd-sold {
+			font-size: 12px;
+			margin-top: 8px;
+			color: gray;
+		}
+		/*隐藏*/
+
+		.hide {
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+	<!--标题-->
+	<div class="header">
+		<!--菜单 需加上mescroll-touch-x,原因: https://www.mescroll.com/qa.html#q10 -->
+		<div class="scrollx mescroll-touch-x">
+			<div id="scrollxContent" class="scrollx-content">
+				<ul id="nav" class="nav">
+					<li class="active" i="0">全部</li>
+					<li i="1">女装</li>
+					<li i="2">男装</li>
+					<li i="3">内衣</li>
+					<li i="4">母婴</li>
+					<li i="5">美妆</li>
+					<li i="6">食品</li>
+					<li i="7">居家</li>
+					<li i="8">鞋品</li>
+					<li i="9">运动</li>
+					<li i="10">车品</li>
+					<li i="11">数码</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!--轮播-->
+	<div id="swiper" class="swiper-container">
+		<div id="swiperWrapper" class="swiper-wrapper">
+
+			<!--首页-->
+			<div id="mescroll0" class="swiper-slide mescroll">
+				<ul id="dataList0" class="data-list">
+					<!--<li>
+							<img class="pd-img" src="../../res/img/pd1.jpg"/>
+							<p class="pd-name">商品标题商品标题商品标题商品标题商品标题商品</p>
+							<p class="pd-price">200.00 元</p>
+							<p class="pd-sold">已售50件</p>
+						</li>-->
+				</ul>
+				<ul class="goods-list" id="goods_block0"></ul>
+			</div>
+
+			<!--奶粉-->
+			<div id="mescroll1" class="swiper-slide mescroll">
+				<ul id="dataList1" class="data-list"> </ul>
+				<ul class="goods-list" id="goods_block1"></ul>
+			</div>
+
+			<!--面膜-->
+			<div id="mescroll2" class="swiper-slide mescroll">
+				<ul id="dataList2" class="data-list"> </ul>
+				<ul class="goods-list" id="goods_block2"></ul>
+			</div>
+
+			<!--图书-->
+			<div id="mescroll3" class="swiper-slide mescroll">
+				<ul id="dataList3" class="data-list"> </ul>
+				<ul class="goods-list" id="goods_block3"></ul>
+			</div>
+
+			<!--果汁-->
+			<div id="mescroll4" class="swiper-slide mescroll">
+				<ul id="dataList4" class="data-list"> </ul>
+				<ul class="goods-list" id="goods_block4"></ul>
+			</div>
+
+			<!--奶瓶-->
+			<div id="mescroll5" class="swiper-slide mescroll">
+				<ul id="dataList5" class="data-list"> </ul>
+				<ul class="goods-list" id="goods_block5"></ul>
+			</div>
+
+			<!--美素-->
+			<div id="mescroll6" class="swiper-slide mescroll">
+				<ul id="dataList6" class="data-list"> </ul>
+				<ul class="goods-list" id="goods_block6"></ul>
+			</div>
+			<!--璐拉-->
+			<div id="mescroll7" class="swiper-slide mescroll">
+				<ul id="dataList7" class="data-list"> </ul>
+				<ul class="goods-list" id="goods_block7"></ul>
+			</div>
+			<!--启赋-->
+			<div id="mescroll8" class="swiper-slide mescroll">
+				<ul id="dataList8" class="data-list"> </ul>
+				<ul class="goods-list" id="goods_block8"></ul>
+			</div>
+			<!--雅培-->
+			<div id="mescroll9" class="swiper-slide mescroll">
+				<ul id="dataList9" class="data-list"> </ul>
+				<ul class="goods-list" id="goods_block9"></ul>
+			</div>
+			<!--花王-->
+			<div id="mescroll10" class="swiper-slide mescroll">
+				<ul id="dataList10" class="data-list"> </ul>
+				<ul class="goods-list" id="goods_block10"></ul>
+			</div>
+			<!--韩蜜-->
+			<div id="mescroll11" class="swiper-slide mescroll">
+				<ul id="dataList11" class="data-list"> </ul>
+				<ul class="goods-list" id="goods_block11"></ul>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/aui-tab.js"></script>
+<script type="text/javascript" src="../../script/mescroll.js"></script>
+<script type="text/javascript" src="../../script/swiper.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+			api.parseTapmode();
+			//导航菜单
+			var mescrollArr = new Array(17); //每个菜单对应一个mescroll对象
+			//当前菜单下标
+			var curNavIndex = 0;
+			//初始化首页
+			mescrollArr[curNavIndex] = initMescroll(curNavIndex);
+			/*初始化轮播*/
+			var swiper = new Swiper('#swiper', {
+				onTransitionEnd: function(swiper) {
+					var i = swiper.activeIndex; //轮播切换完毕的事件
+					changePage(i);
+				}
+			});
+			/*菜单点击事件*/
+			$("#nav li").click(function() {
+					var i = Number($(this).attr("i"));
+					swiper.slideTo(i); //以轮播的方式切换列表
+				})
+				/*切换列表*/
+			function changePage(i) {
+				if (curNavIndex != i) {
+					//更改列表条件
+					var curNavDom; //当前菜单项
+					$("#nav li").each(function(n, dom) {
+						if (dom.getAttribute("i") == i) {
+							dom.classList.add("active");
+							curNavDom = dom;
+						} else {
+							dom.classList.remove("active");
+						}
+					});
+					//菜单项居中动画
+					var scrollxContent = document.getElementById("scrollxContent");
+					var star = scrollxContent.scrollLeft; //当前位置
+					var end = curNavDom.offsetLeft + curNavDom.clientWidth / 2 - document.body.clientWidth / 2; //居中
+					mescrollArr[curNavIndex].getStep(star, end, function(step, timer) {
+						scrollxContent.scrollLeft = step; //从当前位置逐渐移动到中间位置,默认时长300ms
+					});
+					//隐藏当前回到顶部按钮
+					mescrollArr[curNavIndex].hideTopBtn();
+					//取出菜单所对应的mescroll对象,如果未初始化则初始化
+					if (mescrollArr[i] == null) {
+						mescrollArr[i] = initMescroll(i);
+					} else {
+						//检查是否需要显示回到到顶按钮
+						var curMescroll = mescrollArr[i];
+						var curScrollTop = curMescroll.getScrollTop();
+						if (curScrollTop >= curMescroll.optUp.toTop.offset) {
+							curMescroll.showTopBtn();
+						} else {
+							curMescroll.hideTopBtn();
+						}
+					}
+					//更新标记
+					curNavIndex = i;
+				}
+			}
+			/*创建MeScroll对象*/
+			function initMescroll(index) {
+				//创建MeScroll对象,内部已默认开启下拉刷新,自动执行up.callback,刷新列表数据;
+				var mescroll = new MeScroll("mescroll" + index, { //上拉加载的配置项
+					up: {
+						callback: getListData, //上拉回调,此处可简写; 相当于 callback: function (page) { getListData(page); }
+						isBounce: false, //此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
+						noMoreSize: 1, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
+						page: {
+							num: 0, //当前页码,默认0,回调之前加1,
+							size: 20, //每页数据的数量;
+							time: null //加载第一页数据服务器返回的时间 (可空);
+						},
+						lazyLoad: {
+							use: true, // 是否开启懒加载,默认false
+							attr: 'imgurl', // 网络图片地址的属性名 (图片加载成功会自动移除改属性): <img imgurl='网络图  src='占位图''/>
+							showClass: 'mescroll-lazy-in', // 图片加载成功的显示动画: 渐变显示,参见mescroll.css
+							delay: 400, // 列表滚动的过程中每500ms检查一次图片是否在可视区域,如果在可视区域则加载图片
+							offset: 10 // 超出可视区域200px的图片仍可触发懒加载,目的是提前加载部分图片
+						},
+						htmlNodata: '<p class="upwarp-nodata">-- 已加载完毕 --</p>',
+						empty: {
+							icon: "../../image/option/mescroll-empty.png", //图标,默认null
+							tip: "暂无相关数据~", //提示
+							//		btntext: "去逛逛 >", //按钮,默认""
+							//	btnClick: function() { //点击按钮的回调,默认null
+							//			alert("点击了按钮,具体逻辑自行实现");}
+						},
+						clearEmptyId: "goods_block" + index,
+						toTop: { //配置回到顶部按钮
+							src: "../../image/option/mescroll-totop.png", //默认滚动到1000px显示,可配置offset修改
+							offset: 500
+						},
+						isBounce: false
+					}
+				});
+				return mescroll;
+			}
+			/*联网加载列表数据  page = {num:1, size:10}; num:当前页 从1开始, size:每页数据条数 */
+			function getListData(page) {
+				//联网加载数据
+				var commondata = GetStorage('commondata');
+				var dataIndex = curNavIndex; //记录当前联网的nav下标,防止快速切换时,联网回来curNavIndex已经改变的情况;
+				//关键词筛选模拟数据
+				var keyword = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"];
+				var cidword = keyword[curNavIndex];
+				var url = "http://japi.jingtuitui.com/api/get_goods_list?appid=" + commondata.jingtuitui_APPID + "&appkey=" + commondata.jingtuitui_APPKEY; //京推推链接
+				setTimeout(function() {
+					api.ajax({
+							url: url + '&num=' + page.size + '&page=' + page.num + '&type=' + cidword + '&rank=collage', //分类商品API接口链接
+							encode: false,
+							method: 'post',
+							timeout: 5,
+							cache: 'true',
+							dataType: 'json',
+						},
+						function(ret, err) {
+							if (ret) {
+								var curPageData = ret.result.data;
+								mescrollArr[dataIndex].endSuccess(curPageData.length);
+								//设置列表数据
+								setListData(curPageData, dataIndex, page);
+							} else {
+								//联网失败的回调,隐藏下拉刷新和上拉加载的状态;
+								mescrollArr[dataIndex].endErr();
+								var listDom = document.getElementById("goods_block" + dataIndex);
+								var html = '<div style="text-align:center"><img src="../../image/option/mescroll-empty.png" style="width:200PX;"></div>';
+								html += '<div class="paging" style="text-align:center;padding-top:5px;">-- 没有网络或网络错误 --<br>请检查网络后下拉刷新!!</div>';
+								$api.html(listDom, html);
+							}
+						});
+				}, 500);
+			}
+		}
+		/*设置列表数据
+		 * pageData 当前页的数据
+		 * dataIndex 数据属于哪个nav */
+	function setListData(curPageData, dataIndex, page) {
+		var listDom = document.getElementById("goods_block" + dataIndex);
+		var len = curPageData.length;
+		/*下面就是往容器里面插入数据的代码*/
+		var html = '';
+		for (var i = 0; i < len; i++) {
+			var data = curPageData[i];
+			var tbm = '<img src="../../image/jd.png" style="width:13px;"/>&nbsp;';
+			//图片链接判断
+			var pic = "";
+			if ((data.goods_img).indexOf("http") != -1) {
+				pic = data.goods_img;
+			} else {
+				pic = 'https:' + data.goods_img;
+			};
+			html += '<div class="goods-item"tapmode data-skuid="' + data.goods_id + '" data-couponurl="' + data.discount_link + '" data-discount="' + data.discount_price + '" onclick="openJDxiangqing(this);">';
+			html += '<a class="img"><span class="coupon-wrapper  theme-bg-color-1">券<i>￥</i><b>' + parseFloat(data.discount_price) + '</b></span>'; //<span class="today-wrapper"><b>NEW</b></span>';
+			html += '<img onerror="this.src=\'../../image/loaderr.png\'";" src="../../image/load.gif" imgurl="' + pic + '"></a>';
+			html += '<a class="title"><div class="text">' + tbm + data.goods_name + '</div></a>';
+			html += '<div class="price-wrapper"><span class="price">￥<span>' + parseFloat(data.coupon_price) + '</span></span><span class="text">券后拼购价</span>';
+			html += '<div class="sold-wrapper"><span class="text">原价</span><span class="sold-num">' + data.goods_price + '元</span></div>';
+			html += '</div></div>';
+		}
+		$api.append(listDom, html);
+		//api.refreshHeaderLoadDone();
+		lock = false;
+	}
+</script>
+
+</html>

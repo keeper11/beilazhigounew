@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/aui.css">
+    <link rel="stylesheet" href="../../css/animate.css">
+
+    <style media="screen">
+        .aui-bar-nav {
+            background-color: #fff;
+            color: #000;
+            padding-top: 20px;
+        }
+
+        .aui-title {
+            color: #333333;
+            font-size: 20px;
+            font-family: SimHei;
+        }
+
+        .aui-form-list {
+            border: none;
+            /*background-image: none;*/
+        }
+
+        ul li {
+            height: 55px;
+        }
+
+        .aui-list-in .aui-list-item .aui-list-item-arrow {
+            color: #999999;
+        }
+
+        textarea {
+            background-color: #fff;
+            padding: 0 11px;
+            /*height: 2.5rem;*/
+            padding-top: 10px;
+            height: 55px;
+        }
+
+        .aui-list-item {
+            background-color: #fff;
+        }
+
+        .defaultdizhi {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 11px;
+            height: 55px;
+        }
+
+        .bgc {
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            z-index: 99;
+            background-color: rgba(33, 33, 33, 0.2);
+        }
+
+        .bgc .parameterbox {
+            width: 100%;
+            height: 60vh;
+            background-color: #fff;
+            border-radius: 10px 10px 0 0;
+            position: fixed;
+            bottom: 0;
+            padding: 0px 20px;
+            padding-bottom: 0px;
+        }
+
+        .bgc .parameterbox .bgctop {
+            display: flex;
+            align-items: center;
+            height: 50px;
+            justify-content: space-between;
+        }
+
+        .bgc .parameterbox .bgctop img {
+            width: 13px;
+            height: 13px;
+        }
+
+        .bgc .parameterbox .bgctop p {
+            width: 90%;
+            text-align: center;
+            color: #333333;
+            font-size: 18px;
+            font-family: SimHei;
+        }
+
+        .aui-list-in .aui-list-item .diqubox {
+            display: flex;
+            justify-content: flex-start;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='box'>
+
+        <header class="aui-bar aui-bar-nav">
+            <div class="aui-pull-left aui-btn" @click='bankhtml'>
+                <span class="aui-iconfont aui-icon-left" style="color:#000"></span>
+            </div>
+            <div class="aui-title">新添加收货地址</div>
+            <div class="aui-pull-right aui-btn" style='color:#F1206B' @click='gosave'>
+                保存
+            </div>
+        </header>
+        <!-- 输入框 -->
+        <ul class="aui-list aui-form-list">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+
+                    <div class="aui-list-item-input">
+                        <input type="text" placeholder="收货人" v-model='deliveryman'>
+                    </div>
+                    <div class="aui-list-item-label-icon">
+                        <img src="../../image\soppeticon/lianxi.png" style="width:22px;height:22px;">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+
+                    <div class="aui-list-item-input">
+                        <input type="text" placeholder="手机号" v-model='phones'>
+                    </div>
+                    <div class="aui-list-item-label-icon">
+                        +86
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner aui-list-item-arrow diqubox" :value='region' id="picker" @click='shows'>
+                    <span id='provinces'>所在地区</span><span id="towns"></span><span id="districts"></span>
+                </div>
+            </li>
+        </ul>
+
+        <textarea cols="2" rows="6" style="overflow:hidden" placeholder='详细地址：如道路、门牌号、小区、楼栋号、单元室' v-model='deladdress'></textarea>
+
+        <div class="defaultdizhi">
+            <p>设置为默认地址</p>
+            <input class="aui-switch" type="checkbox" name="demo2" :checked="shihis" @click='defaul()'>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script src="../../script/picker.min.js"></script>
+<script type="text/javascript" src="../../script/city.js"></script>
+<script type="text/javascript" src="../../script/index.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/axios.min.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+
+<script type="text/javascript">
+    apiready = function() {
+
+        var vuedata = {
+            'showme': false,
+            'region': '',
+            'shihis': true,
+            'default': 'normal',
+            'deladdress':'',
+            'phones': '',
+            'deliveryman': '',
+            'address1': '',
+            'address2': '',
+            'address3': '',
+            'mobiles':''
+        }
+        var vm = new Vue({
+            el: '#box',
+            data: vuedata,
+            mounted: function() {
+
+            },
+            created: function() {
+              this.getmobiles()
+            },
+            methods: {
+              getmobiles(){
+                this.mobiles = $api.getStorage('mobile')
+              },
+                goaddsite() {
+                    api.openWin({ 
+                        name: 'addsite',
+                             url: './addsite.html',
+                             pageParam: {  }   
+                    });
+
+                },
+                bankhtml() {
+                  api.closeWin();
+                },
+                showselect() {
+                    this.showme = !this.showme
+                },
+                closebox() {
+                    this.showme = false
+                },
+                shows() {
+                    picker.show();
+                },
+                gosave() {
+                  // console.log(this.deladdress);
+                  // console.log(1111111111111111);
+                  // console.log(this.mobiles);
+                  // console.log(1111111111111111);
+
+                    this.address1 = document.getElementById('provinces').innerText
+                    this.address2 = document.getElementById('towns').innerText
+                    this.address3 = document.getElementById('districts').innerText
+                    // axios.get(`http://shop.19gou.net/api/address/MemberAddressAdd?mobiles&address=132&name=%E5%BC%A0%E6%97%AD&phone=15200000000&province=%E5%9B%9B%E5%B7%9D%E7%9C%81&city=%E6%88%90%E9%83%BD%E5%B8%82&area=%E9%9D%92%E7%BE%8A%E5%8C%BA&default=normal`)
+                    axios.get(`http://shop.19gou.net/api/address/MemberAddressAdd?token=${ this.mobiles }&address=${this.deladdress}&name=${this.deliveryman}&phone=${this.phones}&province=${this.address1}&city=${this.address2}&area=${this.address3}&default=${this.default}`)
+                        .then(res => {
+                            console.log(res);
+                            console.log(res.data.msg)
+                            if(res.data.code == 1){
+                              console.log(res.data.mag)
+                              api.openWin({ 
+                                  name: 'mysite',
+                                       url: './mysite.html',
+                                       pageParam: { 
+
+                                   }   
+                              });
+                            }
+                        })
+                        .catch(function(error) {
+                            //  console.log(error);
+                        });
+                    console.log(this.address1);
+                    console.log(this.address2);
+                    console.log(this.address3);
+                },
+                defaul() {
+                    console.log(this.shihis);
+                    if (this.shihis == true) {
+                        this.shihis = false
+                        this.default = 'hidden'
+                    } else if (this.shihis == false) {
+                        this.shihis = true
+                        this.default = 'normal'
+                    }
+                    console.log(this.default);
+                }
+            },
+        });
+    }
+
+    function getOrderListByPage() {
+        这里面可以直接用vuedata里面的任何一个数据
+
+    }
+</script>
+
+</html>
