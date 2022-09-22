@@ -1,4 +1,4 @@
-<widget id="A6002363288897" version="0.0.1"> //id请更改为自己的包名，并且删除双斜杠后所有内容
+<widget id="A6002363288897" version="0.0.1"> 
     <name>赞友生活</name>
     <description>
         Example For APICloud.
